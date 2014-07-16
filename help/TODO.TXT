@@ -1,0 +1,615 @@
+ToDo:
+- Code ueberarbeiten (Strukturieren, dokumentieren und Sprache fuer Bezeichner
+  auf Englisch vereinheitlichen, damit der Code international verstaendlich ist)
+  static-Variablen einfuegen um Performance zu optimieren.
+- Texte in Message-Properties-Datei auslagern fuer Mehrsprachigkeit
+- Unbedingt: Globale Variablen mit System.setProperty(...); setzen.
+  Damit koennte viel Overhead aus der FieldComponent-Implementierung
+  entfallen. Ausserdem viel mit statischen Klassen/Variablen arbeiten.
+- DB als Speicherung nehmen (SQLite mit aktiviertem Autovacuum oder hsqldb bzw. h2)
+- Optionen in properties-Datei schreiben statt XML
+- Datenzugriffsschicht einbauen
+    - Lesen von Images
+    - Lesen/Schreiben von XMLs
+- Statusbar am Optionsdialog
+- Layout-Info in Options aufnehmen (Wenn ein Board geladen wird, anzeigen, wie es aussehen wird)
+- Verbesserung der Absicherung gegen Manipulationsversuche (Regelmaessiger Abgleich der Staende
+  und Pruefung von Remote-Klicks auf Gueltigkeit)
+- Refactoring: Implementierung von G-Server und davon abgeleitet ein G-Net-Server, die alle
+  relevanten Daten halten
+- G-Clients implementieren, die nur Client-Informationen halten und mit dem G-Server ueber
+  "Aktionen" bzw. "Events" kommunizieren.
+- Clicks "generischer" machen: d.h. ID des Clickers mitgeben
+- Ueberlegen, wie der Randueberlauf bei der Variante "borderless"
+  mit nicht rechteckigen Spielbrettern funktionieren koennte.
+  (Derzeit werden deaktiverte Randfelder fuer den Ueberlauf ignoriert)
+  Moegliche Loesungen:
+    - Feldabhaengigkeiten im Editor editierbar machen
+    - 3D Spielbretter implementieren (bspw. Fußball)
+- Abfangen von fehlerhaften Eingaben
+  - Mussfelder
+  - Bereits belegte Ports
+  - Spieler mit gleichen Farben/Grafiken (Warnung)
+  - Meldung bei Aenderungen am Spielbrett, wenn sich dadurch bei abhaengigen Feldern
+    die Maximalwerte aendern, so dass eingetragene Werte die Maximalwerte uebersteigen.
+  - Pruefung der Feld-XMLs
+    - Polygon geschlossen, Positionen angegeben, jede Grenze mind. 2 Punkte,
+      jede Grenze hat ID und Ref-ID, Ref-ID verweist auf gueltige ID, ...
+- Vordefinierte Szenarien ueber Netzwerk spielbar machen.
+  Sprich: Nicht Spieloptionen auf dem Server ablegen, sondern das Board.
+- Optionen bewerten, ob sie das Spiel beschleunigen oder verlangsamen und
+  entsprechenden Hinweis im Options-Dialog anzeigen.
+- Bilder als Base64 in Speicherungen einbinden
+- Optionale Uebernahmeanimationen implementieren
+- Optionale 3D-Grafik implementieren (evtl. sogar 3D Spielfeld-Wuerfel)
+- Optionale Sounds implementieren (Explosionen, Titel-/Endemelodien, usw.)
+- Eastereggs einbauen. Zum Bsp. wenn ein Spieler sich einen bestimmten Namen gibt,
+  ertoent nicht die Gewinnermelodie sondern ein basslastiges "Player <Name> wins!!!"
+  wie in Mortal Kombat
+- Schoeneren "Gewonnen"-Dialog einbauen.
+- Editor fuer Felder integrieren
+    - Steuerung der Anzahl unterschiedlicher Spalten/Zeilen durch Schieberegler
+    - Steuerung der Rasterabstaende durch Schieberegler
+    - Im Hintergrund helle Linien als Hilfsraster anzeigen, dunkle Linien als
+      Spalten/Zeilen-Abgrenzungen (Col/Row-Factor)
+    - Linksklick fuegt Punkte hinzu, Rechtsklick entfernt Punkte.
+    - Klicks auf die Linie oder knapp daneben fuegen Zwischenpunkte ein.
+    - Drag auf bestehende Punkte verschiebt diese.
+    - Drag auf Mittelpunkt im Polygon verschiebt den Offset.
+    - Am Rand werden mit hellen Umrissen weitere Polygone angezeigt,
+      um die Positionierung auf dem Brett kontrollieren zu koennen.
+    - Anzeige/Aenderung der referenzierten Felder ist noch offen.
+
+Hexplode
+
+- Andere Namen:
+    Nuclear/Nuklear
+    Chain Reaction
+    Sprengmeister
+    (H)Explode
+    (H)Expand
+    Blast
+    Smash
+    Overload
+    Overtake
+    Take over
+    Turn over
+    Tip over
+    Domination
+    Domino-Effect
+    Cascade/Kaskade
+    Lawine
+    Spread 'n Grow
+    Ueberhitzung/Heatwave
+    Ueberdruck
+
+Beschreibung:
+Eine Matrix grafischer Elemente, die ueber Relationen
+interaktiv Kaskaden triggern und aus XML-Descriptoren
+instanziert werden.
+
+Siegbedingungen:
+- Capture the field - Jeder Spieler hat ein Feld das er verteidigen
+  muss und wenn es uebernommen wird, scheidet der betreffende Spieler
+  aus. Die verbleibenden Spieler spielen solange weiter, bis nur ein
+  Spieler uebrig ist (siehe: last man standing). Das zu verteidigende
+  Feld ist das erste Feld, das der Spieler anklickt (vorsicht bei der
+  borderless Variante).
+  Subvarianten:
+  a) Der Spieler der das Feld uebernimmt bekommt alle Felder des
+  uebernommenen Spielers
+  b) Die Felder des uebernommenen Spielers werden freigegeben
+
+Teamplay:
+- Spieler koennen sich zu Teams zusammenschliessen, wobei die Siegbedingungen
+  dann nicht mehr auf die Spieler sondern Teams gelten. So zaehlt es bei last
+  man standing als Sieg, wenn zwar mehrere Spieler aktiv sind aber diese dem
+  gleichen Team angehoeren. (Natuerlich koennen sich die Spieler anhand der
+  uebernommenen Felder noch intern auf einen 1. und folgende Plaetze einigen.)
+
+Spielvarianten:
+- Border - Es muss angrenzend an eigene Felder gesetzt werden
+  oder aber frei an einem der Randfelder
+- Teamplay - Spieler duerfen auch auf Felder ihrer Teampartner
+  klicken allerdings wird dann nicht der Besitzer gewechselt,
+  sondern nur der Wert erhoeht.
+- Punkte sammeln: 1 Punkt pro Ueberladung, mehr Punkte pro Ueberladung,
+  die durch eine andere Ueberladung ausgeloest wurde, noch mehr Punkte,
+  wenn es dabei zu einer Uebernahme gegnerischer Felder kommt, etc.
+  Optional: Minuspunkte fuer - an den Gegner verlorene - Felder.
+- "Hunt the beast" Es kann nur im Sticky-Modus mit unveraenderten Boards mit
+  ungerader Feldanzahl (z.B. 9 auf 7) gespielt werden und der Startpunkt fuer die Spieler
+  ist immer in den Ecken, waehrend das Biest in der Mitte beginnt. Das Ziel ist es,
+  ein kleines Vieh zu sprengen aber da es sehr schreckhaft ist, laeuft es bei jeder
+  Explosion ein Feld in die entgegengesetzte Richtung weg, also im Normalfall in Richtung
+  des anderen Spielers. So arbeiten also beide daran sich, das Vieh gegenseitig zueinander
+  zu treiben, um es schlussendlich einzukreisen, so dass es nicht mehr entkommen kann und
+  unweigerlich gesprengt wird.
+- "Schiffe versenken" Die Spieler verstecken Schiffe, die gegen eigene Explosionen immun
+  sind aber Gegner koennen Sie zerstoeren (direkt oder indirekt). Wer zuerst alle Schiffe
+  des Gegners zerstoert hat, gewinnt das Spiel. (Politisch korrekt kann man auch statt
+  Schiffen von "strategischen Zielen" sprechen, die uebernommen werden.)
+- "Wabanti" Es gewinnt derjenige, der es schafft, zuerst von einer Seite des Bretts bis
+  zur anderen Seite eine durchgehende Verbindung aufzubauen.
+- "Mahjong" Das Spielfeld ist mehrschichtig wie das gleichnamige asiatische Brettspiel
+  und es koennen nur Felder angeklickt werden, die auch bei Mahjong waehlbar waeren
+- "Big Bang" oder "Tanz auf dem Vulkan" Es kann nur mit unveraenderten Boards mit ungerader
+  Feldanzahl (z.B. 9 auf 7) gespielt werden. Das Ziel ist es, den Vulkan in der Mitte
+  ausbrechen zu lassen. Dies geschieht durch kleine Eruptionen. Allerdings reichen die
+  einfachen Explosionen dafuer nicht aus und so werden die Kettenreaktionen gezaehlt. Sobald
+  eine bestimmte Anzahl erreicht oder ueberschritten wird, bricht der Vulkan aus und der
+  ausloesende Spieler hat gewonnen. Natuerlich kann das Szenario auch anders herum gespielt
+  werden und zwar indem beide sich wie gewohnt bekaempfen muessen aber so, dass der Vulkan dabei
+  nicht ausbricht. Die Empfindlichkeit des Vulkans kann dabei flexibel eingestellt werden.
+- Seit Anbeginn der Zeit ringen die Kraefte von Yin und Yang miteinander.
+  Doch immer wahrten sie das Gleichgewicht und nie errang eine Seite die
+  Oberhand... bis jetzt. Die Sterblichen selbst - so wurde entschieden -
+  sollen ihre Wahl treffen und mit jeder Tat koennen sie ihre Seite staerken
+  und zugleich mit geschickten taktischen Zuegen den Gegner schwaechen.
+- Elemental Wars: Die Elemente ringen um die Vorherrschaft auf der
+  elementaren Ebene. Doch keiner Seite gelang es, als Sieger aus dem
+  Kampf hervorzugehen. Bis jetzt...
+  Feuer verbrennt die Erde, verzehrt die Luft und verdunstet das Wasser
+  Erde erstickt das Feuer, bremst die Luft und saugt das Wasser
+  Luft verweht die Erde, blaest das Feuer und treibt das Wasser
+  Wasser loescht das Feuer, schwemmt die Erde und bindet die Luft
+    Feuer  blockt Erde (verbrannte Erde, kein Wachstum)
+           wird geloescht durch Wasser, ausgeblasen durch Luft
+    Wasser blockt Feuer (wird geloescht)
+           wird aufgesaugt durch Erde, weggeblasen durch Luft
+    Erde   blockt Luft
+           wird ausgetrocknet durch Feuer, weggespuelt durch Wasser
+    Luft   blockt Wasser (wird weggesaugt)
+           wird verzehrt durch Feuer, geblockt durch Erde
+
+    Feld --> Feld das ueberladen wird --> Wirkung
+    + uebernimmt Feld,
+    = Feld wird uebernommen und Inhalt in gleicher Richtung weitergeschoben,
+    - kein Effekt
+    W --> F --> + (Verloescht)
+    W --> E --> = (Spuelt/schwemmt weiter)
+    W --> L --> - (Weht zurueck)
+    
+    L --> W --> + (Saugt weg)
+    L --> F --> = (Facht an und treibt weiter)
+    L --> E --> - (Prallt ab)
+    
+    E --> L --> + (Verdraengt)
+    E --> W --> = (Spritzt/schwappt weiter)
+    E --> F --> - (Schmilzt)
+    
+    F --> E --> + (Verbrennt)
+    F --> L --> = (Erhitzt und bewegt weiter)
+    F --> W --> - (Zuendet nicht)
+
+    Spezialfaehigkeiten fuer die einzelnen Elemente:
+    - Erde kann automatisch alle beschaedigten Felder regenerieren,
+      solange sie im Besitz sind (pro x Runden dauerhaften Besitz
+      eine Stufe Regeneration auf die entsprechenden Felder)
+      oder Es koennen x Felder gewaehlt werden, die regenerieren
+      (kann pro Runde wechseln) 
+      - Im Reparier-Modus koennen sogar entfernte Felder wieder
+        hinzugefuegt werden (volle Integritaet)
+
+    - Feuer kann Felder anzuenden und somit je Runde beschaedigen
+      (gilt nicht fuer angeklickte, sondern nur uebernommene Felder
+      und auch nur fuer Luft- oder Erdfelder - Wasser brennt nicht)
+      Nach dem Ausbrennen (1 Strukturpunkt) kann Feld weder angezuendet,
+      noch uebernommen werden.
+      (Schwarz darstellen) Nur Wasser (und evtl. Erde) koennen es reaktivieren.
+
+Boni:
+- Bombs - Auf dem Brett sind bereits ein paar Felder mit kritischen
+  Werten aktiviert. Allerdings koennen diese nicht direkt angeklickt
+  werden, sondern muessen uebernommen werden.
+- Backfire-Trap - Hierzu koennen die Spieler <x> Fallen legen und
+  wenn ein solches Feld angeklickt wird, laeuft die Kettenreaktion
+  in der Farbe des Fallenstellers. Diese Mine funktioniert aber nur,
+  wenn sie direkt angeklickt wird. Wird das verminte Feld durch eine
+  Ueberladung uebernommen, wird die Mine zerstoert.
+- Reset - Felder die durch eine Ueberladung gefeuert haben, werden auf
+  "frei" gesetzt.
+- One-Shot - Felder die durch eine Ueberladung gefeuert haben, koennen
+  in der gleichen Runde nicht noch einmal feuern. Der Wert wird zwar
+  auf 0 zurueckgesetzt, sie verteilen sich aber nicht auf die
+  umliegenden Felder.
+- Cooldown - Felder brauchen x Runden, bis sie wieder Werte aufnehmen
+  und somit ueberladen koennen. Alternativ koennen sie zwar Werte tanken
+  aber ueberladen erst nach Ablauf der Cooldown-Phase.
+- Empty overloaded - Bei einer Uebernahme gegnerischer Felder wird das
+  Feld neutral behaelt aber seinen Zahlenwert (keep value). Ohne die
+  Option (keep value) wird das Feld auf 0 zurueckgesetzt. Bei der
+  naechsten Uebernahme wird das Feld wie gewohnt in Besitz genommen. 
+- Elemental - Jeder der bis zu vier Spieler darf ein Element waehlen.
+  Aehnlich wie bei der Backfire-Trap-Variante stehen dadurch <x> Felder
+  des eigenen Elements zur Verfuegung, die frei gesetzt werden duerfen.
+  Diese Felder sind fuer den Besitzer leichter zu aktivieren und feuern
+  bereits bei der Haelfte der notwendigen Ladung. Feindliche Elemente
+  sind dagegen schwerer zu ueberladen und muessen mit der doppelten Zahl
+  von Klicks aktiviert werden. Als feindlich gelten Erde+Wasser gegen
+  Feuer+Luft. Ausserdem verteilen sie sich mit +2 fuer umliegende Felder.
+- Elemental-Area - In der Start-Ecke gibt es einen Bereich mit Feldern,
+  wie sie in der Elemental-Variante beschrieben sind.
+- Charge-Bomb - Braucht ca. 20-50 Runden zum aufladen. Wenn sie dann
+  abgefeuert wird, dauert es noch zwei weitere Runden, in denen der
+  Gegner informiert wird, dass etwas auf ihn zukommt. Der folgende Klick
+  loest dann automatisch den Beam aus, der aber nur auf ein freies Feld
+  erfolgen kann. Allerdings ist er nicht sehr zielgenau, so dass es eine
+  Varianz von zwei Feldern in alle Richtungen gibt, wo genau der Beam
+  einschlaegt. Zudem gibt es nur eine 70% Chance, dass es klappt, eine
+  20% Chance, dass nichts passiert und eine 10% Chance, dass sich seine
+  Polaritaet umkehrt, wodurch ein zufaellig anderer Spieler die Felder
+  bekommt. Allerdings ist der Beam sehr stark, da er auf alle umliegenden
+  Felder +2 setzt und noch in einem weiteren Ring +1. Zusaetzlich wird es
+  immer schwerer den Beam einzusetzen, je mehr Felder man hat, da die
+  Energie fuer den Erhalt dieser eingesetzt werden muss und nicht mehr in
+  den Beam geleitet werden kann.
+- Power - Diese Version erhoeht die Taktik noch um einen weiteren Faktor.
+  Die Ueberladungen brauchen Energie, die pro Runde erzeugt werden muss.
+  Dafuer hat jeder eine gewisse Basis-Energie zur Verfuegung, die dann
+  mit der Uebernahme von Energie-Feldern erhoeht werden kann. Fuer diese
+  Variante ist aber "Sticky" (siehe oben) Pflicht. Die Erklaerung dafuer
+  ist, dass die Energie ununterbrochen uebertragen werden muss. Fuer jeden
+  Punkt den man auf die Energiefelder legt, bekommt man pro Runde diese
+  Anzahl an Energie. Allerdings wird das Feld dadurch gefaehrdeter fuer
+  Uebernahmen.
+- Energy - Diese Variante basiert darauf, dass Felder pro x Runden in denen
+  sie im Besitz des Spielers sind und der nichts damit macht (anklicken
+  oder indirekt durch Ueberladungen aktivieren), jeweils einen Punkt verlieren.
+  Das erhoeht die Dynamik, weil man darauf achten muss, dass auch bestehende
+  Felder immer wieder aktiviert werden. Dies koennte zum Beispiel durch die
+  Dreieck-Variante dargestellt werden. (Siehe: Spezielle Feldtypen) Wird ein
+  Feld aktiviert, werden alle Dreiecke des Feldes farbig markiert. In jeder
+  Runde verlischt ein Dreieck und wenn alle Dreiecke weg sind, ist das Feld
+  wieder frei. (Option: Engergielose Felder bleiben im Besitz des Spielers
+  oder werden freigegeben)  Fuer diese Variante hat jeder Spieler pro Runde
+  aber x Klicks, statt nur einen, wie in der normalen Variante. Die Verteilung
+  der Klicks orientiert sich aber an den bestehenden Regeln. Also nur eigene
+  oder freie Felder sind anklickbar.  
+- Charge-Beam - Eine Runde aussetzen, um in der naechsten Runde das Feld
+  um zwei statt um eins hochzuzaehlen. Jede weitere Runde erhoeht die Kraft
+  um eins bis zum Maximalwert der Felder (6 bei Hexfeldern). Ueberschuessige
+  Kraftpunkte (bspw. 5 gesammelte Punkte, die in ein Hex-Feld geleitet
+  werden, das bereits 3 Punkte hat) gehen verloren. Es gibt trotzdem nur
+  die normale Entladung. Wird allerdings bei erreichen der Maximalkraft
+  noch eine weitere Runde gewartet, gibt es einen Crititcal Strike bei
+  dem sogar ein gegnerisches Feld gewaehlt werden darf.
+- Nuke-Ladungen - Als Belohnung fuer eine bestimmte Anzahl Ueberladungen
+  bekommt man eine Nuke-Ladung, die einen Instant-Overload ausloest, egal
+  wie hoch der Zaehler des Feldes ist. Allerdings wird die Explosion um
+  soviele Runden verzoegert, wie Klicks zur Explosion fehlen. Sprich: Ein
+  Feld, das sechs Klicks zum Ueberladen braucht und bereits eine Ladung
+  hatte, wird in fuenf Runden automatisch ohne weitere Klicks explodieren.
+  Es koennen aber pro Feld mehr Nukes investiert werden, um die Zeit zu
+  verringern. Allerdings kann pro Runde nur ein Feld mit Nukes geladen
+  werden.
+- Defuse - Damit kann man ein Feld des Gegners entschaerfen, also auf 0
+  setzen. Das Feld bleibt aber weiterhin im Besitz des Gegners. Diese
+  Anti-Minen koennen genauso wie die Nuke-Ladungen erworben werden.
+- Reroute/Pipe - Damit kann eine Leitung von einem gegnerischen
+  Feld zu einem eigenen Feld gelegt werden. Wird dieses Feld ueberladen,
+  uebertraegt sich die Energie auf das Zielfeld und sorgt dort fuer eine
+  Entladung ohne aber die Farbe zu aendern. Der Uebertragungsweg wird dabei
+  zerstoert und das Ursprungsfeld bleibt ebenfalls in der Farbe, wird aber
+  auf 0 gesetzt. Wenn das Zielfeld inzwischen im Besitz des Gegners ist,
+  ging der Schuss nach hinten los. Optional: Es ist waehlbar ob die
+  vollstaendige Energie des Impacts weitergeben werden soll oder nur 1.
+- Fuse/Wire - Die Zuendschnur funktioniert aehnlich wie Reroute/Pipe aber
+  das Ursprungsfeld explodiert wie gewohnt und das andere Ende der Schnur
+  wird zusaetzlich um 1 aufgeladen/zum Explodieren gebracht und obendrein
+  wird die eigene Farbe auf die andere Seite uebertragen. Das funktioniert
+  aber in beide Richtungen, so dass man dem Gegner eine Oeffnung bietet.
+- Spy - Bestimmten Radius aufdecken. Fremdminen, Wires/Tubes, etc.
+  sichtbar machen.
+- Mauern
+  --> Begrenzen bzw. als Belohnung fuer Explosionen/Uebernahmen
+  --> Jede Mauer kann an beliebige Seiten innerhalb des Bretts
+      (also bei randlosem/grenzenlosen Spiel auch am Aussenrand)
+      gesetzt werden und schirmt jeweils eine Explosion ab,
+      bevor sie zerbricht bzw. verstaerkte Mauern einfuehren mit
+      Darstellung durch Dicke/Transparenz oder auch mit Zahl
+  --> Schutz fuer ein Feld ueber eine begrenzte Zeit idR. eine Runde.
+      Wenn genuegend Schutzpunkte verfuegbar sind, kann das Feld fuer
+      mehrere Runden aufgeladen werden. Pro Schutzpunkt eine Runde.
+  --> Auswertung der Explosionen im Uhrzeigersinn
+      D.h. bei ueberlasteten Feldern erst Feld darueber, rechts
+      daneben, darunter und dann links daneben pruefen.
+
+- Spezielle Feldtypen:
+  - Dreieck-basiert (alle Formen, die aus Dreiecken zusammengesetzt
+    werden koennen: bspw. Rechteck, Raute, Hexagon, Oktagon)
+      - Statt mit einem Klick das ganze Feld aufzuladen, wird pro Klick
+        ein Dreieck-Teil aktiviert. Wenn alle Dreiecke mit 1 aufgeladen
+        sind, verteilt sich das Feld wie ueblich auf die umliegenden Felder.
+        Bei Randfeldern am sind auch nur die angrenzenden Dreiecke aktivierbar.
+        Jedes Dreieck-Teil hat ebenfalls eine Maximalkapazitaet von drei und
+        kann separat zum Ueberladen gebracht werden. Jede Ueberladung laeft bei
+        angrenzenden Feldern auch nur das entsprechende Dreieck auf.
+  - Freeform (alle anderen Formen: bspw. Plus, Escher-Figuren)
+
+Chainreaction mit Tetris kombinieren
+
+Es darf nur die erste Reihe angeklickt werden.
+Dadurch wird ein Feld in die Roehre gesetzt,
+das bis ganz nach unten wandert. Landet es auf
+dem Boden, bleibt es liegen. Wirft nun der Gegner
+in die gleiche Spalte ein Feld, bleibt dieses auf
+dem gegnerischen Feld liegen. Wird allerdings ein
+weiteres eigenes Feld auf das eigene geworfen,
+addieren sich die beiden. Dabei gelten die normalen
+Regeln von Chainreaction. D.h. Eckfelder explodieren
+bei einem Wert von zwei, Randfelder bei drei und die
+Felder in der Mitte bei vier. Dadurch koennen die
+gegnerischen Felder uebernommen werden. Doch nun
+kommt es zu einer Besonderheit dieser Variante:
+Bei jeder Explosion rutschen die Felder nach und
+fuehren somit zu weiteren Explosionen. (Offen ist
+noch, ob dieses Nachruecken gleich bei jeder oder
+erst nach allen Explosionen durchgefuehrt wird.)
+Die bei einer Explosion entfernten Felder zaehlen
+als Punkte. (Evtl. eine Berechnung, dass Felder,
+die durch eine Explosion zerstoert werden, mehr
+Punkte bringen und zwar abhaengig von der Stufe
+der Rekursion. Sprich, die ausgeloeste Explosion
+bringt einen Punkt, wird danach eine weitere
+ausgeloest, bringt diese zwei weitere Punkte und
+wenn diese nochmal zwei Explosionen ausloest,
+sind diese jeweils drei Punkte wert, usw.
+Alternativ koennte auch der Inhalt gewertet werden,
+so dass Mittelfelder vier Punkte bringen, Randfelder
+drei und Eckfelder zwei.)
+
+Chainreaction mit Conways Game of Life kombinieren
+
+Jede Runde wachsen/sterben die Felder nach den R.egeln des "Game of Life"
+
+Erweiterungen:
+    Prio 1  - Colspan/Rowspan
+Bsp:
+    1   2   3
+  +---+-------+
+1 |   |       |
+  +   +-------+
+2 |   |       |
+  +---+---+---+
+3 |       |   |
+  +-------+   +
+4 |       |   |
+  +---+---+---+
+ 
+    Prio 2  - Modularisierung (Grafikerzeugung aus XML, Netzwerk, KI, ...)
+        - Zeichenoperationen optimieren (nur teilweise Neuzeichnen mit Clipping)
+
+
+Alternativen zu Row-/Colspan:
+
+Muster:
++---------+----+----+
+|         |    |    |
+|----+----|    |    |
+|    |    |    |    |
+|    |    |----+----|
+|    |    |         |
++----+----+---------+
+
+
+Variante 1:
++---------+----+----+
+| 0/0: 1/0| 2/0| 3/0|
+|----+----|....|....|
+| 0/1| 1/1| 2/1| 3/1|
+|....|....|----+----|
+| 0/2| 1/2| 2/2: 3/2|
++----+----+---------+
+
+Jeweils einzelne Felder mit einer fehlenden Border-Beziehung
++ Einfach zu deklarieren
+- Zusammenhaengende Felder sind keine Einheit
+
+
+Variante 2:
++---------+----+----+
+|   0/0   |    |    |
+|----+----| 1/0| 2/0|
+|    |    |    |    |
+| 0/1| 1/1|----+----|
+|    |    |   2/1   |
++----+----+---------+
+
+Die Felder werden mit entsprechenden Faktoren versehen
++ Echte Zugehoerigkeit
+- Derzeit keine Unterstuetzung fuer unterschiedliche Faktoren
+
+
+Variante 3:
++---------+----+----+
+| 0/0  1/0| 2/0| 3/0|
+|----+----|    |    |
+| 0/1| 1/1| 2/1| 3/1|
+|    |    |----+----|
+| 0/2| 1/2| 2/2  3/2|
++----+----+---------+
+
+Eigenschaft Col-/Rowspan und unsichtbare Felder als Dummy einfuegen
++ Echte Zugehoerigkeit
+- Derzeit keine Unterstuetzung fuer Span-Angaben
+
+Todos
+=====
+
+Implementierung fuer Variante 2:
+Col-Faktor/Row-Faktor auf Feldebene d.h. InnerGroup kann beides
+haben und ueberschreibt ggf. die default-Faktoren der OuterGroup
+
+Implementierung fuer Variante 3:
+Nur das Feld mit der Span-Angabe existiert. Die "ueberspannten"
+Felder werden nur als Platzhalter implementiert, um die
+Abstaende korrekt darzustellen.
+
+
+
+- FieldComponentFactory
+    - FieldComponentGame (NoWall)
+        - SegmentedFieldComponent (SegmentedWall)
+        - Breakable (als Interface? Hat Methode fuer Neuzeichnen mit Transparenz und fuer das Setzen der Abhaengigkeit)
+    - FieldComponentEditor
+
+- Singleton-Klasse fuer SpielSession machen.
+    Inhalt: Aktueller Spieler, Aktuelle Runde, ...
+    - Auf Session das InfoPanel als Oberserver implementieren und das SessionObjekt als Observable
+
+- Aktueller Zustand:
+    FieldComponent fragt bei jedem MouseOver das Board, ob Klick moeglich ist.
+    Das Board leitet weiter an GamePanel, da nur dort die noetigen Infos sind.
+    - Bessere Loesung? An FieldComponent Flag setzen, ob klickbar. Dieses Flag
+      wird jede Runde erneuert fuer das komplette Board.
+      Vorteil: Weniger Abhaengigkeit zwischen Komponenten und Parent.
+      Nachteil: Evtl. mehr Berechnungsaufwand, wenn Pruefung fuer alle Felder
+      durchlaufen wird aber der Spieler immer nur wenige Felder mit der Maus
+      beruehrt. --> Verbesserung: ChangedFlag. D. h. wenn das Feld gaendert wird,
+      wird im Feld gespeichert, in welcher Runde das war.
+      Beste Loesung: Klickbarkeit Cachen und jede Runde (oder bei Ausstieg eines
+      Netzwerkspielers) zuruecksetzen.
+
+
+
+- Thread
+    - Check auf Aenderung in Click-Stack
+        - Wenn Aenderung
+            - Klick ausfuehren
+
+- Init
+    - Lokal
+        - Spieler --> Start des Threads
+        - CPU --> Start des Threads
+    - Netz
+        - Warten, bis alle da sind --> Start des Threads
+
+ClickArten
+    - MausKlick --> direkt klicken und Netz-Mitspieler informieren
+    - CPU-Klick --> direkt klicken
+    - NetzKlick --> direkt klicken
+
+ClickAblauf
+    - Klick durchfuehren
+    - Abhaenigkeiten pruefen
+    - Auf Gewinner pruefen (und noch aktive Mitspieler)
+    - ggf. Runde wechseln
+
+Vorschlag:
+    GameThread implementieren, bei dem die Player-Objekte als Listener
+    Implementiert werden. Der GameThread ruft Play auf und ermoeglicht
+    so den Zug (Lock). Nach dem Zug wird der Lock aufgehoben (Thread
+    wartet auf Beendigung des Zuges) und geht weiter.
+
+
+
+
+
+
+
+Field default colFactor = 1.0, rowFactor = 1.0, width = 1, height = 1, offsetx = 0, offsety = 0
+
+px  0   20  40  60  ...
+0   +-------+-------+-------+-------   \
+    |       |       |       |          |
+    |       |       |       |           > rowFactor = 1 / height = 1
+    |       |       |       |          |
+40  +-------+-------+-------+-------   /
+    |       |       |       |
+    |       |       |       |
+    |       |       |       |
+80  +-------+-------+-------+-------
+    |       |       |       |
+    |       |       |       |
+    |       |       |       |
+120 +-------+-------+-------+-------
+.   |       |       |       |
+.   |       |       |       |
+.   |       |       |       |
+    \___ ___/
+        v
+    colFactor = 1 / width = 1
+
+
++-------+---------------+-------+---------------+
+|       |               |       |               |
+|       |     1 / 0     |       |     3 / 0     |
+|       |               |       |               |
+| 0 / 0 +---------------+ 2 / 0 +---------------+
+|       |               |       |               |
+|       |     1 / 1     |       |     3 / 1     |
+|       |               |       |               |
++-------+---------------+-------+---------------+
+|       |               |       |               |
+|       |     1 / 2     |       |     3 / 2     |
+|       |               |       |               |
+| 0 / 2 +---------------+ 2 / 2 +---------------+
+|       |               |       |               |
+|       |     1 / 3     |       |     3 / 3     |
+|       |               |       |               |
++-------+---------------+-------+---------------+
+
+Field
+    row
+        col
+            Field cf = 1, rf = 2, w = 1, h = 2, ox = 0; oy = 0
+        /col
+        col
+            Field cf = 2, rf = 1, w = 2, h = 1, ox = 0; oy = 0
+        /col
+    /row
+    row
+        col
+            Field (empty)
+        /col
+        col
+            Field cf = 2, rf = 1, w = 2, h = 1, ox = 0; oy = 0
+        /col
+    /row
+
+
++-----------------------+-------+-----------------------+-------+
+|                       |       |                       |       |
+|                       |       |                       |       |
+|                       |       |                       |       |
+|       +---------------+       |       +---------------+       |
+|       |                       |       |                       |
+|       |                       |       |                       |
+|       |                       |       |                       |
++-------+---------------+-------+-------+---------------+-------+
+|                       |       |                       |       |
+|                       |       |                       |       |
+|                       |       |                       |       |
+|       +---------------+       |       +---------------+       |
+|       |                       |       |                       |
+|       |                       |       |                       |
+|       |                       |       |                       |
++-------+-----------------------+-------+-----------------------+
+
+Field
+    row
+        col
+            Field cf = 1, rf = 2, w = 3, h = 2, ox = 0; oy = 0
+        /col
+        col
+            Field cf = 3, rf = 2, w = 3, h = 2, ox = 0; oy = 0
+        /col
+    /row
+
+
+
+- FieldFormatter von Konstruktoren auf static Factory-Methoden umstellen.
+- Im FieldFormatter evtl. Factory fuer Feld-Typen vorbereiten.
+- GameOptions zu Singleton machen
+- FileSystem-Klasse machen
+    - Gibt Arrays aller Dateien zurueck (Speicherungen, Feld-XMLs, etc.)
+- Speichern/Laden-Funktionalitaet entkoppeln
+    - Interface machen, das die Daten generisch zurueck gibt.
+      Implementierung auf basis von Dateien/Datenbank
+- Erzeugen der Felder entkoppeln
+- CPU-Gegner ueber ServiceProvider instanziieren
+
+
+- Statt Col-/Rowspan und statt leeren Platzhaltern Angaben fuer padding/insets vorsehen.
+

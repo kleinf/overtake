@@ -1,0 +1,577 @@
+<html>
+<head>
+<title>Hex-Plode</title>
+<link rel="stylesheet" type="text/css" href="hexplode.css">
+</head>
+<body>
+<table border="0" width="100%">
+	<tr align="center">
+		<td><img src="images/logo.png"></td>
+	</tr>
+</table>
+<div>
+	<h3>Inhaltsverzeichnis</h3>
+	<a href="#vorgeschichte">Vorgeschichte</a></br>
+	<a href="#anleitung">Anleitung</a></br>
+	<a href="#einstellungen">Einstellungen</a></br>
+	<a href="#entwickler">Entwickler Informationen</a> </br>
+	<a href="#historie">Historie</a></br>
+	<a name="vorgeschichte"></a></br>
+	<h3>Vorgeschichte</h3>
+	Als ich mit neun Jahren meinen ersten Computer (Atari 1040 ST) geschenkt bekam, spielte ich mit Vorliebe ein Spiel
+	namens <a href="http://www.atarilegend.com/games/games_detail.php?game_id=5520#" target="_blank">Sprengmeister</a>.
+	Inzwischen sind &uuml;ber zwanzig Jahre ins Land gezogen, mein Atari hat das Zeitliche gesegnet aber das Spiel habe
+	ich nie vergessen. Aus diesem Grund machte ich mich daran, es nachzuprogrammieren. Allerdings gestaltete sich das
+	etwas schwieriger als ich zuerst dachte, denn meine bescheidenen Programmierkenntnisse reichten allenfalls f&uuml;r
+	kleine Gehversuche und so waren die ersten Versionen des Spiels sehr schlicht aufgebaut. Allerdings habe ich es
+	schon damals geschafft, die Gr&ouml;&szlig;e des Spielfelds variabel zu gestalten. Man konnte also selbst bestimmen,
+	wieviele Felder und wieviele Pixel die Breite und H&ouml;he betragen soll. Zu mehr Extras hat es leider nicht
+	gereicht. Daf&uuml;r entstanden einige Versionen. Unter anderem als Java-Applet und Visual-Basic-Exe. Doch auch
+	dies war noch nicht so prickelnd, denn mir fehlte die Kenntnis, einen w&uuml;rdigen Computergegner zu programmieren,
+	wie ich ihn bei Sprengmeister hatte. Nun war es zwar so, dass ich den Source-Code (Omicron Basic) mal hatte aber ich
+	damals nicht wusste, was ich damit anfangen soll. Inzwischen h&auml;tte ich das gewu&szlig;t aber ich hatte den Code
+	nicht mehr.</br>
+	</br>
+	Damit war das erste Kapitel meines Spiels (ich nannte es damals <a href="images/chain1.gif" target="_blank">Chain
+	Reaktor</a>) abgeschlossen und ich hatte zumindest eine spielbare Version f&uuml;r zwei bis vier Spieler. Leider
+	mangelte es mir an Spielpartnern und so gammelte das Teil auf meiner Platte (und f&uuml;r kurze Zeit auch auf meiner
+	alten Homepage) ohne gro&szlig;e Beachtung herum.</br>
+	</br>
+	Dies sollte sich aber nun &auml;ndern, denn ich habe die Idee neu aufgegriffen. Wobei ich dazu sagen mu&szlig;,
+	dass ich urspr&uuml;nglich ein Brettspiel computerisieren wollte und zwar
+	&quot;<a href="http://www.kosmos.de/kosmos/wrs/wrs.nsf/$WEBFirstSource/FSE0F83F7BC5DDF3F9C125722600431C8A?openDocument&_lang=DE" target="_blank">Einfach genial</a>&quot;.
+	Besagtes Spiel basiert auf einem Spielbrett aus Hexfeldern und daf&uuml;r machte ich mich daran die Routinen zu
+	schreiben. Irgendwann (ich wei&szlig; nicht mehr wie und warum) kam ich auf die Idee mein altes Sprengmeister-Spiel
+	zu entstauben und von Grund auf neu zu schreiben. Aber nicht einfach nur als neuen Klon mit Swing-Oberfl&auml;che,
+	sondern auch mit neuem Spielprinzip. Klar: Hex-Felder ist das Zauberwort.(Im Nachhinein hat sich herausgestellt,
+	dass es auch diese Variante schon l&auml;ngst gab, was mir aber zum damaligen Zeitpunkt aber nicht bewusst war.) Wie soll
+	ich das nun anfangen? Im Internet suchte ich nach Beispielen und fand auch einige Seiten wo
+	<a href="http://www.chessvariants.org/hexagonal.dir/hexagonal.html#computerplay" target="_blank">Hex-Schach-Programme</a>
+    angeboten wurden. Doch die angebotenen Quellcodes war nicht brauchbar f&uuml;r mich und so hie&szlig; es:
+    &quot;&Auml;rmel hochkrempeln und selbermachen&quot;.</br>
+	</br>
+	Im Nachhinein bin ich &uuml;ber die Entscheidung froh, denn so mu&szlig; ich nicht bef&uuml;rchten, irrt&uuml;mlich
+	die Sourcen falsch (im Sinne der Lizenzen) verwendet zu haben und kann statt dessen sagen, dass alles von mir selbst
+	geschrieben ist. Selbst die Beispiele auf Tutorial-Seiten habe ich nicht 1:1 verwendet, sondern nur die Prinzipien
+	analysiert und sie angewandt. Das bedeutet nat&uuml;rlich auch, dass der Code nicht so optimal ist, wie er
+	vielleicht sein k&ouml;nnte aber ich habe doch mein Bestes versucht, ihn so gut zu optimieren, wie ich kann.</br>
+	</br>
+	Allerdings mu&szlig; ich gestehen, doch einmal von diesem Dogma abgewichen zu sein und zwar stie&szlig; ich bei
+	meinen Nachforschungen doch tats&auml;chlich auf die Seite <a href="http://atari.st/" target="_blank">Atari.ST</a>
+	bzw. fr&uuml;her unter dem Namen LGD oder Little Green Desktop bekannt. Von dort kam ich zu Emulatoren und &uuml;ber
+	Umwegen auch an eine <a href="http://www.eifelbahn.de/eu-soft" target="_blank">Seite</a>, wo man eine CD mit
+	s&auml;mtlichen alten Public Domain Disketten kaufen kann, was ich nat&uuml;rlich sofort tat. Tats&auml;chlich unter
+	all den Programmen schlummerte neben meinen alten Lieblingsperlen
+	<a href="http://www.eckhardkruse.net/atari_st/grafik.html" target="_blank">Gruseldemo</a> und
+	<a href="http://www.eckhardkruse.net/atari_st/baller.html" target="_blank">Ballerburg</a> (interessanterweise beides
+	von Eckhard Kruse) auch &quot;mein&quot;
+	<a href="http://www.atarilegend.com/games/games_detail.php?game_id=5520#" target="_blank">Sprengmeister</a>.
+	Mit Hilfe der Demoversion von Omicron Basic konnte ich auch tats&auml;chlich den Quellcode in ASCII konvertieren.
+	Allerdings widersetzte sich das Startbild hartn&auml;ckig meinen Bem&uuml;hungen sich anzeigen zu lassen. Doch dann
+	kam mir die Idee, daf&uuml;r einfach GFA-Basic zu benutzen und siehe da, es ging. Das Bild wurde gleich mit
+	nostalgischem Hochgef&uuml;hl als <a href="images/Sprengmeister_pic.gif" target="_blank">gif</a> gespeichert und der
+	Code weiter analysiert. Nach einiger Recherche stie&szlig; ich dann auch auf eine
+	<a href="http://www.berkhan.com/basic/manual_7/manual_d/data_d/chap5-2.htm" target="_blank">Online-Doku</a> f&uuml;r
+	Omicron Basic, um die kryptischen Befehle in eine f&uuml;r mich verst&auml;ndliche Form zu &uuml;bersetzen. Damit
+	verstand ich nach einiger Zeit auch die Logik hinter der KI und ich machte mich daran, sie nach Java und in mein
+	Spiel (das inzwischen den Arbeitstitel <a href="images/Hexplode.gif" target="_blank">Hexplode</a> bzw.
+	<a href="images/Hex-Plode.png" target="_blank">Hex-Plode</a> bekommen hatte) zu portieren.</br>
+	</br>
+	Nachdem auch diese H&uuml;rde nun genommen war, merkte ich, dass mein Spiel um eine gute neue Funktion reicher aber
+	daf&uuml;r auch mit fremdem geistigen Eigentum gesegnet war. Dies lief meinem urspr&uuml;nglichen Plan zuwider und
+	so kam es zu einem weiteren sehr einschneidenden Schritt. Ich &ouml;ffnete mein Spiel, modularisierte es und schuf
+	somit zum einen eine Art Plugin-Schnittstelle um schnell und einfach neue Feldformen, Spielvarianten und
+	Computergegner einbauen zu k&ouml;nnen. Dadurch kann ich das Spiel ohne die bedenklichen Komponenten weitergeben.
+	Was zwar sehr schade ist, da ich die Sprengmeister-KI f&uuml;r gelungen halte aber besser, als wenn ich deswegen
+	&Auml;rger vom Urheber bekomme (den ich leider nicht mehr ermitteln konnte).</br>
+	</br>
+	Nachdem mein &quot;kleines&quot; Projekt ein knappes halbes Jahr lief (und die Funktionalit&auml;ten auf ein
+	Ma&szlig; angewachsen waren, das ich mir zu Anfang nicht einmal ansatzweise h&auml;tte tr&auml;umen lassen), kam mir
+	die Idee, noch einmal auf die Suche zu gehen. So stie&szlig; ich auf eine Menge &quot;Gleichgesinnter&quot;
+	(<a href="http://neil.fraser.name/software/chain/" target="_blank">hier</a> und
+	<a href="http://utter.chaos.org.uk/~pdh/software/autowars.htm" target="_blank">hier</a>), die auf verschiedene Wege
+	zu <a href="http://thirdcog.eu/apps/overload" target="_blank">vielen</a>
+	<a href="http://www.astatix.com/overload.php" target="_blank">diversen</a>
+	<a href="http://www.gamebase64.com/game.php?id=11082&d=24" target="_blank">Varianten</a> und
+	<a href="http://www.girv.net/amiga/games/atoms.html" target="_blank">noch</a>
+    <a href="http://katoms.sourceforge.net/" target="_blank">viel</a>
+	<a href="http://www.lorisware.com/blog/2012/05/13/atomic-for-android-out-now/" target="_blank">mehr</a>
+	<a href="http://leehaywood.org/games/reaction/" target="_blank">Varianten</a> (sogar mit
+	<a href="http://leehaywood.org/games/reaction/links.html" target="_blank">Links</a>) dieses Spiels kamen. Sogar ein
+	<a href="http://us2.aminet.net/game/think/BIGTriple.readme" target="_blank">Nachbau</a> von Sprengmeister war dabei.
+	Dabei kamen echt interessante Versionen heraus, die zum Teil v&ouml;llig neue Funktionalit&auml;ten bieten. So zum
+	Beispiel, dass man die Form seines Spielbretts selbst bestimmen kann, indem Felder (de)aktiviert werden und die
+	Wahlm&ouml;glichkeit optionaler Hintergrundgrafiken. Zu dem Zeitpunkt, als ich das sah, hatte ich in meinem Spiel
+	&auml;hnliche Funktionen bereits eingebaut. Dies wird mich zwar nicht vom Verdacht des Plagiats freisprechen aber
+	ich kann versichern, dass meine Ideen daf&uuml;r parallel entstanden sind und ich nicht die Absicht hatte, Ideenklau
+	zu betreiben.</br>
+    </br>
+    Inzwischen ist das Spiel ein paar Jahre gereift und (genau wie dieser Text) mehrfach &uuml;berarbeitet und erweitert
+    worden. Unter anderem kommt aus aktuellem Anlass der Hinweis auf ein fast identisches Spiel - ebenfalls mit dem
+    Namen <a href="http://en.wikipedia.org/wiki/Hexplode" target="_blank">Hexplode</a> - hinzu. Auch hiervon gibt es
+    wieder <a href="http://www.alinden.demon.nl/psion/hexplode.htm" target="_blank">&auml;ltere</a> oder aber auch
+    <a href="http://hexplode.com/" target="_blank">neuere</a> Adaptionen. Wie ich diese damals bei meiner Namensfindung
+    &uuml;bersehen konnte, ist mir schleierhaft. Nichtsdestotrotz werde ich das nicht ignorieren, sondern korrigieren und
+    einen anderen Namen w&auml;hlen, um unn&ouml;tige Verwechslungen und/oder Namensstreitigkeiten zu vermeiden.</br> 
+	</br>
+    Zuguterletzt aber gewiss nicht als Geringstes, m&ouml;chte ich denen danken, ohne die dies alles nicht m&ouml;glich
+    geworden w&auml;re. Da (wie so oft) immer wieder der Punkt erreicht war, wo die Arbeit ziemlich z&auml;h von der
+    Hand ging und das Spiel in seiner Vollendung bedroht war. Genau dann war immer die Rettung in Form meiner Freundin
+    (inzwischen Frau) da, die das fertige Spiel unbedingt erleben wollte. Dank ihrer best&auml;ndigen Motivation und
+    unterst&uuml;tzt von den zahlreichen Anregungen/Hinweisen diverser Arbeitskollegen, wurde das Spiel zu dem, was es
+    nun ist.</br>
+	</br>
+	<a name="anleitung" id="anleitung"></a>
+	<h3>Anleitung</h3>
+	Das Spielprinzip ist zugleich einfach und komplex. Einfach im Sinne der Regeln und komplex in den taktischen/strategischen M&ouml;glichkeiten.</br>
+	</br>
+	Dabei gelten folgende Grundregeln:</br>
+	- Die Spieler klicken abwechselnd auf die Felder</br>
+	- Es darf nur auf leere und eigene Felder geklickt werden</br>
+	- Die Felder werden dadurch &uuml;bernommen und ihr Wert um 1 erh&ouml;ht</br>
+	- Erreicht das Feld einen bestimmten Maximalwert, explodiert es und verteilt seinen Inhalt auf die umliegenden Felder. Dabei werden auch gegnerische Felder &uuml;bernommen und um 1 hochgez&auml;hlt. Sollte es dadurch zu einer erneuten &Uuml;berladung kommen, explodiert auch dieses Feld. So k&ouml;nnen sehr komplexe Kettenreaktionen entstehen, die die Machtverh&auml;ltnisse auf einen Schlag v&ouml;llig umkehren. Der Maximalwert entspricht der Anzahl angrenzender Felder. Das sind zum Beispiel bei rechteckigen Feldern in den Ecken 2, an den R&auml;ndern 3 und in der Mitte 4.</br>
+	</br>
+	Mit diesem Wissen kann das Spiel bereits gespielt werden. Doch bietet meine Version noch ein paar Sonderregeln, die im folgenden Abschnitt erkl&auml;rt werden. Zuvor allerdings noch ein paar Erl&auml;uterungen zur Bedienung des Programms:</br>
+	</br>
+	Beim Start sieht man nur das Start-Logo.</br>
+	</br>
+    &Uuml;ber das Men&uuml; File --&gt; New Game gelangt man zu den <a href="#anleitung.einstellungen">Einstellungen</a> um ein neues Spiel zu starten. Mit Join Netgame kann man sich an ein Netzspiel anmelden (vorausgesetzt es sind noch Spielerpl&auml;tze frei). Mit Edit Board wird wie bei New Game der <a href="#anleitung.einstellungen">Einstellungsdialog</a> angezeigt, nur dass man bei einem Klick auf den Button Start editor zum Editor gelangt, wo man sich seine Spielfelder frei erstellen kann. Der Men&uuml;punkt Load game l&auml;dt ein gespeichertes Spiel und Exit beendet das Programm.</br>
+	<a name="anleitung.einstellungen" id="anleitung.einstellungen"></a>
+	<h4>Einstellungsdialog</h4>
+	Man kann die vorgegebenen Einstellungen so belassen und gleich auf den Button &quot;Start game&quot; klicken oder die Einstellungen nach Belieben anpassen. Hierzu eine Liste der m&ouml;glichen Optionen, wo sie zu finden sind und welche Auswirkungen sie haben:</br>
+	</br>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td valign="top"><b>Dialog</b></td>
+			<td><b>Option</b></td>
+			<td><b>Erkl&auml;rung</b></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Spiebrett</td>
+			<td valign="top">Feldform</td>
+			<td>Die Form der Felder (Hexagon, Rechteck, Dreieck, Raute) bzw. weitere &uuml;ber Feld-Module selbst definierte Formen.</td>
+		</tr>
+		<tr> </tr>
+		<tr> </tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Spielfeld-Button</td>
+			<td>Ein Extra-Dialog in dem die H&ouml;he/Breite der Felder, sowie die Anzahl der Felder eingestellt werden kann.</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Gamemode</td>
+			<td><ul>
+					<li>Free - Die Spieler d&uuml;rfen ihre Felder frei ausw&auml;hlen</li>
+					<li>Sticky - Neue Felder d&uuml;rfen nur angrenzend an eigene Felder besetzt werden</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Feld-Stabilit&auml;t</td>
+			<td>Wenn ein Wert gr&ouml;&szlig;er als 0 gew&auml;hlt wird, werden die Feder instabil. Das hei&szlig;t, jede Explosion schw&auml;cht das entsprechende Feld. Dies wird dadurch angezeigt, dass das Feld immer durchsichtiger angezeigt wird. Ist der eingestellte Grenzwert erreicht und explodiert es noch einmal, verschwindet das Feld, ohne sich auf die umliegenden Felder zu verteilen. Dadurch &auml;ndern sich nat&uuml;rlich auch die Grenzwerte f&uuml;r die angrenzenden Felder, wodurch sie noch schneller explodieren. Allerdings kann man besch&auml;digte Felder reparieren. F&uuml;r jedes Feld das ein Gegner verliert, bekommen alle Mitspieler einen Reparaturpunkt. Dies wird durch einen erscheinenden Button im rechten Fensterteil angezeigt. Mit einem Klick auf den Button wechselt das Spiel in den Reparatur-Modus. Jeder Klick auf besch&auml;digte Felder (auch gegnerische) repariert sie um eine Stufe aber nicht &uuml;ber das Maximum hinaus. Ein Wiederherstellen von vernichteten Feldern ist nicht m&ouml;glich. Die Reparatur kann jederzeit mit einem erneuten Klick auf den Button abgebrochen werden. Restliche Punkte werden f&uuml;r eine sp&auml;tere Verwendung aufbewahrt. Eine andere Reparaturm&ouml;glichkeit besteht darin, ein Feld lange zu halten. F&uuml;r jeweils 10 Runden, in denen sich das Feld ununterbrochen im Besitz eines Spielers befindet, wird es um eine Stufe repariert. Besch&auml;digte freie Felder sind davon ausgenommen. Sind alle Reparaturpunkte aufgebraucht, wechselt das Spiel automatisch wieder in den Spiel-Modus.</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Feld-Sichtbarkeit</td>
+			<td>Damit kann die allgemeine Transparenz der Felder reguliert werden. Dies macht dann Sinn, wenn ein sch&ouml;nes Hintergrundbild sichtbar sein sollte. Diese Option ist aber nur w&auml;hlbar, wenn die Option der Feld-Stabilit&auml;t ausgeschaltet ist, da diese Option ebenfalls die Transparenz-Werte ver&auml;ndert und dies f&uuml;r eine eingeschr&auml;nkte Sichtbarkeit f&uuml;hren w&uuml;rde. </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Player</td>
+			<td valign="top">Anzahl-Spieler</td>
+			<td>Anzahl der Mitspieler. Dies hat vor allem auch Auswirkungen auf das Spiel im Netzwerk, da so lange gewartet wird, bis sich die entsprechende Anzahl Spieler angemeldet haben. </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Spielername</td>
+			<td>Diese Einstellung hat zwei Bedeutungen. Zum einen handelt es sich hierbei nat&uuml;rlich um den frei w&auml;hlbaren Namen des Spielers und zum anderen kann damit auch der Computergegner gew&auml;hlt werden. Dazu gleich mehr bei Erkl&auml;rung zur Option CPU. </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">CPU</td>
+			<td>Eine aktivierte Checkbox bedeutet, dass dieser Spieler durch einen Computergegner repr&auml;sentiert wird. Dazu mu&szlig; allerdings mindestens ein KI-Modul installiert sein. Statt dem Eingabefeld f&uuml;r den Namen erscheint dann eine Auswahlliste mit allen Computer-Gegnern.</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Farb-Button</td>
+			<td>Mit einem Klick auf diesen Button kann die Farbe gew&auml;hlt werden, in der die Felder dieses Spielers eingef&auml;rbt werden. </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Bilder-Liste</td>
+			<td>Statt einer Farbe kann auch eine Grafik ausgew&auml;hlt werden. Diese wird dann auf die Gr&ouml;&szlig;e des Feldes angepasst und in jedes Feld dieses Spielers gezeichnet.</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Netzwerk</td>
+			<td>Sobald diese Checkbox gew&auml;hlt wird, erscheinen zwei neue Auswahlm&ouml;glichkeiten. Die Liste zeigt alle IP-Adressen unter denen dieser Computer erreichbar ist. Im Eingabefeld daneben kann ein Port eingegeben werden, &uuml;ber den sich andere Spieler am Netzwerkspiel beteiligen k&ouml;nnen. Allerdings darf kein Spieler durch einen Computergegner repr&auml;sentiert werden. </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Game</td>
+			<td valign="top">Startbedingung</td>
+			<td>Derzeit ist nur die M&ouml;glichkeit empty implementiert. Das hei&szlig;t, das Spielfeld ist zu Beginn leer. Die angedachte Option random w&uuml;rde ein zuf&auml;llig generiertes Spielfeld vorgeben, bei dem die Felder bereits zu gleichen Teilen an alle Spieler verteilt sind. </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Siegbedingung</td>
+			<td><ul>
+					<li>Last man standing - Gewinner ist, wer als Letzter noch Felder besitzt. Sobald ein Spieler alle Felder verloren hat, scheidet er aus, auch wenn noch freie Felder besetzbar w&auml;ren. Die verbleibenden Spieler spielen solange weiter, bis einer &uuml;brig bleibt.</li>
+					<li>Divide et impera - Die Spieler m&uuml;ssen anteilig die Mehrheit erreichen. Dies w&auml;re bei zwei Spielern mehr als die H&auml;lfte, bei drei Spielern mehr als ein Drittel, usw. Scheidet ein Spieler aus, &auml;ndern sich auch die Zielvorgaben. So m&uuml;ssen die bei drei Spielern die verbleibenden zwei Spieler mehr als die H&auml;lfte der Felder in ihren Besitz bringen um zu gewinnen.</li>
+					<li>Domination - Alle Felder m&uuml;ssen sich im Besitz eines Spielers befinden. Das bedeutet, dass solange gesetzt werden darf, solange noch Felder frei sind.</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td valign="top">Specials</td>
+			<td>Dabei handelt es sich um verschiedene Einstellungen, um die Regeln individueller auszulegen. Einige Optionen stehen nicht zur Verf&uuml;gung, wenn eine entsprechende Siegbedingung gew&auml;hlt wurde, die in Verbindung mit dieser Option keinen Sinn machen w&uuml;rde.</br>
+				<ul>
+					<li>Borderless - Das Spielfeld hat keine Grenzen. Explosionen am Rand setzen sich auf der gegen&uuml;berliegenden Seite fort. Dadurch haben auch Eckfelder mehr Nachbarn und sind somit schwerer zum explodieren zu bringen.</li>
+					<li>Set while free - Diese Option erlaubt den Spielern solange mitzuspielen, solange freie Felder verf&uuml;gbar sind. Dies ist zum Beispiel das Unterscheidungskriterium zwischen den Siegbedingungen zu Last man standing und Domination, weshalb eine Auswahl nicht m&ouml;glich ist, wenn eine dieser beiden Siegbedingungen gew&auml;hlt wurde.</li>
+					<li>Overload on equal - Damit wird die &Uuml;berladungsgrenze der Felder gesteuert. Wird die Option aktiviert, explodiert das Feld sobald der Maximalwert erreicht ist. Bei einer Deaktivierung mu&szlig; der Wert erst &uuml;berschritten werden, damit es zu einer &Uuml;berladnug kommt.</li>
+					<li>Empty overloaded - Eine aktiverte Checkbox bedeutet, dass Felder die &uuml;berladen wurden auf 0 gesetzt werden. Allerdings kann es vorkommen, dass durch Kettenreaktionen das Feld mehr als den Maximalwert enth&auml;lt. Wird nun diese Option deaktiviert, wird der Wert des Feldes nur um um seinen Maximalwert verringert und es verbleibt ein Restwert im Feld. Zum Beispiel w&uuml;rde das Eckfeld bei rechteckigen Feldern bei einem Wert von 2 explodieren, seinen Inhalt auf die angrenzenden Felder verteilen und den Wert 0 annehmen. Nun wird aber durch eine Kettenreaktion der Wert 3 erreicht. Dann wird der Wert des Feldes auf 1 zur&uuml;ckgesetzt. Diese Option wurde nur aus Logikgr&uuml;nden angeboten, da es sonst keine Erkl&auml;rung daf&uuml;r gibt, wohin der Restwert verschwindet, wenn sich von dem Feld eigentlich nur zwei Einheiten auf die Nachbarfelder verteilen.</li>
+					<li>Loose overloaded - Checkbox aktiviert bedeutet, dass Felder die &uuml;berladen wurden frei werden. Andernfalls verbleiben sie im Besitz des urspr&uuml;nglichen Besitzers.</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td valign="top">&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+	</br>
+	Die gew&auml;hlten Einstellungen lassen sich anschlie&szlig;end auch &uuml;ber das Men&uuml; im Einstellungsdialog speichern, damit sie nicht immer wieder neu eingegeben werden m&uuml;ssen. Um den Zugriff zu erleichtern, wird eine Liste mit gespeicherten Einstellungen angeboten, die im gleichen Verzeichnis wie das Spiel liegen. Wurde ein anderes Verzeichnis gew&auml;hlt, mu&szlig; &uuml;ber den Men&uuml;punkt Load options der Lade-Dialog aufgerufen werden. Dort kann man dann das Verzeichnis und die gew&uuml;nschte Datei laden.</br>
+	</br>
+	Au&szlig;erdem ist es m&ouml;glich, im Men&uuml; LookAndFeel verschiedene Layouts einzustellen.</br>
+	</br>
+	<a name="anleitung.einstellungen" id="anleitung.einstellungen"></a>
+	<h4>Netzwerk-Spiel</h4>
+	Um das Spiel &uuml;ber Netzwerk zu spielen sind zwei Schritte notwendig:</br>
+	1. Netzwerkspiel starten. Dazu mu&szlig; nur - wie oben beschrieben - ein neues Spiel gestartet und bei den Einstellungen die Checkbox Netzwerk gew&auml;hlt werden. Dadurch wird auf diesem Rechner ein Server-Prozess gestartet und zugleich ein lokaler Client. Das Spiel selbst kann aber erst beginnen, wenn sich die gew&auml;hlte Anzahl Spieler angemeldet hat. Daf&uuml;r dient er nun folgende 2. Schritt. </br>
+	2. Nun mu&szlig; nur noch auf einem oder mehreren anderen Rechner(n) ebenfalls ein Spiel gestartet werden aber statt dem Men&uuml;punkt New Game wird Join Netgame gew&auml;hlt. Im folgenden Dialog mu&szlig; man den Rechnernamen bzw. die IP-Adresse des Rechners angeben, auf dem das Spiel initiiert wurde. Au&szlig;erdem mu&szlig; noch der entsprechende Port eingetragen werden. Nat&uuml;rlich ist der Wahl eines Spielernamens und einer Farbe sinnvoll, um sich von den anderen Spielern zu unterscheiden. Dann kann man mit Join game auch schon einsteigen.</br>
+	</br>
+	Das Spiel selbst unterscheidet sich nicht von der lokalen Variante. Nur das Aussehen des Dialogs ist ein klein wenig anders, denn auf der Rechten Seite ist nun ein neuer Bereich in dem Nachrichten angezeigt/verschickt werden k&ouml;nnen. Es handelt sich um eine kleine Chat-Komponente, um mit den Mitspielern in Kontakt treten zu k&ouml;nnen. Die Bedienung dieser Komponente ist denkbar einfach. Man mu&szlig; nur aus der Liste den Empf&auml;nger ausw&auml;hlen, einen Text in das Eingabefeld eingeben und Return dr&uuml;cken. </br>
+	</br>
+	<a name="anleitung.einstellungen" id="anleitung.einstellungen"></a>
+	<h4>Neues Spiel</h4>
+	Wurde das Spiel gestartet (mit oder ohne Netzwerk), gibe es nun unterschiedliche Men&uuml;eintr&auml;ge. Bei einem lokalen Spiel ist es &uuml;ber das Men&uuml; m&ouml;glich, die laufende Partie zu speichern, &uuml;ber Quit game zum Startbildschirm zur&uuml;ckzukehren oder &uuml;ber Exit das Programm komplett zu beenden. Gespeicherte Spiele k&ouml;nnen sp&auml;ter weitergef&uuml;hrt bzw. im Editor bearbeitet werden. </br>
+	</br>
+	<a name="anleitung.einstellungen" id="anleitung.einstellungen"></a>
+	<h4>Editor</h4>
+	Nach dem Start des Editors erscheint ein leeres Spielfeld. Die Bedienung des Editors l&auml;uft folgenderma&szlig;en:</br>
+	Ein Klick mit der Maus aktiviert oder deaktiviert Felder</br>
+	Ein Mausklick bei gleichzeitig gedr&uuml;ckter Shift-Taste erh&ouml;ht den Wert des Feldes bis zur Maximalgrenze. Bei &Uuml;berschreitung beginnt der Z&auml;hler von vorne. (Achtung: Wird ein Feld auf den Maximalwert ver&auml;ndert und werden anschlie&szlig;end Nachbarfelder entfernt, wird der Wert nicht auf den neuen Maximalwert angepasst. Erst wenn das Feld wieder mit Shift und Maus angeklickt wird, greift der neue Maximalwert!)</br>
+	Ein Mausklick bei gleichzeitig gedr&uuml;ckter Strg-Taste ver&auml;ndert den Besitzer des Feldes. Auch hier beginnt der Z&auml;hler wieder am Anfang.</br>
+	Ein Mausklick bei gleichzeitig gedr&uuml;ckter Alt-Taste setzt ein Feld auf den Ursprung (Aktiviert, Wert 0, Kein Besitzer) zur&uuml;ck.</br>
+	</br>
+	&Uuml;ber das Men&uuml; kann das Spiel nun gespeichert und/oder gespielt werden. (Achtung: L&auml;dt man eine bereits gespielte Partie in den Editor werden nur die Feldinformationen ge&auml;ndert. Nicht aber die aktuelle Runde bzw. der aktuelle Spieler und auch nicht die damals gew&auml;hlten Spieleinstellungen!)</br>
+	</br>
+	<a name="entwickler" id="entwickler"></a>
+	<h3>Entwickler-Informationen</h3>
+	Das Spiel kann mittels selbstgeschriebener Komponenten um neue Computergegner erweitert werden.</br>
+	</br>
+	Im Einzelnen ist dies folgende Komponente:</br>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><b>Superklasse</b></td>
+			<td><b>Namenskonvention</b></td>
+			<td><b>&Uuml;berladbare Methode</b></td>
+			<td><b>Aufgabe</b></td>
+		</tr>
+		<tr>
+			<td> hex.game.Computer</td>
+			<td>*CPU.class</td>
+			<td>Field computerClick(Player AktuellerSpieler)</td>
+			<td>W&auml;hlen des n&auml;chsten Zuges. Durch die Ableitung erh&auml;lt die Klasse Zugriff auf die Member-Variable board, die eine Repr&auml;sentation des Spielbretts darstellt. Dieses Spielfeld besteht aus einem Array von Fields, die ihrerseits Informationen &uuml;ber Wert, Besitzer und Feldbeziehungen beinhalten. Dadurch ist es m&ouml;glich, die aktuelle Spielsituation zu analysieren und einen g&uuml;nstigen Zug herauszufinden, den die CPU machen kann. </td>
+		</tr>
+	</table>
+	</br>
+	Der * steht f&uuml;r einen frei w&auml;hlbaren Namen.</br>
+	</br>
+	<a name="historie" id="historie"></a>
+	<h3>Historie</h3>
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td valign="top">Version 1.0 (Final) - 01/06</td>
+			<td><ul>
+					<li>Diese Version enth&auml;lt bereits alle spielbaren Modi</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 1.1 - 02/06</td>
+			<td><ul>
+					<li>Umstrukturierung der Logik</li>
+					<li>Implementieren der Feldform &quot;Raute&quot; </li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 1.2 - 03/06</td>
+			<td><ul>
+					<li>Erweitern der grafischen Komponenten (About-Dialog)</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Die Scroller-Animationen laufen nicht sauber ab</br>
+						(Text wird nicht sauber gel&ouml;scht) (gefixed mit V. 1.3.5)</li>
+					<li>Beim JAR-File kann der About-Dialog nicht ge&ouml;ffnet werden</br>
+						(Programm h&auml;ngt sich auf) (gefixed mit V. 1.3.5)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 1.3 - 03/06</td>
+			<td><ul>
+					<li>Implementieren des Computer-Gegners</li>
+					<li>Verbesserung des Spielerhandlings (Es kann nun der Name eingegeben werden)</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Wenn man den Computer gegen sich selbst spielen l&auml;&szlig;t, kommt es zu einem &quot;stack overflow&quot;</br>
+						(workaround mit V1.3.5 - Es muss mindestens einen menschlichen Spieler geben)</br>
+						(gefixed mit V. 2.0 - Rekursion bei Weitergabe von Feld&uuml;bernahmen wurde entfernt)</li>
+					<li>Wenn &quot;set while free&quot; mit sticky aktiviert ist, macht der Computer keinen Zug,
+						obwohl er an der Reihe w&auml;re (gefixed mit V. 1.3.5)</li>
+					<li>&quot;Domination&quot; und &quot;Empty overloaded&quot; macht zusammen keinen Sinn,
+						da man den Gegner nur durch Sprengung &uuml;bernehmen kann und man damit eine L&uuml;cke &ouml;ffnet,
+						in die Gegner wieder setzen darf. --&gt; Keine Gewinnsituation m&ouml;glich (gefixed mit V. 1.3.5)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 1.3.5 (Bugfix-Release) - 03/06</td>
+			<td><ul>
+					<li>Bugs von Version 1.2 gefixed</li>
+					<li>Bugs von Version 1.3 gefixed</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 2.0 - 04/06</td>
+			<td><ul>
+					<li>Implementierung der Netzwerkf&auml;higkeit</li>
+					<li>Spieler k&ouml;nnen nun ihre Farben selbst ausw&auml;hlen</li>
+					<li>Der Spielbereich kann nun mit einer Grafik hinterlegt werden</li>
+					<li>Dialog f&uuml;r Spieleinstellungen wurde &uuml;bersichtlicher gestaltet</li>
+					<li>Einstellungen f&uuml;r LookAndFeel sind nun im Optionen-Dialog zu finden</li>
+					<li>Laden und Speichern von Spieleinstellungen ist nun m&ouml;glich</li>
+					<li>Fehler beim Laden und Speichern von Spielen behoben</li>
+					<li>Speicherung erfolgt nun im XML-Format</li>
+					<li>Fehler bei Darstellung der alternativen Formen behoben</li>
+					<li>Es ist nun m&ouml;glich, durch (de)aktivieren einzelner Felder beliebige Brett-Formen zu erzeugen</li>
+					<li>Mittels eines Editors k&ouml;nnen nun Szenarien erstellt werden.</br>
+						Es ist auch m&ouml;glich bestehende Speicherst&auml;nde nach Belieben zu ver&auml;ndern.</li>
+					<li>Felder k&ouml;nnen nun eine definierte Stabilit&auml;t haben, wodurch sie nach einer</br>
+						einstellbaren Anzahl von &Uuml;berladungen einfach wegbrechen.</li>
+					<li>Felder die an Stabilit&auml;t verloren haben, k&ouml;nnen repariert werden. Die Punkte daf&uuml;r bekommt man, wenn einer der Gegner ein Feld verliert. Au&szlig;erdem regenerieren/reparieren sich Felder alle 10 Runden um eine Stufe, vorausgesetzt, sie sind diese ganze Zeit &uuml;ber im Besitz eines Spielers gewesen. </li>
+					<li>Interne Optimierungen (entfernen von unbenutztem Code und Umstrukturierungen)</li>
+					<li>Die Spielbrett-Optionen sind nun leichter einstellbar und variabler</li>
+					<li>Das Spielbrett und die Felder k&ouml;nnen nun mit Grafiken hinterlegt werden</li>
+					<li>Die Felder k&ouml;nnen zudem transparent dargestellt werden</li>
+					<li>Handling &uuml;berarbeitet. Z.B.: Ein laufendes Spiel mu&szlig; zuerst beendet werden, bevor ein neues Spiel gestartet werden kann. Aus dem Editor heraus kann nun ein bearbeitetes Brett sofort als Spiel gestartet werden.</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Wenn ein Port bereits durch einen Server belegt ist, kommt eine Fehlermeldung (gefixed mit V. 2.0)</li>
+					<li>Wenn Mussfelder (z.B. Spielername) nicht gef&uuml;llt ist, kommt es zu einem Fehler (gefixed mit V. 2.0)</li>
+					<li>Wenn man gegen den Computer spielt und er gewonnen hat, spielt er noch weiter. (gefixed mit V. 2.0)</li>
+					<li>Wenn das Men&uuml; aufgeklappt ist, kann es durch Felder &quot;&uuml;bermalt&quot; werden. (gefixed mit V. 3.6)</li>
+					<li>Bei einem Netzwerkspiel wird dem nicht-aktiven Spieler bei Mouseover die Felder in gr&uuml;n angezeigt, die der aktive Spieler anklicken darf. Das verwirrt und sollte so sein, dass bei nicht-aktiven Spielern die Felder immer in rot dargestellt werden. (gefixed mit V. 3.5)</li>
+					<li>Speicherleck: Images m&uuml;ssen explizit freigegeben werden</li>
+					<li>Animierte Gifs als Feldgrafiken f&uuml;hrt zu Performanceeinbr&uuml;chen (gefixed mit V. 3.5)</li>
+					<li>Computergegner bleibt aus unerfindlichen Gr&uuml;nden ab und zu h&auml;ngen (gefixed mit V. 2.0 - Das dynamische Wegbrechen der Felder und die Entfernung der rekursiven Feldpr&uuml;fung f&uuml;hrte zu ung&uuml;ltigen Nachbarschaftsbeziehungen und damit zu Endlosschleifen. Au&szlig;erdem k&ouml;nnen sich Felder nicht mehr auf Nachbarfelder verteilen, wenn sie wegbrechen)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 2.1 - 11/08</td>
+			<td><ul>
+					<li>Grundlegendes Refactoring des Codes</li>
+					<li>Das Spielfenster wird bei Start eines neuen Spiels automatisch auf die Gr&ouml;&szlig;e des Spielfelds reduziert</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Im About-Scroller verschwinden gro&szlig;e Grafiken bevor sie ganz aus dem Bild gescrollt sind (gefixed mit V. 2.1)</li>
+					<li>Das Ausschalten der Option Empty overloaded kann zu einer Endlosschleife f&uuml;hren (gefixed mit V. 2.1)</li>
+					<li>Das vom Computer angeklickte Feld wird erst in der n&auml;chsten Runde markiert (gefixed mit V. 2.1)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 3.0 - 01/09</td>
+			<td><ul>
+					<li>Refactoring der Feld-Generierung. Statt &uuml;ber Java-Klassen werden die Felder nun per XML-Files generiert.</li>
+					<li>Weitere Arbeiten an den XML-Beschreibungen. Es ist nun w&auml;hlbar, ob zuerst die Zeilen oder Spalten aufgebaut werden (siehe Hex1 und Hex2).</li>
+					<li>Im Optionen-Dialog bei der Auswahl der Feldform werden nun die &Uuml;berladungs-Zielfelder mit Pfeilen gekennzeichnet.</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Im About-Scroller beginnt die Animation immer von Neuen, wenn die Fenster gewechselt werden.</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 3.1 - 01/09</td>
+			<td><ul>
+					<li>Weitere Arbeiten an den XML-Beschreibungen. Es sind nun auch Felder mit mehrseitigen Grenzen m&ouml;glich (siehe Plus1 und Plus2).</li>
+					<li>Weitere Arbeiten an den XML-Beschreibungen. Es sind nun auch Bezier-Kurven bei Feldformen m&ouml;glich (siehe A1).</li>
+					<li>Ein rudiment&auml;rer Feld-Editor wurde eingef&uuml;gt. (Nur Prototyp)</li>
+					<li>Im Optionen-Dialog werden nun Tooltips angezeigt.</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 3.5 - 08/09</td>
+			<td><ul>
+					<li>Versionssprung, da nun Animationen auf Feldebene m&ouml;glich sind und der Code grundlegend &uuml;berarbeitet wird.</li>
+					<li>Animierte Gifs werden nun auch korrekt verarbeitet. Stichwort: <a href="http://www.theimage.com/animation/timing/timing.htm" target="_blank">Delays</a> und <a href="http://www.theimage.com/animation/pages/disposal.html" target="_blank">Disposals</a></li>
+					<li>Die Dynamisierung wurde zur&uuml;ckgenommen, da es den Code nur verkompliziert hat.</li>
+					<li>Die Trennung in Daten-/GUI-Objekte (Board/Field) wurde zur&uuml;ckgenommen, da es den Code nur verkompliziert hat.</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Die Animation startet erst nachdem das Feld mit der Maus ber&uuml;hrt wurde. Stichwort: Mouse-Over-Event (gefixed mit V. 3.6)</li>
+					<li>Die Animation &uuml;bermalt die Drop-Down-Men&uuml;s. (gefixed mit V. 3.6)</li>
+					<li>Deaktivierte Felder k&ouml;nnen im Editor nach dem Speichern und Laden nicht mehr aktiviert werden. (gefixed mit V. 3.6)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 3.6 - 10/09</td>
+			<td><ul>
+					<li>Bugs von Version 3.5 gefixed</li>
+					<li>Die Darstellung des Spielbretts wird nun &uuml;ber einen LayoutManager gesteuert. (Bugfix von Versionen 2.0 und 3.5)</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Die R&auml;nder der Polygone werden nicht sauber dargestellt.</li>
+					<li>Die Mouse-Over-Farbe wird &uuml;ber die Polygone in die angrenzenden Komponenten gezeichnet. (gefixed mit V. 3.7)</li>
+					<li>Die Initialgr&ouml;&szlig;e im Editor-Dialog ist nicht korrekt. (gefixed mit V. 3.6)</li>
+					<li>Die kleinen Zwischenfelder bei den Octagon-Feldern werden nicht angezeigt. (gefixed mit V. 3.6)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 3.7 - 10/09</td>
+			<td><ul>
+					<li>Die Darstellung der Options-Dialoge wird nun &uuml;ber das GridBagLayout gesteuert.</li>
+					<li>Konstanten wurden durch Enums ersetzt.</li>
+					<li>Fonts werden nun direkt aus TrueType-Dateien erzeugt.</li>
+					<li>Durchg&auml;ngiges Refactoring mit Unterst&uuml;tzung von PMD und Findbugs.<li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Die Initialgr&ouml;&szlig;e im Spiel-Dialog ist nicht korrekt. (gefixed mit V. 3.7)</li>
+					<li>Bei Spielfelder mit deaktivierten Feldern kann es vorkommen, dass die CPU keinen Zug macht. (gefixed mit V. 3.8)</li>
+					<li>Wenn mehr als eine CPU mitspielen kommt die Zugreihenfolge v&ouml;llig durcheinander. (gefixed mit V. 3.7)</li>
+					<li>Wenn der Computer gegen sich selbst spielt, wird kein Gewinner ermittelt. (gefixed mit V. 3.7)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 3.8 - 10/09</td>
+			<td><ul>
+					<li>GameOptions wurde zu einem Singleton umgebaut um statisch zugreifen zu k&ouml;nnen.</li>
+					<li>Umorganisation der Optionsdialoge. (Einige der Optionen passen besser zu Board, andere besser zu Game)</li>
+					<li>Pr&uuml;fung, ob Klick erlaubt ist, wird pro Zug nur noch einmal gepr&uuml;ft und dann zwischengespeichert.</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Wenn Felder wegbrechen k&ouml;nnen, wurde kein Gewinner ermittelt, wenn alle Felder zerst&ouml;rt waren. (gefixed mit V. 3.8)</li>
+					<li>Durch &Uuml;berladung weggebrochene Felder hatten noch immer Referenzen auf Nachbarfelder. (gefixed mit V. 3.8)</li>
+					<li>Die Vorschau des Spielfeldlayouts wurde bei Wechsel der Feldform nicht neu initialisiert. (gefixed mit V. 3.8)</li>
+					<li>Repair-Klicks werden im Netz-Spiel nicht an die Mitspieler weitergegeben. (gefixed mit V. 3.8)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td valign="top">Version 4.0 - 11/09</td>
+			<td><ul>
+					<li>Refactoring der Darstellung.</li>
+					<li>Es ist nun m&ouml;glich, die Feldgr&ouml;&szlig;e relativ zur Spielbrettgr&ouml;&szlig;e einzustellen.</li>
+					<li>Es k&ouml;nnen nun Spalten- oder Zeilen&uuml;bergreifende Felder dargestellt werden (colspan/rowspan).</li>
+				</ul>
+				Known Bugs:
+				<ul>
+					<li>Probleme bei der Berechnung der optimalen Gr&ouml;&szlig;e. (gefixed mit V. 4.0)</li>
+					<li>Fehlerhafte Ermittlung der Spielfeldgr&ouml;&szlig;e bei colspan/rowspan. (gefixed mit V. 4.0)</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+        <tr>
+            <td valign="top">Version 5.0 - 07/14</td>
+            <td><ul>
+                    <li>Das Format der Feldbeschreibung kann neben XML nun auch als JSON angegeben werden (Konverter sind enthalten).</li>
+                    <li>Javascript-Implementierung der Feld-Visualisierung (nur JSON-Format) erfolgreich umgesetzt.</li>
+                </ul>
+                Known Bugs:
+                <ul>
+                    <li>Rundungsfehler bei der Ermittlung der Spielfeldgr&ouml;&szlig;e.</li>
+                </ul></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+	</table>
+	</br>
+</div>
+</body>
+</html>

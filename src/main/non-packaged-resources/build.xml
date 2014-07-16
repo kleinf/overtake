@@ -1,0 +1,77 @@
+<project name="test" default="all" basedir=".">
+
+	<property file="${basedir}/build.properties"/>
+
+	<target name="all" depends="create-jar">
+		<delete dir="build/jar"/>
+		<delete dir="d:/temp/down/overtake"/>
+		<mkdir dir="d:/temp/down/overtake"/>
+		<copy todir="d:/temp/down/overtake">
+			<fileset dir="build">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="*.bat"/>
+				<include name="*.field"/>
+				<include name="*.over"/>
+				<include name="*.ini"/>
+				<include name="help/**/*"/>
+				<include name="lib/**/*"/>
+			</fileset>
+			<fileset dir="images">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="fonts">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="create-jar" depends="compile">
+		<copy todir="build/jar/images">
+			<fileset dir="src/images"/>
+		</copy>
+		<jar jarfile="build/overtake.jar">
+			<fileset dir="build/jar" includes="**/*"/>
+			<manifest>
+				<attribute name="Class-Path" value=". lib/jdom.jar"/>
+				<attribute name="Main-Class" value="Appl"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="compile">
+		<delete dir="build"/>
+		<mkdir dir="build/jar"/>
+		<javac destdir="build/jar" classpath=".;lib/jdom.jar" debug="true" optimize="false" source="1.5" target="1.5">
+			<src path="src"/>
+			<include name="**/*.java"/>
+		</javac>
+		<javac destdir="build" classpath=".;build/jar" debug="true" optimize="false" source="1.5" target="1.5">
+			<src path="modules"/>
+			<include name="**/*.java"/>
+		</javac>
+	</target>
+
+	<target name="javadocs" depends="compile" description="generates javadoc and also UML Diagram">
+		<mkdir dir="javadoc"/>
+		<javadoc sourcepath="src" destdir="javadoc" private="true">
+			<doclet name="org.umlgraph.doclet.UmlGraphDoc" path="lib/UMLGraph.jar">
+				<param name="-attributes" />
+				<param name="-operations" />
+				<param name="-qualify" />
+				<param name="-types" />
+				<param name="-visibility" />
+			</doclet>
+		</javadoc>
+		<apply executable="dot" dest="." parallel="false">
+			<arg value="-Tpng"/>
+			<arg value="-o"/>
+			<targetfile/>
+			<srcfile/>
+			<fileset dir="." includes="*.dot"/>
+			<mapper type="glob" from="*.dot" to="*.png"/>
+		</apply>
+	</target>
+
+</project>

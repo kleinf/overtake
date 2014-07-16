@@ -1,0 +1,128 @@
+{
+	"field": 
+	{
+		"row": [{
+				"factor": 1,
+				"col": [{
+						"factor": 0.5,
+						"border": [{
+								"id": 1,
+								"refBorderId": 3,
+								"refFieldX": -1,
+								"refFieldY": -1,
+								"wall": [{
+										"type": "move",
+										"x1": 0,
+										"y1": 0.5
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 0
+									}]
+							},{
+								"id": 2,
+								"refBorderId": 4,
+								"refFieldX": 1,
+								"refFieldY": -1,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 0
+									},{
+										"type": "line",
+										"x1": 1,
+										"y1": 0.5
+									}]
+							},{
+								"id": 3,
+								"refBorderId": 1,
+								"refFieldX": 1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 1,
+										"y1": 0.5
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 1
+									}]
+							},{
+								"id": 4,
+								"refBorderId": 2,
+								"refFieldX": -1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 1
+									},{
+										"type": "line",
+										"x1": 0,
+										"y1": 0.5
+									}]
+							}]
+					},{
+						"factor": 0.5,
+						"offsetY": 0.5,
+						"border": [{
+								"id": 1,
+								"refBorderId": 3,
+								"refFieldX": -1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 0,
+										"y1": 0.5
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 0
+									}]
+							},{
+								"id": 2,
+								"refBorderId": 4,
+								"refFieldX": 1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 0
+									},{
+										"type": "line",
+										"x1": 1,
+										"y1": 0.5
+									}]
+							},{
+								"id": 3,
+								"refBorderId": 1,
+								"refFieldX": 1,
+								"refFieldY": 1,
+								"wall": [{
+										"type": "move",
+										"x1": 1,
+										"y1": 0.5
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 1
+									}]
+							},{
+								"id": 4,
+								"refBorderId": 2,
+								"refFieldX": -1,
+								"refFieldY": 1,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 1
+									},{
+										"type": "line",
+										"x1": 0,
+										"y1": 0.5
+									}]
+							}]
+					}]
+			}]
+	}
+}

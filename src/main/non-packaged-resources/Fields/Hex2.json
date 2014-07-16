@@ -1,0 +1,184 @@
+{
+	"field": 
+	{
+		"col": [{
+				"factor": 1,
+				"row": [{
+						"factor": 0.75,
+						"border": [{
+								"id": 1,
+								"refBorderId": 4,
+								"refFieldX": -1,
+								"refFieldY": -1,
+								"wall": [{
+										"type": "move",
+										"x1": 0,
+										"y1": 0.25
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 0
+									}]
+							},{
+								"id": 2,
+								"refBorderId": 5,
+								"refFieldX": 0,
+								"refFieldY": -1,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 0
+									},{
+										"type": "line",
+										"x1": 1,
+										"y1": 0.25
+									}]
+							},{
+								"id": 3,
+								"refBorderId": 6,
+								"refFieldX": 1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 1,
+										"y1": 0.25
+									},{
+										"type": "line",
+										"x1": 1,
+										"y1": 0.75
+									}]
+							},{
+								"id": 4,
+								"refBorderId": 1,
+								"refFieldX": 0,
+								"refFieldY": 1,
+								"wall": [{
+										"type": "move",
+										"x1": 1,
+										"y1": 0.75
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 1
+									}]
+							},{
+								"id": 5,
+								"refBorderId": 2,
+								"refFieldX": -1,
+								"refFieldY": 1,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 1
+									},{
+										"type": "line",
+										"x1": 0,
+										"y1": 0.75
+									}]
+							},{
+								"id": 6,
+								"refBorderId": 3,
+								"refFieldX": -1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 0,
+										"y1": 0.75
+									},{
+										"type": "line",
+										"x1": 0,
+										"y1": 0.25
+									}]
+							}]
+					},{
+						"factor": 0.75,
+						"offsetX": 0.5,
+						"border": [{
+								"id": 1,
+								"refBorderId": 4,
+								"refFieldX": 0,
+								"refFieldY": -1,
+								"wall": [{
+										"type": "move",
+										"x1": 0,
+										"y1": 0.25
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 0
+									}]
+							},{
+								"id": 2,
+								"refBorderId": 5,
+								"refFieldX": 1,
+								"refFieldY": -1,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 0
+									},{
+										"type": "line",
+										"x1": 1,
+										"y1": 0.25
+									}]
+							},{
+								"id": 3,
+								"refBorderId": 6,
+								"refFieldX": 1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 1,
+										"y1": 0.25
+									},{
+										"type": "line",
+										"x1": 1,
+										"y1": 0.75
+									}]
+							},{
+								"id": 4,
+								"refBorderId": 1,
+								"refFieldX": 1,
+								"refFieldY": 1,
+								"wall": [{
+										"type": "move",
+										"x1": 1,
+										"y1": 0.75
+									},{
+										"type": "line",
+										"x1": 0.5,
+										"y1": 1
+									}]
+							},{
+								"id": 5,
+								"refBorderId": 2,
+								"refFieldX": 0,
+								"refFieldY": 1,
+								"wall": [{
+										"type": "move",
+										"x1": 0.5,
+										"y1": 1
+									},{
+										"type": "line",
+										"x1": 0,
+										"y1": 0.75
+									}]
+							},{
+								"id": 6,
+								"refBorderId": 3,
+								"refFieldX": -1,
+								"refFieldY": 0,
+								"wall": [{
+										"type": "move",
+										"x1": 0,
+										"y1": 0.75
+									},{
+										"type": "line",
+										"x1": 0,
+										"y1": 0.25
+									}]
+							}]
+					}]
+			}]
+	}
+}

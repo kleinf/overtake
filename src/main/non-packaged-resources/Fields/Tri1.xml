@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<field xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="field.xsd">
+	<row factor="1">
+		<col factor="0.5">
+			<border id="1" refBorderId="2" refFieldX="-1" refFieldY="0">
+				<move x1="0" y1="1" />
+				<line x1="0.5" y1="0" />
+			</border>
+			<border id="2" refBorderId="3" refFieldX="1" refFieldY="0">
+				<move x1="0.5" y1="0" />
+				<line x1="1" y1="1" />
+			</border>
+			<border id="3" refBorderId="1" refFieldX="0" refFieldY="1">
+				<move x1="1" y1="1" />
+				<line x1="0" y1="1" />
+			</border>
+		</col>
+		<col factor="0.5">
+			<border id="1" refBorderId="3" refFieldX="0" refFieldY="-1">
+				<move x1="0" y1="0" />
+				<line x1="1" y1="0" />
+			</border>
+			<border id="2" refBorderId="1" refFieldX="1" refFieldY="0">
+				<move x1="1" y1="0" />
+				<line x1="0.5" y1="1" />
+			</border>
+			<border id="3" refBorderId="2" refFieldX="-1" refFieldY="0">
+				<move x1="0.5" y1="1" />
+				<line x1="0" y1="0" />
+			</border>
+		</col>
+	</row>
+	<row factor="1">
+		<col factor="0.5">
+			<border id="1" refBorderId="3" refFieldX="0" refFieldY="-1">
+				<move x1="0" y1="0" />
+				<line x1="1" y1="0" />
+			</border>
+			<border id="2" refBorderId="1" refFieldX="1" refFieldY="0">
+				<move x1="1" y1="0" />
+				<line x1="0.5" y1="1" />
+			</border>
+			<border id="3" refBorderId="2" refFieldX="-1" refFieldY="0">
+				<move x1="0.5" y1="1" />
+				<line x1="0" y1="0" />
+			</border>
+		</col>
+		<col factor="0.5">
+			<border id="1" refBorderId="2" refFieldX="-1" refFieldY="0">
+				<move x1="0" y1="1" />
+				<line x1="0.5" y1="0" />
+			</border>
+			<border id="2" refBorderId="3" refFieldX="1" refFieldY="0">
+				<move x1="0.5" y1="0" />
+				<line x1="1" y1="1" />
+			</border>
+			<border id="3" refBorderId="1" refFieldX="0" refFieldY="1">
+				<move x1="1" y1="1" />
+				<line x1="0" y1="1" />
+			</border>
+		</col>
+	</row>
+</field>

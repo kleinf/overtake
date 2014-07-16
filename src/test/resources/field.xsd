@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="factorType">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="idType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attributeGroup name="colrowGrp">
+		<xs:attribute name="factor" type="factorType" use="optional" default="1" />
+		<xs:attribute name="offsetX" type="factorType" use="optional" default="0" />
+		<xs:attribute name="offsetY" type="factorType" use="optional" default="0" />
+	</xs:attributeGroup>
+	<xs:complexType name="fieldType">
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="border" minOccurs="3" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="move">
+							<xs:complexType>
+								<xs:attribute name="x1" type="factorType" use="required" />
+								<xs:attribute name="y1" type="factorType" use="required" />
+							</xs:complexType>
+						</xs:element>
+						<xs:choice maxOccurs="unbounded">
+							<xs:element name="line">
+								<xs:complexType>
+									<xs:attribute name="x1" type="factorType" use="required" />
+									<xs:attribute name="y1" type="factorType" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="quad">
+								<xs:complexType>
+									<xs:attribute name="x1" type="factorType" use="required" />
+									<xs:attribute name="y1" type="factorType" use="required" />
+									<xs:attribute name="x2" type="factorType" use="required" />
+									<xs:attribute name="y2" type="factorType" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="curve">
+								<xs:complexType>
+									<xs:attribute name="x1" type="factorType" use="required" />
+									<xs:attribute name="y1" type="factorType" use="required" />
+									<xs:attribute name="x2" type="factorType" use="required" />
+									<xs:attribute name="y2" type="factorType" use="required" />
+									<xs:attribute name="x3" type="factorType" use="required" />
+									<xs:attribute name="y3" type="factorType" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:sequence>
+					<xs:attribute name="id" type="idType" use="required" />
+					<xs:attribute name="refBorderId" type="idType" use="required" />
+					<xs:attribute name="refFieldX" type="xs:integer" use="required" />
+					<xs:attribute name="refFieldY" type="xs:integer" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="colrowGrp" />
+	</xs:complexType>
+	<xs:element name="field">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="col">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="row" type="fieldType" maxOccurs="unbounded">
+								<xs:key name="keyIdColRow">
+									<xs:selector xpath="border" />
+									<xs:field xpath="@id" />
+								</xs:key>
+								<xs:unique name="uniqueBorderRefColRow">
+									<xs:selector xpath="border" />
+									<xs:field xpath="@refBorderId" />
+									<xs:field xpath="@refFieldX" />
+									<xs:field xpath="@refFieldY" />
+								</xs:unique>
+							</xs:element>
+						</xs:sequence>
+						<xs:attributeGroup ref="colrowGrp" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="row">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="col" type="fieldType" maxOccurs="unbounded">
+								<xs:key name="keyIdRowCol">
+									<xs:selector xpath="border" />
+									<xs:field xpath="@id" />
+								</xs:key>
+								<xs:unique name="uniqueBorderRefRowCol">
+									<xs:selector xpath="border" />
+									<xs:field xpath="@refBorderId" />
+									<xs:field xpath="@refFieldX" />
+									<xs:field xpath="@refFieldY" />
+								</xs:unique>
+							</xs:element>
+						</xs:sequence>
+						<xs:attributeGroup ref="colrowGrp" />
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

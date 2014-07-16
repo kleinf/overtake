@@ -1,0 +1,7 @@
+/.settings/
+/target/
+/.checkstyle
+/.classpath
+/.pmd
+/.project
+/Appl.launch

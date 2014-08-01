@@ -85,7 +85,7 @@ public class AnimatedImageUtil {
 				return createMyImage(ImageIO.createImageInputStream(new File(
 						Constants.USERPATH + "/" + imageName)));
 			} catch (final IOException e) {
-				Logger.getInstance().log(e.getMessage());
+				PseudoLogger.getInstance().log(e.getMessage());
 			}
 		}
 		return createMyImage(color);

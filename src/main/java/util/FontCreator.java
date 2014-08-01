@@ -29,11 +29,11 @@ public final class FontCreator {
 			is = ClassLoader.getSystemResourceAsStream(fontName);
 			font = Font.createFont(Font.TRUETYPE_FONT, is);
 		} catch (final FileNotFoundException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		} catch (final FontFormatException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		} finally {
 			if (is != null) {
 				try {

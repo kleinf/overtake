@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import util.Constants;
-import util.Logger;
+import util.PseudoLogger;
 
 /**
  * @author Administrator
@@ -85,7 +85,7 @@ public class ServerClient extends Thread {
 				printWriter.close();
 			}
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		}
 	}
 

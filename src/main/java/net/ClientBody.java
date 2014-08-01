@@ -1,6 +1,6 @@
 package net;
 
-import gui.GameFrame;
+import gui.swing.GameFrame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketException;
 
-import util.Logger;
+import util.PseudoLogger;
 
 /**
  * @author Administrator
@@ -52,7 +52,7 @@ public class ClientBody extends Thread {
 		} catch (final SocketException socketException) {
 			// Socket closed
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		}
 	}
 }

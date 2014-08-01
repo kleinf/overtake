@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import util.FieldFormatter;
+import util.field.FieldFormatter;
 
 /**
  * 

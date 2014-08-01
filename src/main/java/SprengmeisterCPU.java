@@ -1,7 +1,7 @@
 import game.AbstractComputer;
 import game.GameSession;
 import game.Player;
-import gui.FieldComponent;
+import gui.swing.FieldComponent;
 
 /**
  * @author Administrator

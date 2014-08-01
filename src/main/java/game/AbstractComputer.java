@@ -1,7 +1,7 @@
 package game;
 
-import gui.BoardPanel;
-import gui.FieldComponent;
+import gui.swing.BoardPanel;
+import gui.swing.FieldComponent;
 
 /**
  * @author Administrator

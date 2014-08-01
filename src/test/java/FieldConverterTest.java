@@ -6,8 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.FieldConverterJsonToXml;
-import util.FieldConverterXmlToJson;
+import util.field.FieldConverterJsonToXml;
+import util.field.FieldConverterXmlToJson;
 
 /**
  * @author Administrator

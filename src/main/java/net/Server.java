@@ -13,7 +13,7 @@ import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
 import util.Constants;
-import util.Logger;
+import util.PseudoLogger;
 
 /**
  * Server-Komponente. Hier wird fuer jeden Client ein Server-Prozess gestartet,
@@ -44,7 +44,7 @@ public class Server extends Thread {
 		try {
 			socket = new ServerSocket(GameSession.gameOptions.getPort());
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		}
 	}
 
@@ -62,7 +62,7 @@ public class Server extends Thread {
 		} catch (final SocketException exception) {
 			// Socket closed
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		}
 	}
 
@@ -116,14 +116,14 @@ public class Server extends Thread {
 			send(targetId, targetId, Net.GAME.name() + Constants.NET_DIVIDER
 					+ writer.getBuffer().toString());
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		} finally {
 			try {
 				if (writer != null) {
 					writer.close();
 				}
 			} catch (final IOException exception) {
-				Logger.getInstance().log(exception.getMessage());
+				PseudoLogger.getInstance().log(exception.getMessage());
 			}
 		}
 
@@ -220,7 +220,7 @@ public class Server extends Thread {
 				socket.close();
 			}
 		} catch (final IOException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			PseudoLogger.getInstance().log(exception.getMessage());
 		} finally {
 			socket = null;
 		}

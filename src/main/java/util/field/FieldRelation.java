@@ -35,34 +35,35 @@ public class FieldRelation {
 	 * @return int
 	 */
 	protected int getBorderId() {
-		return borderId;
+		return this.borderId;
 	}
 
 	/**
 	 * @return int
 	 */
 	protected int getRefBorderId() {
-		return refBorderId;
+		return this.refBorderId;
 	}
 
 	/**
 	 * @return int
 	 */
 	public int getRefFieldX() {
-		return refFieldX;
+		return this.refFieldX;
 	}
 
 	/**
 	 * @return int
 	 */
 	public int getRefFieldY() {
-		return refFieldY;
+		return this.refFieldY;
 	}
 
 	/**
 	 * @return String
 	 */
 	protected String getKey() {
-		return borderId + "|" + refBorderId + "|" + refFieldX + "|" + refFieldY;
+		return this.borderId + "|" + this.refBorderId + "|" + this.refFieldX
+				+ "|" + this.refFieldY;
 	}
 }

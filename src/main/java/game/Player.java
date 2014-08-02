@@ -2,7 +2,7 @@ package game;
 
 import org.jdom.Element;
 
-import util.AnimatedImage;
+import swing.util.AnimatedImage;
 
 /**
  * @author Administrator

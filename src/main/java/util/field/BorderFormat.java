@@ -1,8 +1,7 @@
 package util.field;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import java.awt.geom.GeneralPath;
 
 /**
  * @author Administrator
@@ -34,48 +33,50 @@ public class BorderFormat {
 		this.refId = refId;
 		this.refFieldX = refFieldX;
 		this.refFieldY = refFieldY;
+		this.pointFormats = new ArrayList<PointFormat>();
 	}
 
 	/**
 	 * @return int
 	 */
 	protected int getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
 	 * @return int
 	 */
 	protected int getRefId() {
-		return refId;
+		return this.refId;
 	}
 
 	/**
 	 * @return int
 	 */
 	protected int getRefFieldX() {
-		return refFieldX;
+		return this.refFieldX;
 	}
 
 	/**
 	 * @return int
 	 */
 	protected int getRefFieldY() {
-		return refFieldY;
+		return this.refFieldY;
 	}
 
 	/**
 	 * @return String
 	 */
 	protected String getKey() {
-		return id + "|" + refId + "|" + refFieldX + "|" + refFieldY;
+		return this.id + "|" + this.refId + "|" + this.refFieldX + "|"
+				+ this.refFieldY;
 	}
 
 	/**
 	 * @return List<PointFormat>
 	 */
 	private List<PointFormat> getPointFormats() {
-		return pointFormats;
+		return this.pointFormats;
 	}
 
 	/**
@@ -95,17 +96,17 @@ public class BorderFormat {
 	 *            int
 	 * @param pathPosSumY
 	 *            int
-	 * @return GeneralPath
+	 * @return Shape
 	 */
-	protected GeneralPath getWall(final int width, final int height,
+	protected Shape getWall(final int width, final int height,
 			final double pathPosSumX, final double pathPosSumY) {
-		double pathPosX1; // X-Coordinate inside of the form
-		double pathPosX2; // X-Coordinate inside of the form
-		double pathPosX3; // X-Coordinate inside of the form
-		double pathPosY1; // Y-Coordinate inside of the form
-		double pathPosY2; // Y-Coordinate inside of the form
-		double pathPosY3; // Y-Coordinate inside of the form
-		final GeneralPath wall = new GeneralPath();
+		double pathPosX1 = 0.0D; // X-Coordinate inside of the form
+		double pathPosY1 = 0.0D; // Y-Coordinate inside of the form
+		double pathPosX2 = 0.0D; // X-Coordinate inside of the form
+		double pathPosY2 = 0.0D; // Y-Coordinate inside of the form
+		double pathPosX3 = 0.0D; // X-Coordinate inside of the form
+		double pathPosY3 = 0.0D; // Y-Coordinate inside of the form
+		final Shape wall = new Shape();
 		for (final PointFormat pf : getPointFormats()) {
 			pathPosX1 = width * pf.getPosX1() + pathPosSumX;
 			pathPosY1 = height * pf.getPosY1() + pathPosSumY;
@@ -149,8 +150,8 @@ public class BorderFormat {
 	 */
 	protected double[] getWallCenter(final int width, final int height,
 			final double pathPosSumX, final double pathPosSumY) {
-		double x = 0; // X-Coordinate inside of the form
-		double y = 0; // Y-Coordinate inside of the form
+		double x = 0.0D; // X-Coordinate inside of the form
+		double y = 0.0D; // Y-Coordinate inside of the form
 		final List<PointFormat> pfs = getPointFormats();
 		final int id = (int) Math.floor(pfs.size() * 0.5D);
 		PointFormat pf = pfs.get(id);

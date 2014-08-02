@@ -87,49 +87,77 @@ public class PointFormat {
 	/**
 	 * @return PointType
 	 */
-	protected PointType getPointType() {
-		return pointType;
+	public PointType getPointType() {
+		return this.pointType;
 	}
 
 	/**
 	 * @return double
 	 */
-	protected double getPosX1() {
-		return posX1;
+	public double getPosX1() {
+		return this.posX1;
 	}
 
 	/**
 	 * @return double
 	 */
-	protected double getPosY1() {
-		return posY1;
+	public double getPosY1() {
+		return this.posY1;
 	}
 
 	/**
 	 * @return double
 	 */
-	protected double getPosX2() {
-		return posX2;
+	public double getPosX2() {
+		return this.posX2;
 	}
 
 	/**
 	 * @return double
 	 */
-	protected double getPosY2() {
-		return posY2;
+	public double getPosY2() {
+		return this.posY2;
 	}
 
 	/**
 	 * @return double
 	 */
-	protected double getPosX3() {
-		return posX3;
+	public double getPosX3() {
+		return this.posX3;
 	}
 
 	/**
 	 * @return double
 	 */
-	protected double getPosY3() {
-		return posY3;
+	public double getPosY3() {
+		return this.posY3;
+	}
+
+	/**
+	 * @param pf
+	 *            PointFormat
+	 * @return boolean
+	 */
+	protected boolean isPoint(PointFormat pf) {
+		double lastEndX;
+		double lastEndY;
+		switch (pf.getPointType()) {
+		case LINE:
+			lastEndX = pf.getPosX1();
+			lastEndY = pf.getPosY1();
+			break;
+		case QUAD:
+			lastEndX = pf.getPosX2();
+			lastEndY = pf.getPosY2();
+			break;
+		case CURVE:
+			lastEndX = pf.getPosX3();
+			lastEndY = pf.getPosY3();
+			break;
+		default:
+			lastEndX = pf.getPosX1();
+			lastEndY = pf.getPosY1();
+		}
+		return lastEndX == posX1 && lastEndY == posY1;
 	}
 }

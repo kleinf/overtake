@@ -1,7 +1,5 @@
 package net;
 
-import gui.swing.GameFrame;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.SocketException;
 
 import util.PseudoLogger;
+import swing.gui.GameFrame;
 
 /**
  * @author Administrator

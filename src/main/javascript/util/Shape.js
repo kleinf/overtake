@@ -2,6 +2,8 @@
  * 
  */
 function Shape() {
+	this.drawCmds = [];
+
 	/**
 	 * @param pathPosX1
 	 *            double
@@ -9,7 +11,7 @@ function Shape() {
 	 *            double
 	 */
 	Shape.prototype.moveTo = function(pathPosX1, pathPosY1) {
-		this.drawCmds.push([ "move", pathPosX1, pathPosY1 ]);
+		this.drawCmds.push(new PointFormat("MOVE", pathPosX1, pathPosY1));
 	}
 
 	/**
@@ -19,7 +21,7 @@ function Shape() {
 	 *            double
 	 */
 	Shape.prototype.lineTo = function(pathPosX1, pathPosY1) {
-		this.drawCmds.push([ "line", pathPosX1, pathPosY1 ]);
+		this.drawCmds.push(new PointFormat("LINE", pathPosX1, pathPosY1));
 	}
 
 	/**
@@ -34,8 +36,7 @@ function Shape() {
 	 */
 	Shape.prototype.quadTo = function(pathPosX1, pathPosY1, pathPosX2,
 			pathPosY2) {
-		this.drawCmds
-				.push([ "quad", pathPosX1, pathPosY1, pathPosX2, pathPosY2 ]);
+		this.drawCmds.push(new PointFormat("QUAD", pathPosX1, pathPosY1, pathPosX2, pathPosY2));
 	}
 
 	/**
@@ -54,8 +55,7 @@ function Shape() {
 	 */
 	Shape.prototype.curveTo = function(pathPosX1, pathPosY1, pathPosX2,
 			pathPosY2, pathPosX3, pathPosY3) {
-		this.drawCmds.push([ "curve", pathPosX1, pathPosY1, pathPosX2,
-				pathPosY2, pathPosX3, pathPosY3 ]);
+		this.drawCmds.push(new PointFormat("CURVE", pathPosX1, pathPosY1, pathPosX2, pathPosY2, pathPosX3, pathPosY3));
 	}
 
 	/**
@@ -64,13 +64,30 @@ function Shape() {
 	Shape.prototype.closePath = function() {
 		var lastMove = void (0);
 		for ( var i in this.drawCmds) {
-			if (this.drawCmds[i][0] == "move") {
+			if (this.drawCmds[i].getPointType() == "MOVE") {
 				lastMove = this.drawCmds[i];
 			}
 		}
 		if (lastMove != void (0)) {
-			this.drawCmds.push([ "line", lastMove[1], lastMove[2] ]);
+			this.drawCmds.push(new PointFormat("LINE", lastMove.getPosX1(), lastMove.getPosY1()));
 		}
+	}
+
+	/**
+	 * 
+	 */
+	Shape.prototype.compact = function() {
+		var drawCmdsTmp = [];
+		var thisPointFormat = void(0);
+		var lastPointFormat = void(0);
+		for (var i in this.drawCmds) {
+			thisPointFormat = this.drawCmds[i];
+			if (i == 0 || !thisPointFormat.isPoint(lastPointFormat)) {
+				drawCmdsTmp.push(thisPointFormat);
+			}
+			lastPointFormat = thisPointFormat;
+		}
+		this.drawCmds = drawCmdsTmp;
 	}
 
 	/**
@@ -83,10 +100,10 @@ function Shape() {
 		// Bei connect = true und in Verbindung mit einer bestehenden Form, wird
 		// der erste Move zu einer Line, wenn es die Verbindung noch nicht gibt.
 		var startIndex = 0;
+		var startPoint = shape.drawCmds[0];
 		if (connect && this.drawCmds.length > 0 && shape.drawCmds.length > 0
-				&& shape.drawCmds[0][0] == "move") {
-			this.drawCmds.push([ "line", shape.drawCmds[0][1],
-					shape.drawCmds[0][2] ]);
+				&& startPoint.getPointType() == "MOVE") {
+			this.drawCmds.push(new PointFormat("LINE", startPoint.getPosX1(), startPoint.getPosY1()));
 			startIndex = 1;
 		}
 		for (var i = startIndex; i < shape.drawCmds.length; i++) {
@@ -95,11 +112,9 @@ function Shape() {
 	}
 
 	/**
-	 * @return drawCmds[]
+	 * @return PointFormat[]
 	 */
 	Shape.prototype.getDrawCmds = function() {
 		return this.drawCmds;
 	}
-
-	this.drawCmds = [];
 }

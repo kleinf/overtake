@@ -1,23 +1,21 @@
 import java.util.Map;
 import java.util.Map.Entry;
 
-import java.awt.Dimension;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import util.field.FieldFormatter;
+import swing.util.FieldFormatterSwing;
 
 /**
  * 
  */
 public class FieldFormatterTest {
 
-	private int numFieldsWidth = 8;
+	private int numFieldsWidth = 10;
 	private int numFieldsHeight = 10;
 	private int fieldWidth = 40;
 	private int fieldHeight = 40;
@@ -26,14 +24,14 @@ public class FieldFormatterTest {
 	private boolean borderless = false;
 
 	private String fieldName = "A0.xml";
-	private FieldFormatter ff = FieldFormatter.getInstance();
+	private FieldFormatterSwing ff = FieldFormatterSwing.getInstance();
 
 	/**
 	 * 
 	 */
 	@Before
 	public void init() {
-		FieldFormatter.getInstance().init("src/test/resources/" + fieldName);
+		ff.init("src/test/resources/" + fieldName);
 	}
 
 	/**
@@ -41,14 +39,14 @@ public class FieldFormatterTest {
 	 */
 	@Test
 	public void testFieldsizeToBoardsize() {
-		final Dimension boardSize = ff.getBoardsize(fieldWidth, fieldHeight,
+		int[] boardSize = ff.getBoardsize(fieldWidth, fieldHeight,
 				numFieldsWidth, numFieldsHeight);
 
-		Dimension fieldSize = ff.getFieldsize(boardSize.width,
-				boardSize.height, 0, 0, numFieldsWidth, numFieldsHeight);
+		int[] fieldSize = ff.getFieldsize(boardSize[0], boardSize[1], 0, 0,
+				numFieldsWidth, numFieldsHeight);
 
-		// Assert.assertEquals(fieldWidth, fieldSize.width);
-		// Assert.assertEquals(fieldHeight, fieldSize.height);
+		// Assert.assertEquals(fieldWidth, fieldSize[0]);
+		// Assert.assertEquals(fieldHeight, fieldSize[1]);
 	}
 
 	/**
@@ -56,25 +54,28 @@ public class FieldFormatterTest {
 	 */
 	@Test
 	public void testBoardsizeToFieldsize() {
-		Dimension fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0,
+		int[] fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0,
 				numFieldsWidth, numFieldsHeight);
 
-		final Dimension boardSize = ff.getBoardsize(fieldSize.width,
-				fieldSize.height, numFieldsWidth, numFieldsHeight);
+		int[] boardSize = ff.getBoardsize(fieldSize[0], fieldSize[1],
+				numFieldsWidth, numFieldsHeight);
 
-//		Assert.assertEquals(boardWidth, boardSize.width);
-//		Assert.assertEquals(boardHeight, boardSize.height);
+		// Assert.assertEquals(boardWidth, boardSize[0]);
+		// Assert.assertEquals(boardHeight, boardSize[1]);
 	}
 
 	/**
 	 * 
 	 */
 	@Test
-	@Ignore
 	public void testCoords() {
+		int[] fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0,
+				numFieldsWidth, numFieldsHeight);
 		for (int idY = 0; idY < numFieldsHeight; idY++) {
 			for (int idX = 0; idX < numFieldsWidth; idX++) {
-				if (!FieldFormatter.getInstance().isEmpty(idX, idY)) {
+				ff.getPolygon(fieldSize[0], fieldSize[1], true, idX, idY,
+						numFieldsWidth, numFieldsHeight);
+				if (!FieldFormatterSwing.getInstance().isEmpty(idX, idY)) {
 					outputSegments(idX, idY);
 				}
 			}
@@ -82,12 +83,12 @@ public class FieldFormatterTest {
 	}
 
 	private void outputSegments(final int idX, final int idY) {
-		final GeneralPath poly = FieldFormatter.getInstance().getPolygon(
+		final GeneralPath poly = FieldFormatterSwing.getInstance().getPolygon(
 				fieldWidth, fieldHeight, true, idX, idY, numFieldsWidth,
 				numFieldsHeight);
-		final Map<String, GeneralPath> segments = FieldFormatter.getInstance()
-				.getSegments(fieldWidth, fieldHeight, true, idX, idY,
-						numFieldsWidth, numFieldsHeight, borderless);
+		final Map<String, GeneralPath> segments = FieldFormatterSwing
+				.getInstance().getSegments(fieldWidth, fieldHeight, true, idX,
+						idY, numFieldsWidth, numFieldsHeight, borderless);
 		System.out.println(idX + "/" + idY + " " + poly.getBounds().width + "/"
 				+ poly.getBounds().height + " " + poly.getBounds().x + "/"
 				+ poly.getBounds().y);

@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.awt.Dimension;
-import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
-
 import org.jdom.Element;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -185,11 +181,11 @@ public class FieldFormat implements Comparable<FieldFormat> {
 				JSONArray walls = elementBorder.getJSONArray("wall");
 				for (int j = 0; j < walls.length(); j++) {
 					JSONObject elementPoint = walls.getJSONObject(j);
+					final PointType pt = PointType.valueOf(elementPoint
+							.getString("type").toUpperCase());
 					final double posX1 = elementPoint.getDouble("x1");
 					final double posY1 = elementPoint.getDouble("y1");
 					setMinMax(posX1, posY1);
-					final PointType pt = PointType.valueOf(elementPoint
-							.getString("type").toUpperCase());
 					if (PointType.MOVE == pt) {
 						pointFormats.add(new PointFormat(pt, posX1, posY1));
 					}
@@ -206,6 +202,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 					if (PointType.CURVE == pt) {
 						final double posX2 = elementPoint.getDouble("x2");
 						final double posY2 = elementPoint.getDouble("y2");
+						setMinMax(posX2, posY2);
 						final double posX3 = elementPoint.getDouble("x3");
 						final double posY3 = elementPoint.getDouble("y3");
 						setMinMax(posX3, posY3);
@@ -214,7 +211,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 					}
 				}
 				borderFormat.setPointFormats(pointFormats);
-				borderFormats.put(Integer.toString(borderFormat.getId()),
+				this.borderFormats.put(Integer.toString(borderFormat.getId()),
 						borderFormat);
 			}
 		}
@@ -222,10 +219,10 @@ public class FieldFormat implements Comparable<FieldFormat> {
 
 	private void setMinMax(final double posX, final double posY) {
 
-		minPosX = Math.min(minPosX, posX);
-		minPosY = Math.min(minPosY, posY);
-		maxPosX = Math.max(maxPosX, posX);
-		maxPosY = Math.max(maxPosY, posY);
+		this.minPosX = Math.min(this.minPosX, posX);
+		this.minPosY = Math.min(this.minPosY, posY);
+		this.maxPosX = Math.max(this.maxPosX, posX);
+		this.maxPosY = Math.max(this.maxPosY, posY);
 	}
 
 	/**
@@ -233,7 +230,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 */
 	protected double getMinMaxPosX() {
 
-		return minPosX + maxPosX;
+		return this.minPosX + this.maxPosX;
 	}
 
 	/**
@@ -241,7 +238,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 */
 	protected double getMinMaxPosY() {
 
-		return minPosY + maxPosY;
+		return this.minPosY + this.maxPosY;
 	}
 
 	/**
@@ -252,8 +249,8 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	private double getValue(final String key) {
 
 		double retVal = 0.0D;
-		if (map.get(key) != null) {
-			retVal = Double.parseDouble(map.get(key));
+		if (this.map.get(key) != null) {
+			retVal = Double.parseDouble(this.map.get(key));
 		}
 		return retVal;
 	}
@@ -264,8 +261,8 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	protected int getColId() {
 
 		int retVal = 0;
-		if (map.get(COL) != null) {
-			retVal = Integer.parseInt(map.get(COL));
+		if (this.map.get(COL) != null) {
+			retVal = Integer.parseInt(this.map.get(COL));
 		}
 		return retVal;
 	}
@@ -276,8 +273,8 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	protected int getRowId() {
 
 		int retVal = 0;
-		if (map.get(ROW) != null) {
-			retVal = Integer.parseInt(map.get(ROW));
+		if (this.map.get(ROW) != null) {
+			retVal = Integer.parseInt(this.map.get(ROW));
 		}
 		return retVal;
 	}
@@ -426,7 +423,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	}
 
 	/**
-	 * Gibt die grafische Entsprechung des Feldes als GeneralPath zurueck.
+	 * Gibt die grafische Entsprechung des Feldes als Shape zurueck.
 	 * 
 	 * @param width
 	 *            int
@@ -446,20 +443,20 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return GeneralPath
+	 * @return Shape
 	 */
-	protected GeneralPath getPolygon(final int width, final int height,
+	public Shape getPolygon(final int width, final int height,
 			final double sumColFactor, final double sumRowFactor,
 			final boolean translate, final int idX, final int idY,
 			final int maxX, final int maxY) {
-
-		final Area poly = new Area();
-		for (final GeneralPath segment : getSegments(width, height,
-				sumColFactor, sumRowFactor, translate, idX, idY, maxX, maxY,
-				true).values()) {
-			poly.add(new Area(segment));
+		final Shape poly = new Shape();
+		for (final Shape segment : getSegments(width, height, sumColFactor,
+				sumRowFactor, translate, idX, idY, maxX, maxY, true, true)
+				.values()) {
+			poly.append(segment, false);
 		}
-		return new GeneralPath(poly);
+		poly.compact();
+		return poly;
 	}
 
 	/**
@@ -501,15 +498,13 @@ public class FieldFormat implements Comparable<FieldFormat> {
 		if (translate) {
 			pathPosOffsetY = height * getOffsetY();
 		}
-
 		final double pathPosSumX = pathPosBoardX + pathPosOffsetX;
 		final double pathPosSumY = pathPosBoardY + pathPosOffsetY;
-
 		return new double[] { pathPosSumX, pathPosSumY };
 	}
 
 	/**
-	 * Gibt ein Array von GeneralPath-Objekten zurueck, die jeweils den Linien
+	 * Gibt ein Array von Shape-Objekten zurueck, die jeweils den Linien
 	 * entsprechen, die an ein Nachbarfeld angrenzen. Eine Grenze kann dabei aus
 	 * mehr als einer Linie bestehen.
 	 * 
@@ -533,17 +528,16 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            int
 	 * @param borderless
 	 *            boolean
-	 * @return Map<String, GeneralPath>
+	 * @return Map<String, Shape>
 	 */
-	protected Map<String, GeneralPath> getWalls(final int width,
-			final int height, final double sumColFactor,
-			final double sumRowFactor, final boolean translate, final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
+	public Map<String, Shape> getWalls(final int width, final int height,
+			final double sumColFactor, final double sumRowFactor,
+			final boolean translate, final int idX, final int idY,
+			final int maxX, final int maxY, final boolean borderless) {
 
 		final double[] pos = getPosition(width, height, sumColFactor,
 				sumRowFactor, translate);
-		final Map<String, GeneralPath> walls = new HashMap<>();
+		final Map<String, Shape> walls = new HashMap<>();
 		for (final BorderFormat borderFormat : getBorderFormatsFiltered(idX,
 				idY, maxX, maxY, borderless)) {
 			walls.put(borderFormat.getKey(),
@@ -568,9 +562,9 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            double
 	 * @param maxOffsetY
 	 *            double
-	 * @return Dimension
+	 * @return int[]
 	 */
-	protected Dimension getSize(final int containerWidth,
+	protected int[] getSize(final int containerWidth,
 			final int containerHeight, final int maxX, final int maxY,
 			final double maxOffsetX, final double maxOffsetY) {
 
@@ -578,7 +572,68 @@ public class FieldFormat implements Comparable<FieldFormat> {
 				/ ((maxX - 1.0D) * getColFactor() + 1.0D + maxOffsetX));
 		final int height = (int) Math.rint(containerHeight
 				/ ((maxY - 1.0D) * getRowFactor() + 1.0D + maxOffsetY));
-		return new Dimension(width, height);
+		return new int[] { width, height };
+	}
+
+	/**
+	 * Gibt die Segmente mit der exakten Begrenzung zu den korrekten
+	 * Nachbarfeldern zurueck.
+	 * 
+	 * @param width
+	 *            int
+	 * @param height
+	 *            int
+	 * @param sumColFactor
+	 *            double
+	 * @param sumRowFactor
+	 *            double
+	 * @param translate
+	 *            boolean
+	 * @param idX
+	 *            int
+	 * @param idY
+	 *            int
+	 * @param maxX
+	 *            int
+	 * @param maxY
+	 *            int
+	 * @param borderless
+	 *            boolean
+	 * @param poly
+	 *            boolean
+	 * @return Map<String, Shape>
+	 */
+	public Map<String, Shape> getSegments(final int width, final int height,
+			final double sumColFactor, final double sumRowFactor,
+			final boolean translate, final int idX, final int idY,
+			final int maxX, final int maxY, final boolean borderless,
+			boolean poly) {
+
+		final Map<String, Shape> segments = new HashMap<>();
+		final double[] pos = getPosition(width, height, sumColFactor,
+				sumRowFactor, translate);
+		final double centerX = pos[0] + width * getMinMaxPosX() * 0.5D;
+		final double centerY = pos[1] + height * getMinMaxPosY() * 0.5D;
+
+		Shape wall;
+		Shape segment;
+		// Alle Nachbarschaftsbeziehungen dieses Feldes durchlaufen
+		for (final BorderFormat borderFormat : getBorderFormatsFiltered(idX,
+				idY, maxX, maxY, borderless)) {
+			segment = new Shape();
+			if (!poly) {
+				segment.moveTo(centerX, centerY);
+			}
+			// Pruefen, welche der Feldgrenzen dieses Feldes mit
+			// welcher Feldgrenze des Nachbarfeldes uebereinstimmt.
+			wall = borderFormat.getWall(width, height, pos[0], pos[1]);
+			segment.append(wall, true);
+			if (!poly) {
+				segment.closePath();
+			}
+			segments.put(borderFormat.getKey(), segment);
+		}
+		return segments;
 	}
 
 	/**
@@ -608,63 +663,5 @@ public class FieldFormat implements Comparable<FieldFormat> {
 			}
 		}
 		return retVal;
-	}
-
-	/**
-	 * Gibt die Segmente mit der exakten Begrenzung zu den korrekten
-	 * Nachbarfeldern zurueck.
-	 * 
-	 * @param width
-	 *            int
-	 * @param height
-	 *            int
-	 * @param sumColFactor
-	 *            double
-	 * @param sumRowFactor
-	 *            double
-	 * @param translate
-	 *            boolean
-	 * @param idX
-	 *            int
-	 * @param idY
-	 *            int
-	 * @param maxX
-	 *            int
-	 * @param maxY
-	 *            int
-	 * @param borderless
-	 *            boolean
-	 * @return Map<String, GeneralPath>
-	 */
-	protected Map<String, GeneralPath> getSegments(final int width,
-			final int height, final double sumColFactor,
-			final double sumRowFactor, final boolean translate, final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
-
-		final Map<String, GeneralPath> segments = new HashMap<>();
-		final double[] pos = getPosition(width, height, sumColFactor,
-				sumRowFactor, translate);
-		final double centerX = pos[0] + width * getMinMaxPosX() * 0.5D;
-		final double centerY = pos[1] + height * getMinMaxPosY() * 0.5D;
-
-		GeneralPath wall;
-		GeneralPath segment;
-		// Alle Nachbarschaftsbeziehungen dieses Feldes durchlaufen
-		for (final BorderFormat borderFormat : getBorderFormatsFiltered(idX,
-				idY, maxX, maxY, borderless)) {
-			// Pruefen, welche der Feldgrenzen dieses Feldes mit
-			// welcher Feldgrenze des Nachbarfeldes uebereinstimmt.
-			wall = borderFormat.getWall(width, height, pos[0], pos[1]);
-
-			segment = new GeneralPath();
-			segment.moveTo(centerX, centerY);
-			segment.append(wall, true);
-			segment.closePath();
-
-			segments.put(borderFormat.getKey(), segment);
-		}
-
-		return segments;
 	}
 }

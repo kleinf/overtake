@@ -8,10 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.awt.Dimension;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -25,31 +21,12 @@ import util.PseudoLogger;
  * @author Administrator
  * 
  */
-public final class FieldFormatter {
+public abstract class FieldFormatter {
 
 	private int maxBorders = 0;
 	private FieldFormat[][] fieldFormats = null;
 	private boolean colFirst = false;
 	private boolean rowFirst = false;
-	private static FieldFormatter formatter;
-
-	/**
-	 * Constructor.
-	 */
-	private FieldFormatter() {
-		// Singleton --> FieldFormatter.getInstance()
-	}
-
-	/**
-	 * @return FieldFormatter
-	 */
-	public static synchronized FieldFormatter getInstance() {
-
-		if (formatter == null) {
-			formatter = new FieldFormatter();
-		}
-		return formatter;
-	}
 
 	/**
 	 * FieldFormat-Objekt einlesen.
@@ -221,18 +198,18 @@ public final class FieldFormatter {
 	 * 
 	 * @see FieldFormat#isEmpty()
 	 */
-	private FieldFormat getFieldFormat(final int idX, final int idY) {
+	protected FieldFormat getFieldFormat(final int idX, final int idY) {
 
 		FieldFormat retVal = null;
-		if (colFirst) {
-			final int c = idX % fieldFormats.length;
-			final int r = idY % fieldFormats[c].length;
-			retVal = fieldFormats[c][r];
+		if (this.colFirst) {
+			final int c = idX % this.fieldFormats.length;
+			final int r = idY % this.fieldFormats[c].length;
+			retVal = this.fieldFormats[c][r];
 		}
-		if (rowFirst) {
-			final int r = idY % fieldFormats.length;
-			final int c = idX % fieldFormats[r].length;
-			retVal = fieldFormats[r][c];
+		if (this.rowFirst) {
+			final int r = idY % this.fieldFormats.length;
+			final int c = idX % this.fieldFormats[r].length;
+			retVal = this.fieldFormats[r][c];
 		}
 		return retVal;
 	}
@@ -262,7 +239,7 @@ public final class FieldFormatter {
 	 */
 	public int getMaxRelations() {
 
-		return maxBorders;
+		return this.maxBorders;
 	}
 
 	/**
@@ -289,37 +266,6 @@ public final class FieldFormatter {
 	}
 
 	/**
-	 * Gibt die grafische Entsprechung des Feldes als GeneralPath zurueck.
-	 * 
-	 * @param width
-	 *            int
-	 * @param height
-	 *            int
-	 * @param translate
-	 *            boolean true, wenn das Feld positioniert werden soll.
-	 * @param idX
-	 *            int
-	 * @param idY
-	 *            int
-	 * @param maxX
-	 *            int
-	 * @param maxY
-	 *            int
-	 * @return GeneralPath
-	 * 
-	 * @see FieldFormat#getPolygon(int, int, double, double, boolean, int, int,
-	 *      int, int)
-	 */
-	public GeneralPath getPolygon(final int width, final int height,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY) {
-
-		final double[] sumFactors = getSumFactors(idX, idY);
-		return getFieldFormat(idX, idY).getPolygon(width, height,
-				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY);
-	}
-
-	/**
 	 * Gibt die Position des Feldes als double[] zurueck.
 	 * 
 	 * @param idX
@@ -328,10 +274,10 @@ public final class FieldFormatter {
 	 *            int
 	 * @return double[]
 	 */
-	private double[] getSumFactors(final int idX, final int idY) {
+	protected double[] getSumFactors(final int idX, final int idY) {
 
-		double sumColFactor = 0;
-		double sumRowFactor = 0;
+		double sumColFactor = 0.0D;
+		double sumRowFactor = 0.0D;
 		for (int i = 0; i < idX; i++) {
 			sumColFactor += getFieldFormat(i, idY).getColFactor();
 		}
@@ -367,40 +313,6 @@ public final class FieldFormatter {
 	}
 
 	/**
-	 * Gibt den Platzbedarf aller Felder als Dimension zurueck.
-	 * 
-	 * @param width
-	 *            int
-	 * @param height
-	 *            int
-	 * @param maxX
-	 *            int
-	 * @param maxY
-	 *            int
-	 * @return Dimension
-	 * 
-	 * @see FieldFormat#getPolygon(int, int, double, double, boolean, int, int,
-	 *      int, int)
-	 */
-	public Dimension getBoardsize(final int width, final int height,
-			final int maxX, final int maxY) {
-
-		double maxWidth = 0;
-		double maxHeight = 0;
-		GeneralPath poly;
-		for (int j = 0; j < maxY; j++) {
-			for (int i = 0; i < maxX; i++) {
-				poly = getPolygon(width, height, true, i, j, maxX, maxY);
-				maxWidth = Math.max(maxWidth, poly.getBounds().getMaxX());
-				maxHeight = Math.max(maxHeight, poly.getBounds().getMaxY());
-			}
-		}
-
-		return new Dimension((int) Math.rint(maxWidth) + 1,
-				(int) Math.rint(maxHeight) + 1);
-	}
-
-	/**
 	 * @param containerWidth
 	 *            int
 	 * @param containerHeight
@@ -413,15 +325,15 @@ public final class FieldFormatter {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return Dimension
+	 * @return int[]
 	 */
-	public Dimension getFieldsize(final int containerWidth,
+	public int[] getFieldsize(final int containerWidth,
 			final int containerHeight, final int idX, final int idY,
 			final int maxX, final int maxY) {
 
-		double maxOffsetX = 0;
-		double maxOffsetY = 0;
-		for (final FieldFormat[] formats : fieldFormats) {
+		double maxOffsetX = 0.0D;
+		double maxOffsetY = 0.0D;
+		for (final FieldFormat[] formats : this.fieldFormats) {
 			for (final FieldFormat format : formats) {
 				maxOffsetX = Math.max(format.getOffsetX(), maxOffsetX);
 				maxOffsetY = Math.max(format.getOffsetY(), maxOffsetY);
@@ -430,77 +342,6 @@ public final class FieldFormatter {
 
 		return getFieldFormat(idX, idY).getSize(containerWidth,
 				containerHeight, maxX, maxY, maxOffsetX, maxOffsetY);
-	}
-
-	/**
-	 * Gibt ein Array von GeneralPath-Objekten zurueck, die jeweils den Linien
-	 * entsprechen, die an ein Nachbarfeld angrenzen. Eine Grenze kann dabei aus
-	 * mehr als einer Linie bestehen.
-	 * 
-	 * @param width
-	 *            int
-	 * @param height
-	 *            int
-	 * @param translate
-	 *            boolean true, wenn das Feld positioniert werden soll.
-	 * @param idX
-	 *            int
-	 * @param idY
-	 *            int
-	 * @param maxX
-	 *            int
-	 * @param maxY
-	 *            int
-	 * @param borderless
-	 *            boolean
-	 * @return Map<String, GeneralPath>
-	 * 
-	 * @see FieldFormat#getWalls(int, int, double, double, boolean, int, int,
-	 *      int, int, boolean)
-	 */
-	public Map<String, GeneralPath> getWalls(final int width, final int height,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
-
-		final double[] sumFactors = getSumFactors(idX, idY);
-		return getFieldFormat(idX, idY).getWalls(width, height, sumFactors[0],
-				sumFactors[1], translate, idX, idY, maxX, maxY, borderless);
-	}
-
-	/**
-	 * Gibt die Segmente mit der exakten Begrenzung zu den korrekten
-	 * Nachbarfeldern zurueck.
-	 * 
-	 * @param width
-	 *            int
-	 * @param height
-	 *            int
-	 * @param translate
-	 *            boolean true, wenn das Feld positioniert werden soll.
-	 * @param idX
-	 *            int
-	 * @param idY
-	 *            int
-	 * @param maxX
-	 *            int
-	 * @param maxY
-	 *            int
-	 * @param borderless
-	 *            boolean
-	 * @return Map<String, GeneralPath>
-	 * 
-	 * @see FieldFormat#getSegments(int, int, double, double, boolean, int, int,
-	 *      int, int, boolean)
-	 */
-	public Map<String, GeneralPath> getSegments(final int width,
-			final int height, final boolean translate, final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
-
-		final double[] sumFactors = getSumFactors(idX, idY);
-		return getFieldFormat(idX, idY).getSegments(width, height,
-				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
-				borderless);
 	}
 
 	// ********* Folgende Methoden sind nur zur Visualisierung gedacht *********
@@ -525,14 +366,13 @@ public final class FieldFormatter {
 	 *            int
 	 * @param borderless
 	 *            boolean
-	 * @return Map<String, GeneralPath>
+	 * @return Map<String, Shape>
 	 */
-	public Map<String, GeneralPath> getArrows(final int width,
-			final int height, final boolean translate, final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
+	public Map<String, Shape> getArrowShapes(final int width, final int height,
+			final boolean translate, final int idX, final int idY,
+			final int maxX, final int maxY, final boolean borderless) {
 
-		final Map<String, GeneralPath> arrows = new HashMap<>();
+		final Map<String, Shape> arrows = new HashMap<>();
 		double[] sumFactors = getSumFactors(idX, idY);
 		final FieldFormat fieldFormat = getFieldFormat(idX, idY);
 		double[] pos = fieldFormat.getPosition(width, height, sumFactors[0],
@@ -562,7 +402,7 @@ public final class FieldFormatter {
 			wallCenter = borderFormatRef.getWallCenter(width, height, pos[0],
 					pos[1]);
 
-			final GeneralPath arrow = getArrow(centerX, centerY, wallCenter[0],
+			final Shape arrow = getArrow(centerX, centerY, wallCenter[0],
 					wallCenter[1]);
 
 			arrows.put(relation.getKey(), arrow);
@@ -587,8 +427,8 @@ public final class FieldFormatter {
 				wallCenter = borderFormatRef.getWallCenter(width, height,
 						pos[0], pos[1]);
 
-				final GeneralPath arrow = getArrow(centerX, centerY,
-						wallCenter[0], wallCenter[1]);
+				final Shape arrow = getArrow(centerX, centerY, wallCenter[0],
+						wallCenter[1]);
 
 				arrows.put(borderFormat.getKey(), arrow);
 			} else if (borderless) {
@@ -611,15 +451,21 @@ public final class FieldFormatter {
 	 *            double
 	 * @param endY
 	 *            double
-	 * @return GeneralPath
+	 * @return Shape
 	 */
-	protected GeneralPath getArrow(final double startX, final double startY,
+	protected Shape getArrow(final double startX, final double startY,
 			final double endX, final double endY) {
 
-		final GeneralPath arrow = new GeneralPath();
+		final Shape arrow = new Shape();
 		final double angle = getDegrees(startX, startY, endX, endY);
 		final double sideAngle = 30.0D;
-		final double sideLength = Point2D.distance(startX, startY, endX, endY) * 0.3D;
+
+		double x = startX;
+		double y = startY;
+		x -= endX;
+		y -= endY;
+		double distance = Math.sqrt(x * x + y * y);
+		final double sideLength = distance * 0.3D;
 
 		arrow.moveTo(startX, startY);
 		arrow.lineTo(endX, endY);

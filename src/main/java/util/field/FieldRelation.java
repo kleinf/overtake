@@ -12,7 +12,7 @@ public class FieldRelation {
 	private final int refFieldY;
 
 	/**
-	 * Border-Objekt instanziieren und mit default-Werten initialisieren.
+	 * FieldRelation-Objekt instanziieren und mit default-Werten initialisieren.
 	 * 
 	 * @param borderId
 	 *            ID dieses Feldrandes.
@@ -62,7 +62,7 @@ public class FieldRelation {
 	/**
 	 * @return String
 	 */
-	protected String getKey() {
+	public String getKey() {
 		return this.borderId + "|" + this.refBorderId + "|" + this.refFieldX
 				+ "|" + this.refFieldY;
 	}

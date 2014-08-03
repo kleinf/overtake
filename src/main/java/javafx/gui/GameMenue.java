@@ -75,9 +75,9 @@ public class GameMenue extends MenuBar {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-//				final OptionsDialogStage options = new OptionsDialogStage(
-//						getParentApplication(), ModeEnum.MODE_PLAY);
-//				options.show();
+				// final OptionsDialogStage options = new OptionsDialogStage(
+				// getParentApplication(), ModeEnum.MODE_PLAY);
+				// options.show();
 			}
 		});
 		return menuItemNewGame;
@@ -113,9 +113,9 @@ public class GameMenue extends MenuBar {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-//				final OptionsDialogStage options = new OptionsDialogStage(
-//						getParentApplication(), ModeEnum.MODE_EDIT);
-//				options.show();
+				// final OptionsDialogStage options = new OptionsDialogStage(
+				// getParentApplication(), ModeEnum.MODE_EDIT);
+				// options.show();
 			}
 		});
 		return menuItemEditBoard;

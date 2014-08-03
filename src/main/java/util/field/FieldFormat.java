@@ -423,7 +423,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	}
 
 	/**
-	 * Gibt die grafische Entsprechung des Feldes als Shape zurueck.
+	 * Gibt die grafische Entsprechung des Feldes als Field-Objekt zurueck.
 	 * 
 	 * @param width
 	 *            int
@@ -443,20 +443,16 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return Shape
+	 * @param borderless
+	 *            boolean
+	 * @return Field
 	 */
-	public Shape getPolygon(final int width, final int height,
+	public Field getField(final int width, final int height,
 			final double sumColFactor, final double sumRowFactor,
 			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY) {
-		final Shape poly = new Shape();
-		for (final Shape segment : getSegments(width, height, sumColFactor,
-				sumRowFactor, translate, idX, idY, maxX, maxY, true, true)
-				.values()) {
-			poly.append(segment, false);
-		}
-		poly.compact();
-		return poly;
+			final int maxX, final int maxY, final boolean borderless) {
+		return new Field(idX, idY, getFieldParts(width, height, sumColFactor,
+				sumRowFactor, translate, idX, idY, maxX, maxY, borderless));
 	}
 
 	/**
@@ -599,41 +595,63 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            int
 	 * @param borderless
 	 *            boolean
-	 * @param poly
-	 *            boolean
-	 * @return Map<String, Shape>
+	 * @return List<FieldPart>
 	 */
-	public Map<String, Shape> getSegments(final int width, final int height,
+	protected List<FieldPart> getFieldParts(final int width, final int height,
 			final double sumColFactor, final double sumRowFactor,
 			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless,
-			boolean poly) {
+			final int maxX, final int maxY, final boolean borderless) {
 
-		final Map<String, Shape> segments = new HashMap<>();
 		final double[] pos = getPosition(width, height, sumColFactor,
 				sumRowFactor, translate);
 		final double centerX = pos[0] + width * getMinMaxPosX() * 0.5D;
 		final double centerY = pos[1] + height * getMinMaxPosY() * 0.5D;
 
-		Shape wall;
+		FieldRelation fieldRelation;
 		Shape segment;
+		Shape wall;
+		boolean possibleBorder;
 		// Alle Nachbarschaftsbeziehungen dieses Feldes durchlaufen
-		for (final BorderFormat borderFormat : getBorderFormatsFiltered(idX,
-				idY, maxX, maxY, borderless)) {
-			segment = new Shape();
-			if (!poly) {
-				segment.moveTo(centerX, centerY);
+		int x;
+		int y;
+		final List<FieldPart> fieldParts = new ArrayList<FieldPart>();
+		for (final BorderFormat borderFormat : getBorderFormats().values()) {
+			x = idX + borderFormat.getRefFieldX();
+			y = idY + borderFormat.getRefFieldY();
+			// Nachbarschaftsbeziehungen dieses Feldes pruefen
+			possibleBorder = borderless
+					|| (x >= 0 && y >= 0 && x < maxX && y < maxY);
+
+			// Bei Randueberlauf muessen die Nachbarfelder, die ueber den Rand
+			// hinausgehen, auf die gegenueberliegende Seite umgeleitet werden.
+			if (borderless) {
+				if (x < 0) {
+					x = maxX - 1;
+				}
+				if (x >= maxX) {
+					x = 0;
+				}
+				if (y < 0) {
+					y = maxY - 1;
+				}
+				if (y >= maxY) {
+					y = 0;
+				}
 			}
-			// Pruefen, welche der Feldgrenzen dieses Feldes mit
-			// welcher Feldgrenze des Nachbarfeldes uebereinstimmt.
+			fieldRelation = null;
+			segment = null;
 			wall = borderFormat.getWall(width, height, pos[0], pos[1]);
-			segment.append(wall, true);
-			if (!poly) {
+			if (possibleBorder) {
+				fieldRelation = new FieldRelation(borderFormat.getId(),
+						borderFormat.getRefId(), x, y);
+				segment = new Shape();
+				segment.moveTo(centerX, centerY);
+				segment.append(wall, true);
 				segment.closePath();
 			}
-			segments.put(borderFormat.getKey(), segment);
+			fieldParts.add(new FieldPart(fieldRelation, segment, wall));
 		}
-		return segments;
+		return fieldParts;
 	}
 
 	/**

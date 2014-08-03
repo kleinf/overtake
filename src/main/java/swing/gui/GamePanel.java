@@ -7,8 +7,10 @@ import game.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,12 +22,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 
-import util.Constants;
-import util.ModeEnum;
-import util.PseudoLogger;
 import net.Net;
 import swing.util.AnimatedImageUtil;
 import swing.util.FontCreator;
+import util.Constants;
+import util.ModeEnum;
+import util.PseudoLogger;
 
 /**
  * @author Administrator
@@ -506,7 +508,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 	}
 
 	private void takeOver(final int idX, final int idY) {
-		final HashMap<String, FieldComponent> getCurrChecklist = new HashMap<>();
+		final HashMap<String, FieldComponent> currChecklist = new HashMap<>();
 		final HashMap<String, FieldComponent> newChecklist = new HashMap<>();
 		// Zaehler fuer Kettenreaktionen zuruecksetzen
 		final List<String> overloadCounter = new ArrayList<>();
@@ -518,30 +520,30 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 		// Wert um eins erhoehen
 		currField.addValue();
 		// Feld in Pruefliste eintragen
-		getCurrChecklist.put(currField.getIdX() + "-" + currField.getIdY(),
+		currChecklist.put(currField.getIdX() + "-" + currField.getIdY(),
 				currField);
+
+		Set<String> testSet = new HashSet<String>();
 		do {
 			overloads = 0;
-			for (final Entry<String, FieldComponent> entry : getCurrChecklist
+			for (final Entry<String, FieldComponent> entry : currChecklist
 					.entrySet()) {
 				currField = entry.getValue();
 				// Wenn die Maximalkapazitaet des Feldes ueberschritten
-				// (erreicht)
-				// ist, kommt es zu einer Ueberladung und der Inhalt des Feldes
-				// verteilt sich auf die benachbarten Felder.
+				// (erreicht) ist, kommt es zu einer Ueberladung und der Inhalt
+				// des Feldes verteilt sich auf die benachbarten Felder.
 				if (currField.getValue() > currField.getMaxValue()
 						|| GameSession.gameOptions.isOverloadOnEqual()
 						&& currField.getValue() == currField.getMaxValue()) {
 					// Kettenreaktionen zaehlen.
 					// Dabei wird ermittelt, wieviele Felder durch die
 					// Ueberladung ebenfalls zum ueberladen gebracht werden.
-					// Dies kann als Basis fuer eine Punktewertung dienen, bei
-					// der lange Ketten von Ueberladungen Punkte geben.
+					// Dies kann als Basis fuer eine Punktewertung dienen,
+					// bei der lange Ketten von Ueberladungen Punkte geben.
 					// Die Speicherung erfolgt rundenbasiert. D.h.: ID 0 = die
 					// von Hand ausgeloeste Ueberladung ID 1 ist/sind die
 					// Ueberladung(en), die durch die erste Ueberladung
-					// ausgeloest
-					// wurden usw.
+					// ausgeloest wurden usw.
 					overloads++;
 					// Am Feld vermerken, dass es ueberladen wurde.
 					currField.addOverload();
@@ -595,9 +597,9 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 							&& currField.getOverloads() >= GameSession.gameOptions
 									.getMaxOverload()) {
 						// Wenn Felder oefter explodieren, als es die
-						// Stabilitaet
-						// zulaesst, brechen die Felder weg und eine Verteilung
-						// auf Umliegende Felder findet nicht mehr statt.
+						// Stabilitaet zulaesst, brechen die Felder weg
+						// und eine Verteilung auf Umliegende Felder findet
+						// nicht mehr statt.
 						getBoardPanel().disableField(currField.getIdX(),
 								currField.getIdY());
 						// Ausserdem bekommen alle Mitspieler einen
@@ -612,15 +614,22 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 				}
 			}
 			// Wenn der Durchgang erfolgreich beendet ist, werden die
-			// abhaengigen
-			// Felder geprueft. Anschliessend deren Abhaengigkeiten usw.
-			getCurrChecklist.clear();
-			getCurrChecklist.putAll(newChecklist);
+			// abhaengigen Felder geprueft. Anschliessend deren Abhaengigkeiten
+			// usw.
+			currChecklist.clear();
+			currChecklist.putAll(newChecklist);
 			newChecklist.clear();
-			if (!getCurrChecklist.isEmpty()) {
+			if (!currChecklist.isEmpty()) {
 				overloadCounter.add(Integer.toString(overloads));
 			}
-		} while (!getCurrChecklist.isEmpty());
+
+			// Check auf Endlos-Schleife
+			if (testSet.contains(getBoardPanel().toString())) {
+				System.out.println("Endless!");
+				break;
+			}
+			testSet.add(getBoardPanel().toString());
+		} while (!currChecklist.isEmpty());
 	}
 
 	private void checkWinner() {

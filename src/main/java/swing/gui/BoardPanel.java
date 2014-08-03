@@ -21,9 +21,9 @@ import javax.swing.JPanel;
 
 import org.jdom.Element;
 
-import util.field.FieldRelation;
 import swing.util.FieldFormatterSwing;
 import swing.util.ImageLoader;
+import util.field.FieldRelation;
 
 /**
  * Dies ist die grafische Repraesentation des Spielbretts. Es besteht aus einer
@@ -511,5 +511,26 @@ public class BoardPanel extends JPanel implements MouseListener,
 	@Override
 	public void componentShown(final ComponentEvent arg0) {
 		// not implemented
+	}
+
+	/**
+	 * @see java.awt.Component#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		FieldComponent fc;
+		for (int idY = 0; idY < GameSession.gameOptions.getNumFieldsHeight(); idY++) {
+			for (int idX = 0; idX < GameSession.gameOptions.getNumFieldsWidth(); idX++) {
+				fc = getFieldComponent(idX, idY);
+				if (fc.isEnabled()) {
+					sb.append(idX).append("-");
+					sb.append(idY).append("-");
+					sb.append(fc.getOwnerId()).append("-");
+					sb.append(fc.getValue()).append("-");
+				}
+			}
+		}
+		return sb.toString();
 	}
 }

@@ -1,13 +1,13 @@
 package javafx.gui;
 
-import util.Constants;
-import util.ModeEnum;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import util.Constants;
+import util.ModeEnum;
 
 /**
  * @author Administrator

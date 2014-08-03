@@ -16,10 +16,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
-import util.Constants;
-import util.ModeEnum;
 import swing.gui.options.JoinNetgameDialog;
 import swing.gui.options.OptionsDialog;
+import util.Constants;
+import util.ModeEnum;
 
 /**
  * @author Administrator

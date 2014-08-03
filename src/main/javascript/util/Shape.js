@@ -36,7 +36,8 @@ function Shape() {
 	 */
 	Shape.prototype.quadTo = function(pathPosX1, pathPosY1, pathPosX2,
 			pathPosY2) {
-		this.drawCmds.push(new PointFormat("QUAD", pathPosX1, pathPosY1, pathPosX2, pathPosY2));
+		this.drawCmds.push(new PointFormat("QUAD", pathPosX1, pathPosY1,
+				pathPosX2, pathPosY2));
 	}
 
 	/**
@@ -55,7 +56,8 @@ function Shape() {
 	 */
 	Shape.prototype.curveTo = function(pathPosX1, pathPosY1, pathPosX2,
 			pathPosY2, pathPosX3, pathPosY3) {
-		this.drawCmds.push(new PointFormat("CURVE", pathPosX1, pathPosY1, pathPosX2, pathPosY2, pathPosX3, pathPosY3));
+		this.drawCmds.push(new PointFormat("CURVE", pathPosX1, pathPosY1,
+				pathPosX2, pathPosY2, pathPosX3, pathPosY3));
 	}
 
 	/**
@@ -69,25 +71,9 @@ function Shape() {
 			}
 		}
 		if (lastMove != void (0)) {
-			this.drawCmds.push(new PointFormat("LINE", lastMove.getPosX1(), lastMove.getPosY1()));
+			this.drawCmds.push(new PointFormat("LINE", lastMove.getPosX1(),
+					lastMove.getPosY1()));
 		}
-	}
-
-	/**
-	 * 
-	 */
-	Shape.prototype.compact = function() {
-		var drawCmdsTmp = [];
-		var thisPointFormat = void(0);
-		var lastPointFormat = void(0);
-		for (var i in this.drawCmds) {
-			thisPointFormat = this.drawCmds[i];
-			if (i == 0 || !thisPointFormat.isPoint(lastPointFormat)) {
-				drawCmdsTmp.push(thisPointFormat);
-			}
-			lastPointFormat = thisPointFormat;
-		}
-		this.drawCmds = drawCmdsTmp;
 	}
 
 	/**
@@ -103,11 +89,18 @@ function Shape() {
 		var startPoint = shape.drawCmds[0];
 		if (connect && this.drawCmds.length > 0 && shape.drawCmds.length > 0
 				&& startPoint.getPointType() == "MOVE") {
-			this.drawCmds.push(new PointFormat("LINE", startPoint.getPosX1(), startPoint.getPosY1()));
+			this.drawCmds.push(new PointFormat("LINE", startPoint.getPosX1(),
+					startPoint.getPosY1()));
 			startIndex = 1;
 		}
 		for (var i = startIndex; i < shape.drawCmds.length; i++) {
-			this.drawCmds.push(shape.drawCmds[i]);
+			// Zeichenbefehle zusammenfassen
+			if (connect
+					|| this.drawCmds.length == 0
+					|| !shape.drawCmds[i]
+							.isPoint(this.drawCmds[this.drawCmds.length - 1])) {
+				this.drawCmds.push(shape.drawCmds[i]);
+			}
 		}
 	}
 

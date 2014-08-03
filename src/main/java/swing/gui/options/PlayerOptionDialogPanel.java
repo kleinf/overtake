@@ -28,9 +28,9 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import swing.util.AnimatedImageUtil;
 import util.Constants;
 import util.PseudoLogger;
-import swing.util.AnimatedImageUtil;
 
 /**
  * @author Administrator

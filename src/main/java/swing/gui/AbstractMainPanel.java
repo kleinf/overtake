@@ -21,9 +21,9 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
+import swing.util.AnimatedImageUtil;
 import util.ModeEnum;
 import util.PseudoLogger;
-import swing.util.AnimatedImageUtil;
 
 /**
  * @author Administrator

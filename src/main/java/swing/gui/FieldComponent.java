@@ -133,7 +133,8 @@ public class FieldComponent extends JComponent implements MouseListener,
 		// Die Darstellung des Polygons an die geaenderte Groesse anpassen
 		polygon = FieldFormatterSwing.getInstance().getPolygon(width, height,
 				false, idX, idY, GameSession.gameOptions.getNumFieldsWidth(),
-				GameSession.gameOptions.getNumFieldsHeight());
+				GameSession.gameOptions.getNumFieldsHeight(),
+				GameSession.gameOptions.isBorderless());
 
 		// Die Grenzen des Feldes auf die Groesse des Polygons anpassen
 		super.setBounds(posX, posY, Math.max(width, polygon.getBounds().width),

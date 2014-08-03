@@ -7,6 +7,7 @@ import java.awt.geom.GeneralPath;
 
 import util.field.FieldFormat;
 import util.field.FieldFormatter;
+import util.field.FieldPart;
 import util.field.PointFormat;
 import util.field.PointType;
 import util.field.Shape;
@@ -54,19 +55,20 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 *            int
 	 * @param maxY
 	 *            int
+	 * @param borderless
+	 *            boolean
 	 * @return Shape
 	 * 
-	 * @see FieldFormat#getPolygon(int, int, double, double, boolean, int, int,
-	 *      int, int)
+	 * @see FieldFormat#getField(int, int, double, double, boolean, int, int,
+	 *      int, int, boolean)
 	 */
 	public GeneralPath getPolygon(final int width, final int height,
 			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY) {
-
+			final int maxX, final int maxY, boolean borderless) {
 		final double[] sumFactors = getSumFactors(idX, idY);
-		return getGeneralPath(getFieldFormat(idX, idY).getPolygon(width,
-				height, sumFactors[0], sumFactors[1], translate, idX, idY,
-				maxX, maxY));
+		return getGeneralPath(getFieldFormat(idX, idY).getField(width, height,
+				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
+				borderless).getPolygon());
 	}
 
 	/**
@@ -82,8 +84,8 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 *            int
 	 * @return int[]
 	 * 
-	 * @see FieldFormat#getPolygon(int, int, double, double, boolean, int, int,
-	 *      int, int)
+	 * @see FieldFormat#getField(int, int, double, double, boolean, int, int,
+	 *      int, int, boolean)
 	 */
 	public int[] getBoardsize(final int width, final int height,
 			final int maxX, final int maxY) {
@@ -93,7 +95,7 @@ public final class FieldFormatterSwing extends FieldFormatter {
 		GeneralPath poly;
 		for (int j = 0; j < maxY; j++) {
 			for (int i = 0; i < maxX; i++) {
-				poly = getPolygon(width, height, true, i, j, maxX, maxY);
+				poly = getPolygon(width, height, true, i, j, maxX, maxY, true);
 				maxWidth = Math.max(maxWidth, poly.getBounds().getMaxX());
 				maxHeight = Math.max(maxHeight, poly.getBounds().getMaxY());
 			}
@@ -102,22 +104,6 @@ public final class FieldFormatterSwing extends FieldFormatter {
 		return new int[] { (int) Math.rint(maxWidth) + 1,
 				(int) Math.rint(maxHeight) + 1 };
 	}
-
-	/**
-	 * @param containerWidth
-	 *            int
-	 * @param containerHeight
-	 *            int
-	 * @param idX
-	 *            int
-	 * @param idY
-	 *            int
-	 * @param maxX
-	 *            int
-	 * @param maxY
-	 *            int
-	 * @return int[]
-	 */
 
 	/**
 	 * Gibt eine Liste von GeneralPath-Objekten zurueck, die jeweils den Linien
@@ -199,8 +185,8 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 *            boolean
 	 * @return Map<String, GeneralPath>
 	 * 
-	 * @see FieldFormat#getSegments(int, int, double, double, boolean, int, int,
-	 *      int, int, boolean, boolean)
+	 * @see FieldFormat#getFieldParts(int, int, double, double, boolean, int,
+	 *      int, int, int, boolean)
 	 */
 	public Map<String, GeneralPath> getSegments(final int width,
 			final int height, final boolean translate, final int idX,
@@ -209,11 +195,14 @@ public final class FieldFormatterSwing extends FieldFormatter {
 
 		final double[] sumFactors = getSumFactors(idX, idY);
 		Map<String, GeneralPath> segments = new HashMap<String, GeneralPath>();
-		for (Map.Entry<String, Shape> entry : getFieldFormat(idX, idY)
-				.getSegments(width, height, sumFactors[0], sumFactors[1],
-						translate, idX, idY, maxX, maxY, borderless, false)
-				.entrySet()) {
-			segments.put(entry.getKey(), getGeneralPath(entry.getValue()));
+
+		for (FieldPart fp : getFieldFormat(idX, idY).getField(width, height,
+				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
+				borderless).getFieldParts()) {
+			if (fp.getSegment() != null) {
+				segments.put(fp.getFieldRelation().getKey(),
+						getGeneralPath(fp.getSegment()));
+			}
 		}
 		return segments;
 	}

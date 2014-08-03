@@ -86,23 +86,6 @@ public class Shape {
 	}
 
 	/**
-	 * 
-	 */
-	public void compact() {
-		List<PointFormat> drawCmdsTmp = new ArrayList<PointFormat>();
-		PointFormat thisPointFormat = null;
-		PointFormat lastPointFormat = null;
-		for (int i = 0; i < this.drawCmds.size(); i++) {
-			thisPointFormat = this.drawCmds.get(i);
-			if (i == 0 || !thisPointFormat.isPoint(lastPointFormat)) {
-				drawCmdsTmp.add(thisPointFormat);
-			}
-			lastPointFormat = thisPointFormat;
-		}
-		this.drawCmds = drawCmdsTmp;
-	}
-
-	/**
 	 * @param shape
 	 *            Shape
 	 * @param connect
@@ -120,7 +103,15 @@ public class Shape {
 			startIndex = 1;
 		}
 		for (int i = startIndex; i < shape.drawCmds.size(); i++) {
-			this.drawCmds.add(shape.getDrawCmds().get(i));
+			// Zeichenbefehle zusammenfassen
+			if (this.drawCmds.size() == 0
+					|| !shape
+							.getDrawCmds()
+							.get(i)
+							.isPoint(
+									this.drawCmds.get(this.drawCmds.size() - 1))) {
+				this.drawCmds.add(shape.getDrawCmds().get(i));
+			}
 		}
 	}
 

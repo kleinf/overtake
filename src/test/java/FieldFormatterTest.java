@@ -5,7 +5,6 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import swing.util.FieldFormatterSwing;
@@ -74,7 +73,7 @@ public class FieldFormatterTest {
 		for (int idY = 0; idY < numFieldsHeight; idY++) {
 			for (int idX = 0; idX < numFieldsWidth; idX++) {
 				ff.getPolygon(fieldSize[0], fieldSize[1], true, idX, idY,
-						numFieldsWidth, numFieldsHeight);
+						numFieldsWidth, numFieldsHeight, false);
 				if (!FieldFormatterSwing.getInstance().isEmpty(idX, idY)) {
 					outputSegments(idX, idY);
 				}
@@ -85,7 +84,7 @@ public class FieldFormatterTest {
 	private void outputSegments(final int idX, final int idY) {
 		final GeneralPath poly = FieldFormatterSwing.getInstance().getPolygon(
 				fieldWidth, fieldHeight, true, idX, idY, numFieldsWidth,
-				numFieldsHeight);
+				numFieldsHeight, false);
 		final Map<String, GeneralPath> segments = FieldFormatterSwing
 				.getInstance().getSegments(fieldWidth, fieldHeight, true, idX,
 						idY, numFieldsWidth, numFieldsHeight, borderless);

@@ -12,8 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import util.Constants;
 import net.Net;
+import util.Constants;
 
 /**
  * @author Administrator

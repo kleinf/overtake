@@ -359,7 +359,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 					if (!FieldFormatterSwing.getInstance().isEmpty(idX, idY)) {
 						poly = FieldFormatterSwing.getInstance().getPolygon(
 								fieldWidth, fieldHeight, true, idX, idY,
-								numFieldsWidth, numFieldsHeight);
+								numFieldsWidth, numFieldsHeight, isBorderless);
 						if (showSegments) {
 							drawSegments(idX, idY, g2d, bufG2d, fontMetrics,
 									fontHeight);

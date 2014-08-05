@@ -15,6 +15,42 @@
  *            Row- oder Col-Element (je nachdem, was danach kommt)
  */
 function FieldFormat(id1, id2, key1, key2, object1, object2) {
+
+	const
+	FACTOR = "factor";
+	const
+	OFFSET_X = "offsetX";
+	const
+	OFFSET_Y = "offsetY";
+	const
+	COL = "col";
+	const
+	ROW = "row";
+
+	this.borderFormats;
+	this.minPosX = Number.MAX_VALUE;
+	this.minPosY = Number.MAX_VALUE;
+	this.maxPosX = Number.MIN_VALUE;
+	this.maxPosY = Number.MIN_VALUE;
+
+	this.name1 = key1.toLowerCase();
+	this.name2 = key2.toLowerCase();
+	this.map = [];
+	this.map[this.name1] = id1;
+	this.map[this.name2] = id2;
+	this.map[this.name1 + FACTOR] = object1[FACTOR] == void (0) ? 1
+			: object1[FACTOR].toString();
+	this.map[this.name2 + FACTOR] = object2[FACTOR] == void (0) ? 1
+			: object2[FACTOR].toString();
+	this.map[this.name1 + OFFSET_X] = object1[OFFSET_X] == void (0) ? 0
+			: object1[OFFSET_X].toString();
+	this.map[this.name2 + OFFSET_X] = object2[OFFSET_X] == void (0) ? 0
+			: object2[OFFSET_X].toString();
+	this.map[this.name1 + OFFSET_Y] = object1[OFFSET_Y] == void (0) ? 0
+			: object1[OFFSET_Y].toString();
+	this.map[this.name2 + OFFSET_Y] = object2[OFFSET_Y] == void (0) ? 0
+			: object2[OFFSET_Y].toString();
+
 	/**
 	 * Aufbereitung der JSON-Datei mit den Feldbeschreibungen.
 	 * 
@@ -260,7 +296,7 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	}
 
 	/**
-	 * Gibt die grafische Entsprechung des Feldes als Shape zurueck.
+	 * Gibt die grafische Entsprechung des Feldes als Field-Objekt zurueck.
 	 * 
 	 * @param width
 	 *            int
@@ -280,17 +316,15 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return Shape
+	 * @param borderless
+	 *            boolean
+	 * @return Field
 	 */
-	FieldFormat.prototype.getPolygon = function(width, height, sumColFactor,
-			sumRowFactor, translate, idX, idY, maxX, maxY) {
-		var poly = new Shape();
-		var segments = this.getSegments(width, height, sumColFactor,
-				sumRowFactor, translate, idX, idY, maxX, maxY, true, true);
-		for ( var i in segments) {
-			poly.append(segments[i], true);
-		}
-		return poly;
+	FieldFormat.prototype.getField = function(width, height, sumColFactor,
+			sumRowFactor, translate, idX, idY, maxX, maxY, borderless) {
+		return new Field(idX, idY, this.getFieldParts(width, height,
+				sumColFactor, sumRowFactor, translate, idX, idY, maxX, maxY,
+				borderless));
 	}
 
 	/**
@@ -311,29 +345,27 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	FieldFormat.prototype.getPosition = function(width, height, sumColFactor,
 			sumRowFactor, translate) {
 		// X - Koordinaten des Spaltenanfangs
-		var pathPosBoardX = 0.0;
+		var pathPosBoardX = 0;
 		if (translate) {
 			pathPosBoardX = width * sumColFactor;
 		}
 		// X - Abweichung der Zeile/Spalte
-		var pathPosOffsetX = 0.0;
+		var pathPosOffsetX = 0;
 		if (translate) {
 			pathPosOffsetX = width * this.getOffsetX();
 		}
 		// Y - Koordinaten des Zeilenanfangs
-		var pathPosBoardY = 0.0;
+		var pathPosBoardY = 0;
 		if (translate) {
 			pathPosBoardY = height * sumRowFactor;
 		}
 		// Y - Abweichung innerhalb der Zeile/Spalte
-		var pathPosOffsetY = 0.0;
+		var pathPosOffsetY = 0;
 		if (translate) {
 			pathPosOffsetY = height * this.getOffsetY();
 		}
-
 		var pathPosSumX = pathPosBoardX + pathPosOffsetX;
 		var pathPosSumY = pathPosBoardY + pathPosOffsetY;
-
 		return [ pathPosSumX, pathPosSumY ];
 	}
 
@@ -394,7 +426,7 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 *            double
 	 * @param maxOffsetY
 	 *            double
-	 * @return Dimension
+	 * @return int[]
 	 */
 	FieldFormat.prototype.getSize = function(containerWidth, containerHeight,
 			maxX, maxY, maxOffsetX, maxOffsetY) {
@@ -429,74 +461,60 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 *            int
 	 * @param borderless
 	 *            boolean
-	 * @param poly
-	 *            boolean
-	 * @return Map<String, Shape>
+	 * @return FieldPart[]
 	 */
-	FieldFormat.prototype.getSegments = function(width, height, sumColFactor,
-			sumRowFactor, translate, idX, idY, maxX, maxY, borderless, poly) {
-		var segments = [];
+	FieldFormat.prototype.getFieldParts = function(width, height, sumColFactor,
+			sumRowFactor, translate, idX, idY, maxX, maxY, borderless) {
 		var pos = this.getPosition(width, height, sumColFactor, sumRowFactor,
 				translate);
 		var centerX = pos[0] + width * this.getMinMaxPosX() * 0.5;
 		var centerY = pos[1] + height * this.getMinMaxPosY() * 0.5;
 
-		var wall;
+		var fieldRelation;
 		var segment;
+		var wall;
+		var possibleBorder;
 		// Alle Nachbarschaftsbeziehungen dieses Feldes durchlaufen
-		var borderFormats = this.getBorderFormatsFiltered(idX, idY, maxX, maxY,
-				borderless);
-		for ( var i in borderFormats) {
-			// Pruefen, welche der Feldgrenzen dieses Feldes mit
-			// welcher Feldgrenze des Nachbarfeldes uebereinstimmt.
-			wall = borderFormats[i].getWall(width, height, pos[0], pos[1]);
-			segment = new Shape();
-			if (!poly) {
-				segment.moveTo(centerX, centerY);
+		var x;
+		var y;
+		var fieldParts = [];
+		for ( var i in this.borderFormats) {
+			x = idX + this.borderFormats[i].getRefFieldX();
+			y = idY + this.borderFormats[i].getRefFieldY();
+			// Nachbarschaftsbeziehungen dieses Feldes pruefen
+			possibleBorder = borderless
+					|| (x >= 0 && y >= 0 && x < maxX && y < maxY);
+			// Bei Randueberlauf muessen die Nachbarfelder, die ueber den Rand
+			// hinausgehen, auf die gegenueberliegende Seite umgeleitet werden.
+			if (borderless) {
+				if (x < 0) {
+					x = maxX - 1;
+				}
+				if (x >= maxX) {
+					x = 0;
+				}
+				if (y < 0) {
+					y = maxY - 1;
+				}
+				if (y >= maxY) {
+					y = 0;
+				}
 			}
-			segment.append(wall, true);
-			if (!poly) {
+			fieldRelation = void (0);
+			segment = void (0);
+			wall = this.borderFormats[i].getWall(width, height, pos[0], pos[1]);
+			if (possibleBorder) {
+				fieldRelation = new FieldRelation(
+						this.borderFormats[i].getId(), this.borderFormats[i]
+								.getRefId(), x, y);
+				segment = new Shape();
+				segment.moveTo(centerX, centerY);
+				segment.append(wall, true);
 				segment.closePath();
 			}
-			segments[borderFormats[i].getKey()] = segment;
+			fieldParts.push(new FieldPart(fieldRelation, segment, wall));
 		}
-		return segments;
+		return fieldParts;
 	}
-
-	const
-	FACTOR = "factor";
-	const
-	OFFSET_X = "offsetX";
-	const
-	OFFSET_Y = "offsetY";
-	const
-	COL = "col";
-	const
-	ROW = "row";
-
-	this.borderFormats;
-	this.minPosX = Number.MAX_VALUE;
-	this.minPosY = Number.MAX_VALUE;
-	this.maxPosX = Number.MIN_VALUE;
-	this.maxPosY = Number.MIN_VALUE;
-
-	this.name1 = key1.toLowerCase();
-	this.name2 = key2.toLowerCase();
-	this.map = [];
-	this.map[this.name1] = id1;
-	this.map[this.name2] = id2;
-	this.map[this.name1 + FACTOR] = object1[FACTOR] == void (0) ? 1
-			: object1[FACTOR].toString();
-	this.map[this.name2 + FACTOR] = object2[FACTOR] == void (0) ? 1
-			: object2[FACTOR].toString();
-	this.map[this.name1 + OFFSET_X] = object1[OFFSET_X] == void (0) ? 0
-			: object1[OFFSET_X].toString();
-	this.map[this.name2 + OFFSET_X] = object2[OFFSET_X] == void (0) ? 0
-			: object2[OFFSET_X].toString();
-	this.map[this.name1 + OFFSET_Y] = object1[OFFSET_Y] == void (0) ? 0
-			: object1[OFFSET_Y].toString();
-	this.map[this.name2 + OFFSET_Y] = object2[OFFSET_Y] == void (0) ? 0
-			: object2[OFFSET_Y].toString();
-
 	this.parseBorders(object2);
 }

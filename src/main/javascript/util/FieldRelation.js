@@ -1,6 +1,6 @@
 /**
- * Border-Objekt instanziieren und mit default-Werten initialisieren.
- *
+ * FieldRelation-Objekt instanziieren und mit default-Werten initialisieren.
+ * 
  * @param borderId
  *            ID dieses Feldrandes.
  * @param refBorderId
@@ -11,6 +11,12 @@
  *            Zeilen-ID des referenzierten Nachbarfeldes.
  */
 function FieldRelation(borderId, refBorderId, refFieldX, refFieldY) {
+
+	this.borderId = borderId;
+	this.refBorderId = refBorderId;
+	this.refFieldX = refFieldX;
+	this.refFieldY = refFieldY;
+
 	/**
 	 * @return int
 	 */
@@ -40,15 +46,10 @@ function FieldRelation(borderId, refBorderId, refFieldX, refFieldY) {
 	}
 
 	/**
-	 * @return int
+	 * @return String
 	 */
 	FieldRelation.prototype.getKey = function() {
 		return this.borderId + "|" + this.refBorderId + "|" + this.refFieldX
 				+ "|" + this.refFieldY;
 	}
-
-	this.borderId = borderId;
-	this.refBorderId = refBorderId;
-	this.refFieldX = refFieldX;
-	this.refFieldY = refFieldY;
 }

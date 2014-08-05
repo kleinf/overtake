@@ -1,6 +1,6 @@
 /**
  * Border-Objekt instanziieren und mit default-Werten initialisieren.
- *
+ * 
  * @param id
  *            ID dieses Feldrandes.
  * @param refId
@@ -11,6 +11,13 @@
  *            Zeilen-ID des referenzierten Nachbarfeldes.
  */
 function BorderFormat(id, refId, refFieldX, refFieldY) {
+
+	this.id = id;
+	this.refId = refId;
+	this.refFieldX = refFieldX;
+	this.refFieldY = refFieldY;
+	this.pointFormats = [];
+
 	/**
 	 * @return int
 	 */
@@ -75,14 +82,14 @@ function BorderFormat(id, refId, refFieldX, refFieldY) {
 	 */
 	BorderFormat.prototype.getWall = function(width, height, pathPosSumX,
 			pathPosSumY) {
-		var pathPosX1; // X-Coordinate inside of the form
-		var pathPosX2; // X-Coordinate inside of the form
-		var pathPosX3; // X-Coordinate inside of the form
-		var pathPosY1; // Y-Coordinate inside of the form
-		var pathPosY2; // Y-Coordinate inside of the form
-		var pathPosY3; // Y-Coordinate inside of the form
+		var pathPosX1 = 0; // X-Coordinate inside of the form
+		var pathPosY1 = 0; // Y-Coordinate inside of the form
+		var pathPosX2 = 0; // X-Coordinate inside of the form
+		var pathPosY2 = 0; // Y-Coordinate inside of the form
+		var pathPosX3 = 0; // X-Coordinate inside of the form
+		var pathPosY3 = 0; // Y-Coordinate inside of the form
 		var wall = new Shape();
-		var pointFormats = this.getPointFormats();
+		var pointFormats = this.pointFormats;
 		for ( var i in pointFormats) {
 			pathPosX1 = width * pointFormats[i].getPosX1() + pathPosSumX;
 			pathPosY1 = height * pointFormats[i].getPosY1() + pathPosSumY;
@@ -129,8 +136,7 @@ function BorderFormat(id, refId, refFieldX, refFieldY) {
 		var x = 0; // X-Coordinate inside of the form
 		var y = 0; // Y-Coordinate inside of the form
 		var pfs = this.getPointFormats();
-		var id = (int)
-		Math.floor(pfs.size() * 0.5);
+		var id = Math.floor(pfs.size() * 0.5);
 		var pf = pfs.get(id);
 		switch (pf.getPointType()) {
 		case "LINE":
@@ -176,10 +182,4 @@ function BorderFormat(id, refId, refFieldX, refFieldY) {
 		}
 		return [ x, y ];
 	}
-
-	this.id = id;
-	this.refId = refId;
-	this.refFieldX = refFieldX;
-	this.refFieldY = refFieldY;
-	this.pointFormats = [];
 }

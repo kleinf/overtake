@@ -11,6 +11,8 @@
     <script type="text/javascript" src="util/PointFormat.js"></script>
     <script type="text/javascript" src="util/FieldRelation.js"></script>
     <script type="text/javascript" src="util/Shape.js"></script>
+    <script type="text/javascript" src="util/FieldPart.js"></script>
+    <script type="text/javascript" src="util/Field.js"></script>
 
 	<script type="text/javascript">
         function load(fieldFile) {
@@ -19,13 +21,13 @@
             });
         }
 
-        function show(fieldFile, showSegments) {
+        function show(fieldFile, showSegments, borderless) {
             var fieldFormatter = new FieldFormatter();
             fieldFormatter.initJson(JSON.parse(document.getElementById("fieldDesc").value));
-            drawBoard(fieldFormatter, showSegments);
+            drawBoard(fieldFormatter, showSegments, borderless);
         }
 
-        function drawBoard(fieldFormatter, showSegments) {
+        function drawBoard(fieldFormatter, showSegments, borderless) {
             var numFieldsWidth = 10;
             var numFieldsHeight = 10;
             var canvas = document.getElementById("board");
@@ -38,56 +40,59 @@
             for (var idY = 0; idY < numFieldsHeight; idY++) {
                 for (var idX = 0; idX < numFieldsWidth; idX++) {
                     if(showSegments) {
-                        drawSegments(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight);
+                        drawSegments(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight, borderless);
                     }
-                    drawPolygon(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight);
+                    drawPolygon(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight, borderless);
                 }
             }
             ctx.translate(0.5, 0.5);
         }
 
-        function drawPolygon(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight) {
-            var polygon = fieldFormatter.getPolygon(fieldSize[0], fieldSize[1], true, idX, idY, numFieldsWidth, numFieldsHeight);
+        function drawPolygon(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight, borderless) {
+            var polygon = fieldFormatter.getPolygon(fieldSize[0], fieldSize[1], true, idX, idY, numFieldsWidth, numFieldsHeight, borderless);
             var cmds = polygon.getDrawCmds();
             if(cmds != void(0) && cmds.length > 0) {
                 ctx.beginPath();
                 for(var i in cmds) {
-                    if(cmds[i][0] == "move") {
-                        ctx.moveTo(cmds[i][1], cmds[i][2]);
+                    if(cmds[i].getPointType() == "MOVE") {
+                        ctx.moveTo(cmds[i].getPosX1(), cmds[i].getPosY1());
                     }
-                    if(cmds[i][0] == "line") {
-                        ctx.lineTo(cmds[i][1], cmds[i][2]);
+                    if(cmds[i].getPointType() == "LINE") {
+                        ctx.lineTo(cmds[i].getPosX1(), cmds[i].getPosY1());
                     }
-                    if(cmds[i][0] == "quad") {
-                        ctx.quadraticCurveTo(cmds[i][1], cmds[i][2], cmds[i][3], cmds[i][4]);
+                    if(cmds[i].getPointType() == "QUAD") {
+                        ctx.quadraticCurveTo(cmds[i].getPosX1(), cmds[i].getPosY1(), cmds[i].getPosX2(), cmds[i].getPosY2());
                     }
-                    if(cmds[i][0] == "curve") {
-                        ctx.bezierCurveTo(cmds[i][1], cmds[i][2], cmds[i][3], cmds[i][4], cmds[i][5], cmds[i][6]);
+                    if(cmds[i].getPointType() == "CURVE") {
+                        ctx.bezierCurveTo(cmds[i].getPosX1(), cmds[i].getPosY1(), cmds[i].getPosX2(), cmds[i].getPosY2(), cmds[i].getPosX3(), cmds[i].getPosY3());
                     }
                 }
                 ctx.stroke();
             }
         }
 
-        function drawSegments(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight) {
-            var segments = fieldFormatter.getSegments(fieldSize[0], fieldSize[1], true, idX, idY, numFieldsWidth, numFieldsHeight);
+        function drawSegments(fieldFormatter, ctx, fieldSize, idX, idY, numFieldsWidth, numFieldsHeight, borderless) {
+            var segments = fieldFormatter.getSegments(fieldSize[0], fieldSize[1], true, idX, idY, numFieldsWidth, numFieldsHeight, borderless);
             var colorIndex = 0;
             for(var i in segments) {
+                if(segments[i] == void(0)) {
+                    continue;
+                }
                 var cmds = segments[i].getDrawCmds();
                 if(cmds != void(0) && cmds.length > 0) {
                     ctx.beginPath();
                     for(var j in cmds) {
-                        if(cmds[j][0] == "move") {
-                            ctx.moveTo(cmds[j][1], cmds[j][2]);
+                        if(cmds[j].getPointType() == "MOVE") {
+                            ctx.moveTo(cmds[j].getPosX1(), cmds[j].getPosY1());
                         }
-                        if(cmds[j][0] == "line") {
-                            ctx.lineTo(cmds[j][1], cmds[j][2]);
+                        if(cmds[j].getPointType() == "LINE") {
+                            ctx.lineTo(cmds[j].getPosX1(), cmds[j].getPosY1());
                         }
-                        if(cmds[j][0] == "quad") {
-                            ctx.quadraticCurveTo(cmds[j][1], cmds[j][2], cmds[j][3], cmds[j][4]);
+                        if(cmds[j].getPointType() == "QUAD") {
+                            ctx.quadraticCurveTo(cmds[j].getPosX1(), cmds[j].getPosY1(), cmds[j].getPosX2(), cmds[j].getPosY2());
                         }
-                        if(cmds[j][0] == "curve") {
-                            ctx.bezierCurveTo(cmds[j][1], cmds[j][2], cmds[j][3], cmds[j][4], cmds[j][5], cmds[j][6]);
+                        if(cmds[j].getPointType() == "CURVE") {
+                            ctx.bezierCurveTo(cmds[j].getPosX1(), cmds[j].getPosY1(), cmds[j].getPosX2(), cmds[j].getPosY2(), cmds[j].getPosX3(), cmds[j].getPosY3());
                         }
                     }
                     if (colorIndex % 8 == 0) {
@@ -139,8 +144,9 @@
             <option value="Tri2.json">Tri2</option>
         </select>
         <input type="button" value="load" onClick="load(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value)" />
-        <input type="button" value="show" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked)" />
-        <input id="showSegments" type="checkbox" value="draw segments" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked)">Show segments</input>
+        <input type="button" value="show" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked, this.form.borderless.checked)" />
+        <input id="showSegments" type="checkbox" value="true" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked, this.form.borderless.checked)">Show segments</input>
+        <input id="borderless" type="checkbox" value="true" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked, this.form.borderless.checked)">Borderless</input>
     </form>
     <br />
     <textarea id="fieldDesc" cols="50" rows="25"></textarea>

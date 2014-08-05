@@ -15,6 +15,15 @@
  *            double
  */
 function PointFormat(pointType, posX1, posY1, posX2, posY2, posX3, posY3) {
+
+	this.pointType = pointType;
+	this.posX1 = posX1 == void (0) ? 0 : posX1;
+	this.posY1 = posY1 == void (0) ? 0 : posY1;
+	this.posX2 = posX2 == void (0) ? 0 : posX2;
+	this.posY2 = posY2 == void (0) ? 0 : posY2;
+	this.posX3 = posX3 == void (0) ? 0 : posX3;
+	this.posY3 = posY3 == void (0) ? 0 : posY3;
+
 	/**
 	 * @return PointType
 	 */
@@ -64,11 +73,31 @@ function PointFormat(pointType, posX1, posY1, posX2, posY2, posX3, posY3) {
 		return this.posY3;
 	}
 
-	this.pointType = pointType;
-	this.posX1 = posX1 == void (0) ? 0 : posX1;
-	this.posY1 = posY1 == void (0) ? 0 : posY1;
-	this.posX2 = posX2 == void (0) ? 0 : posX2;
-	this.posY2 = posY2 == void (0) ? 0 : posY2;
-	this.posX3 = posX3 == void (0) ? 0 : posX3;
-	this.posY3 = posY3 == void (0) ? 0 : posY3;
+	/**
+	 * @param pf
+	 *            PointFormat
+	 * @return boolean
+	 */
+	PointFormat.prototype.isPoint = function(pf) {
+		var lastEndX;
+		var lastEndY;
+		switch (pf.getPointType()) {
+		case "LINE":
+			lastEndX = pf.getPosX1();
+			lastEndY = pf.getPosY1();
+			break;
+		case "QUAD":
+			lastEndX = pf.getPosX2();
+			lastEndY = pf.getPosY2();
+			break;
+		case "CURVE":
+			lastEndX = pf.getPosX3();
+			lastEndY = pf.getPosY3();
+			break;
+		default:
+			lastEndX = pf.getPosX1();
+			lastEndY = pf.getPosY1();
+		}
+		return lastEndX == posX1 && lastEndY == posY1;
+	}
 }

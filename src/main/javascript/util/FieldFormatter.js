@@ -5,6 +5,11 @@
  *            String Dateiname.
  */
 function FieldFormatter(fieldFileName) {
+	this.maxBorders = 0;
+	this.fieldFormats = void (0);
+	this.colFirst = false;
+	this.rowFirst = false;
+
 	/**
 	 * Initialisieren des FieldFormatter mit Feldbeschreibungen im JSON-Format.
 	 * 
@@ -50,7 +55,7 @@ function FieldFormatter(fieldFileName) {
 	 * @see FieldFormat#isEmpty()
 	 */
 	FieldFormatter.prototype.getFieldFormat = function(idX, idY) {
-		var retVal = [];
+		var retVal = void (0);
 		if (this.colFirst) {
 			var c = idX % this.fieldFormats.length;
 			var r = idY % this.fieldFormats[c].length;
@@ -114,7 +119,7 @@ function FieldFormatter(fieldFileName) {
 	}
 
 	/**
-	 * Gibt die grafische Entsprechung des Feldes als GeneralPath zurueck.
+	 * Gibt die grafische Entsprechung des Feldes als Shape zurueck.
 	 * 
 	 * @param width
 	 *            int
@@ -130,16 +135,19 @@ function FieldFormatter(fieldFileName) {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return GeneralPath
+	 * @param borderless
+	 *            boolean
+	 * @return Shape
 	 * 
-	 * @see FieldFormat#getPolygon(int, int, double, double, boolean, int, int,
-	 *      int, int)
+	 * @see FieldFormat#getField(int, int, double, double, boolean, int, int,
+	 *      int, int, boolean)
 	 */
 	FieldFormatter.prototype.getPolygon = function(width, height, translate,
-			idX, idY, maxX, maxY) {
+			idX, idY, maxX, maxY, borderless) {
 		var sumFactors = this.getSumFactors(idX, idY);
-		return this.getFieldFormat(idX, idY).getPolygon(width, height,
-				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY);
+		return this.getFieldFormat(idX, idY).getField(width, height,
+				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
+				borderless).getPolygon();
 	}
 
 	/**
@@ -198,10 +206,10 @@ function FieldFormatter(fieldFileName) {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return double[]
+	 * @return int[]
 	 * 
-	 * @see FieldFormat#getPolygon(int, int, double, double, boolean, int, int,
-	 *      int, int)
+	 * @see FieldFormat#getField(int, int, double, double, boolean, int, int,
+	 *      int, int, boolean)
 	 */
 	FieldFormatter.prototype.getBoardsize = function(width, height, maxX, maxY) {
 		var maxWidth = 0;
@@ -209,7 +217,8 @@ function FieldFormatter(fieldFileName) {
 		var poly;
 		for (var j = 0; j < maxY; j++) {
 			for (var i = 0; i < maxX; i++) {
-				poly = this.getPolygon(width, height, true, i, j, maxX, maxY);
+				poly = this.getPolygon(width, height, true, i, j, maxX, maxY,
+						true);
 				// TODO
 				// maxWidth = Math.max(maxWidth, poly.getBounds().getMaxX());
 				// maxHeight = Math.max(maxHeight, poly.getBounds().getMaxY());
@@ -231,7 +240,7 @@ function FieldFormatter(fieldFileName) {
 	 *            int
 	 * @param maxY
 	 *            int
-	 * @return double[]
+	 * @return int[]
 	 */
 	FieldFormatter.prototype.getFieldsize = function(containerWidth,
 			containerHeight, idX, idY, maxX, maxY) {
@@ -251,7 +260,7 @@ function FieldFormatter(fieldFileName) {
 	}
 
 	/**
-	 * Gibt ein Array von GeneralPath-Objekten zurueck, die jeweils den Linien
+	 * Gibt ein Array von Shape-Objekten zurueck, die jeweils den Linien
 	 * entsprechen, die an ein Nachbarfeld angrenzen. Eine Grenze kann dabei aus
 	 * mehr als einer Linie bestehen.
 	 * 
@@ -271,7 +280,7 @@ function FieldFormatter(fieldFileName) {
 	 *            int
 	 * @param borderless
 	 *            boolean
-	 * @return Map<String, GeneralPath>
+	 * @return Map<String, Shape>
 	 * 
 	 * @see FieldFormat#getWalls(int, int, double, double, boolean, int, int,
 	 *      int, int, boolean)
@@ -304,21 +313,21 @@ function FieldFormatter(fieldFileName) {
 	 *            int
 	 * @param borderless
 	 *            boolean
-	 * @return Map<String, GeneralPath>
+	 * @return Shape[]
 	 * 
-	 * @see FieldFormat#getSegments(int, int, double, double, boolean, int, int,
-	 *      int, int, boolean)
+	 * @see FieldFormat#getFieldParts(int, int, double, double, boolean, int,
+	 *      int, int, int, boolean)
 	 */
 	FieldFormatter.prototype.getSegments = function(width, height, translate,
 			idX, idY, maxX, maxY, borderless) {
 		var sumFactors = this.getSumFactors(idX, idY);
-		return this.getFieldFormat(idX, idY).getSegments(width, height,
+		var segments = [];
+		var fieldParts = this.getFieldFormat(idX, idY).getField(width, height,
 				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
-				borderless);
+				borderless).getFieldParts();
+		for ( var i in fieldParts) {
+			segments.push(fieldParts[i].getSegment());
+		}
+		return segments;
 	}
-
-	this.maxBorders = 0;
-	this.fieldFormats = void (0);
-	this.colFirst = false;
-	this.rowFirst = false;
 }

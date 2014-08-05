@@ -391,7 +391,7 @@ public abstract class FieldFormatter {
 			fieldFormatRef = getFieldFormat(relation.getRefFieldX(),
 					relation.getRefFieldY());
 			borderFormatRef = fieldFormatRef.getBorderFormats().get(
-					Integer.toString(relation.getRefBorderId()));
+					Integer.valueOf(relation.getRefBorderId()));
 			if (borderFormatRef == null) {
 				continue;
 			}
@@ -419,7 +419,7 @@ public abstract class FieldFormatter {
 
 				fieldFormatRef = getFieldFormat(refFieldX, refFieldY);
 				borderFormatRef = fieldFormatRef.getBorderFormats().get(
-						Integer.toString(borderFormat.getRefId()));
+						Integer.valueOf(borderFormat.getRefId()));
 
 				sumFactors = getSumFactors(refFieldX, refFieldY);
 				pos = fieldFormatRef.getPosition(width, height, sumFactors[0],

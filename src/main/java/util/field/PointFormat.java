@@ -27,10 +27,10 @@ public class PointFormat {
 		this.pointType = pointType;
 		this.posX1 = posX1;
 		this.posY1 = posY1;
-		posX2 = 0;
-		posY2 = 0;
-		posX3 = 0;
-		posY3 = 0;
+		this.posX2 = 0.0D;
+		this.posY2 = 0.0D;
+		this.posX3 = 0.0D;
+		this.posY3 = 0.0D;
 	}
 
 	/**
@@ -52,8 +52,8 @@ public class PointFormat {
 		this.posY1 = posY1;
 		this.posX2 = posX2;
 		this.posY2 = posY2;
-		posX3 = 0;
-		posY3 = 0;
+		this.posX3 = 0.0D;
+		this.posY3 = 0.0D;
 	}
 
 	/**
@@ -159,5 +159,14 @@ public class PointFormat {
 			lastEndY = pf.getPosY1();
 		}
 		return lastEndX == posX1 && lastEndY == posY1;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return pointType + ": " + posX1 + " " + posY1 + " " + posX2 + " "
+				+ posY2 + " " + posX3 + " " + posY3;
 	}
 }

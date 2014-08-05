@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.jdom.Element;
 import org.json.JSONArray;
@@ -22,7 +23,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	private static final String COL = "col";
 	private static final String ROW = "row";
 	private final Map<String, String> map = new HashMap<>();
-	private Map<String, BorderFormat> borderFormats;
+	private Map<Integer, BorderFormat> borderFormats;
 	private double minPosX = Double.MAX_VALUE;
 	private double minPosY = Double.MAX_VALUE;
 	private double maxPosX = Double.MIN_VALUE;
@@ -102,7 +103,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 */
 	private void parseBorders(final Element fieldElement) {
 
-		borderFormats = new HashMap<>();
+		borderFormats = new TreeMap<Integer, BorderFormat>();
 		for (final Element elementBorder : (List<Element>) fieldElement
 				.getChildren("border")) {
 			final BorderFormat borderFormat = new BorderFormat(
@@ -154,7 +155,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 				}
 			}
 			borderFormat.setPointFormats(pointFormats);
-			borderFormats.put(Integer.toString(borderFormat.getId()),
+			borderFormats.put(Integer.valueOf(borderFormat.getId()),
 					borderFormat);
 		}
 	}
@@ -167,7 +168,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 */
 	private void parseBorders(final JSONObject fieldObject) {
 
-		borderFormats = new HashMap<>();
+		borderFormats = new TreeMap<Integer, BorderFormat>();
 		if (fieldObject.has("border")) {
 			JSONArray borders = fieldObject.getJSONArray("border");
 			for (int i = 0; i < borders.length(); i++) {
@@ -211,7 +212,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 					}
 				}
 				borderFormat.setPointFormats(pointFormats);
-				this.borderFormats.put(Integer.toString(borderFormat.getId()),
+				this.borderFormats.put(Integer.valueOf(borderFormat.getId()),
 						borderFormat);
 			}
 		}
@@ -328,9 +329,9 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	}
 
 	/**
-	 * @return List<BorderFormat>
+	 * @return Map<Integer, BorderFormat>
 	 */
-	protected Map<String, BorderFormat> getBorderFormats() {
+	protected Map<Integer, BorderFormat> getBorderFormats() {
 
 		return borderFormats;
 	}

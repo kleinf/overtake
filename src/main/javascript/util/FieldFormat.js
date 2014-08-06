@@ -1,3 +1,10 @@
+
+const FACTOR = "factor";
+const OFFSET_X = "offsetX";
+const OFFSET_Y = "offsetY";
+const COL = "col";
+const ROW = "row";
+
 /**
  * Constructor.
  * 
@@ -16,17 +23,6 @@
  */
 function FieldFormat(id1, id2, key1, key2, object1, object2) {
 
-	const
-	FACTOR = "factor";
-	const
-	OFFSET_X = "offsetX";
-	const
-	OFFSET_Y = "offsetY";
-	const
-	COL = "col";
-	const
-	ROW = "row";
-
 	this.borderFormats;
 	this.minPosX = Number.MAX_VALUE;
 	this.minPosY = Number.MAX_VALUE;
@@ -38,18 +34,12 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	this.map = [];
 	this.map[this.name1] = id1;
 	this.map[this.name2] = id2;
-	this.map[this.name1 + FACTOR] = object1[FACTOR] == void (0) ? 1
-			: object1[FACTOR].toString();
-	this.map[this.name2 + FACTOR] = object2[FACTOR] == void (0) ? 1
-			: object2[FACTOR].toString();
-	this.map[this.name1 + OFFSET_X] = object1[OFFSET_X] == void (0) ? 0
-			: object1[OFFSET_X].toString();
-	this.map[this.name2 + OFFSET_X] = object2[OFFSET_X] == void (0) ? 0
-			: object2[OFFSET_X].toString();
-	this.map[this.name1 + OFFSET_Y] = object1[OFFSET_Y] == void (0) ? 0
-			: object1[OFFSET_Y].toString();
-	this.map[this.name2 + OFFSET_Y] = object2[OFFSET_Y] == void (0) ? 0
-			: object2[OFFSET_Y].toString();
+	this.map[this.name1 + FACTOR] = FACTOR in object1 ? object1[FACTOR].toString() : 1;
+	this.map[this.name2 + FACTOR] = FACTOR in object2 ? object2[FACTOR].toString() : 1;
+	this.map[this.name1 + OFFSET_X] = OFFSET_X in object1 ? object1[OFFSET_X].toString() : 0;
+	this.map[this.name2 + OFFSET_X] = OFFSET_X in object2 ? object2[OFFSET_X].toString() : 0;
+	this.map[this.name1 + OFFSET_Y] = OFFSET_Y in object1 ? object1[OFFSET_Y].toString() : 0;
+	this.map[this.name2 + OFFSET_Y] = OFFSET_Y in object2 ? object2[OFFSET_Y].toString() : 0;
 
 	/**
 	 * Aufbereitung der JSON-Datei mit den Feldbeschreibungen.
@@ -59,7 +49,7 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 */
 	FieldFormat.prototype.parseBorders = function(fieldObject) {
 		this.borderFormats = [];
-		if (fieldObject.border != void (0)) {
+		if ("border" in fieldObject) {
 			var borders = fieldObject.border;
 			for (var i = 0; i < borders.length; i++) {
 				var elementBorder = borders[i];
@@ -132,7 +122,7 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 */
 	FieldFormat.prototype.getValue = function(key) {
 		var retVal = 0.0;
-		if (this.map[key] != void (0)) {
+		if (key in this.map) {
 			retVal = parseFloat(this.map[key]);
 		}
 		return retVal;
@@ -143,7 +133,7 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 */
 	FieldFormat.prototype.getColId = function() {
 		var retVal = 0;
-		if (this.map[COL] != void (0)) {
+		if (COL in this.map) {
 			retVal = parseInt(this.map[COL], 10);
 		}
 		return retVal;
@@ -154,7 +144,7 @@ function FieldFormat(id1, id2, key1, key2, object1, object2) {
 	 */
 	FieldFormat.prototype.getRowId = function() {
 		var retVal = 0;
-		if (this.map[ROW] != void (0)) {
+		if (ROW in this.map) {
 			retVal = parseInt(this.map[ROW], 10);
 		}
 		return retVal;

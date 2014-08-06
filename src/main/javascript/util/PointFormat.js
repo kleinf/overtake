@@ -98,6 +98,6 @@ function PointFormat(pointType, posX1, posY1, posX2, posY2, posX3, posY3) {
 			lastEndX = pf.getPosX1();
 			lastEndY = pf.getPosY1();
 		}
-		return lastEndX == posX1 && lastEndY == posY1;
+		return lastEndX == this.posX1 && lastEndY == this.posY1;
 	}
 }

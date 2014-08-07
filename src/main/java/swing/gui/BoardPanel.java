@@ -526,8 +526,7 @@ public class BoardPanel extends JPanel implements MouseListener,
 				if (fc.isEnabled()) {
 					sb.append(idX).append("-");
 					sb.append(idY).append("-");
-					sb.append(fc.getOwnerId()).append("-");
-					sb.append(fc.getValue()).append("-");
+					sb.append(fc.getValue());
 				}
 			}
 		}

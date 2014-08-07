@@ -598,7 +598,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 									.getMaxOverload()) {
 						// Wenn Felder oefter explodieren, als es die
 						// Stabilitaet zulaesst, brechen die Felder weg
-						// und eine Verteilung auf Umliegende Felder findet
+						// und eine Verteilung auf umliegende Felder findet
 						// nicht mehr statt.
 						getBoardPanel().disableField(currField.getIdX(),
 								currField.getIdY());
@@ -621,14 +621,13 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 			newChecklist.clear();
 			if (!currChecklist.isEmpty()) {
 				overloadCounter.add(Integer.toString(overloads));
+				// Wenn es weitere Ueberladungen gibt, Endlos-Schleife checken
+				if (testSet.contains(getBoardPanel().toString())) {
+					System.out.println("Endless!");
+					break;
+				}
+				testSet.add(getBoardPanel().toString());
 			}
-
-			// Check auf Endlos-Schleife
-			if (testSet.contains(getBoardPanel().toString())) {
-				System.out.println("Endless!");
-				break;
-			}
-			testSet.add(getBoardPanel().toString());
 		} while (!currChecklist.isEmpty());
 	}
 
@@ -643,7 +642,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 		}
 
 		// Nach der ersten Runde wird gecheckt wer gewonnen hat
-		if (getCurrRound() > 1) {
+		if (getCurrRound() > 1 || getBoardPanel().getSumFieldsFree() == 0) {
 
 			int activePlayers = 0;
 

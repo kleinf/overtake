@@ -408,7 +408,6 @@ public abstract class FieldFormatter {
 					wallCenter[1]);
 
 			arrows.put(relation.getKey(), arrow);
-
 		}
 		for (final BorderFormat borderFormat : fieldFormat.getBorderFormats()
 				.values()) {

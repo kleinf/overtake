@@ -6,6 +6,7 @@ import game.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -45,6 +46,8 @@ public class BoardPanel extends JPanel implements MouseListener,
 	private final FieldComponent[][] components;
 	private final int numFieldsWidth;
 	private final int numFieldsHeight;
+	private boolean mousePressed = false;
+	private Component dragComp = null;
 
 	/**
 	 * @param parentPanel
@@ -426,7 +429,7 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
-		parentPanel.boardClick(event);
+		// not implemented
 	}
 
 	/**
@@ -436,7 +439,9 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 */
 	@Override
 	public void mouseEntered(final MouseEvent event) {
-		// not implemented
+		if (mousePressed) {
+			dragComp = event.getComponent();
+		}
 	}
 
 	/**
@@ -456,7 +461,8 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 */
 	@Override
 	public void mousePressed(final MouseEvent event) {
-		// not implemented
+		dragComp = event.getComponent();
+		mousePressed = true;
 	}
 
 	/**
@@ -466,7 +472,10 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 */
 	@Override
 	public void mouseReleased(final MouseEvent event) {
-		// not implemented
+		if (dragComp != null && dragComp.equals(event.getComponent())) {
+			parentPanel.boardClick(event);
+		}
+		mousePressed = false;
 	}
 
 	/**

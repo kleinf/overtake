@@ -4,7 +4,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>Overtake Javascript</title>
-	<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="util/FieldFormatter.js"></script>
     <script type="text/javascript" src="util/FieldFormat.js"></script>
     <script type="text/javascript" src="util/BorderFormat.js"></script>
@@ -15,13 +14,27 @@
     <script type="text/javascript" src="util/Field.js"></script>
 
 	<script type="text/javascript">
-        function load(fieldFile) {
-            $.getJSON("fields/" + fieldFile, function(fieldData) {
-                document.getElementById("fieldDesc").value = JSON.stringify(fieldData, null, 2);
-            });
+        function init() {
+            document.getElementById("fieldFiles").addEventListener("change", handleFileSelect, false);
         }
 
-        function show(fieldFile, showSegments, borderless) {
+        function handleFileSelect(evt) {
+            // FileList object
+            var files = evt.target.files;
+
+            // files is a FileList of File objects. List some properties.
+            if (files.length == 1) {
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(erg) {
+                        document.getElementById("fieldDesc").value = erg.target.result;
+                    };
+                })(files[0]);
+                reader.readAsText(files[0]);
+            }
+        }
+
+        function show(showSegments, borderless) {
             var fieldFormatter = new FieldFormatter();
             fieldFormatter.initJson(JSON.parse(document.getElementById("fieldDesc").value));
             drawBoard(fieldFormatter, showSegments, borderless);
@@ -96,19 +109,19 @@
                         }
                     }
                     if (colorIndex % 8 == 0) {
-                        ctx.fillStyle = "pink";
-                    } else if (colorIndex % 7 == 0) {
-                        ctx.fillStyle = "orange";
-                    } else if (colorIndex % 6 == 0) {
-                        ctx.fillStyle = "yellow";
-                    } else if (colorIndex % 5 == 0) {
                         ctx.fillStyle = "magenta";
-                    } else if (colorIndex % 4 == 0) {
-                        ctx.fillStyle = "cyan";
-                    } else if (colorIndex % 3 == 0) {
+                    } else if (colorIndex % 7 == 0) {
+                        ctx.fillStyle = "purple";
+                    } else if (colorIndex % 6 == 0) {
                         ctx.fillStyle = "blue";
-                    } else if (colorIndex % 2 == 0) {
+                    } else if (colorIndex % 5 == 0) {
+                        ctx.fillStyle = "cyan";
+                    } else if (colorIndex % 4 == 0) {
                         ctx.fillStyle = "green";
+                    } else if (colorIndex % 3 == 0) {
+                        ctx.fillStyle = "yellow";
+                    } else if (colorIndex % 2 == 0) {
+                        ctx.fillStyle = "orange";
                     } else {
                         ctx.fillStyle = "red";
                     }
@@ -120,36 +133,16 @@
 	</script>
 </head>
 
-<body>
+<body onload="init()">
 	<h1>Overtake</h1>
 	<form>
-        <select id="fieldFile">
-            <option value="A0.json">A0</option>        
-            <option value="Cube.json">Cube</option>
-            <option value="Curved.json">Curved</option>
-            <option value="Hex1.json">Hex1</option>
-            <option value="Hex2.json">Hex2</option>
-            <option value="Hex3.json">Hex3</option>
-            <option value="Hex4.json">Hex4</option>
-            <option value="Oct.json">Oct</option>
-            <option value="Pent1.json">Pent1</option>
-            <option value="Pent2.json">Pent2</option>
-            <option value="Plus1.json">Plus1</option>
-            <option value="Plus2.json">Plus2</option>
-            <option value="Quad.json">Quad</option>
-            <option value="Raute1.json">Raute1</option>
-            <option value="Raute2.json">Raute2</option>
-            <option value="Span.json">Span</option>
-            <option value="Tri1.json">Tri1</option>
-            <option value="Tri2.json">Tri2</option>
-        </select>
-        <input type="button" value="load" onClick="load(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value)" />
-        <input type="button" value="show" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked, this.form.borderless.checked)" />
-        <input id="showSegments" type="checkbox" value="true" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked, this.form.borderless.checked)">Show segments</input>
-        <input id="borderless" type="checkbox" value="true" onClick="show(this.form.fieldFile.options[this.form.fieldFile.selectedIndex].value, this.form.showSegments.checked, this.form.borderless.checked)">Borderless</input>
+        <input type="file" id="fieldFiles" name="fieldFiles[]" size="30" width="250" accept="application/json" />
+		<input type="button" value="show" onClick="show(this.form.showSegments.checked, this.form.borderless.checked)" />
+        <input type="checkbox" id="showSegments" value="true" onClick="show(this.form.showSegments.checked, this.form.borderless.checked)" /> <label for="showSegments">Show segments</label>
+        <input type="checkbox" id="borderless" value="true" onClick="show(this.form.showSegments.checked, this.form.borderless.checked)" /> <label for="borderless"> Borderless</label>
     </form>
     <br />
-    <textarea id="fieldDesc" cols="50" rows="25"></textarea>
+    <textarea id="fieldDesc" cols="100" rows="25"></textarea>
     <canvas id="board" width="400" height="400" style="border:1px solid #000000;"></canvas>
 </body>
 

@@ -23,7 +23,7 @@ const ROW = "row";
  */
 function FieldFormat(id1, id2, key1, key2, object1, object2) {
 
-	this.borderFormats;
+	this.borderFormats = [];
 	this.minPosX = Number.MAX_VALUE;
 	this.minPosY = Number.MAX_VALUE;
 	this.maxPosX = Number.MIN_VALUE;

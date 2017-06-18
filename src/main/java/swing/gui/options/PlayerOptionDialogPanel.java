@@ -1,9 +1,5 @@
 package swing.gui.options;
 
-import game.GameOptions;
-import game.GameSession;
-import game.Player;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -28,6 +24,9 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import game.GameOptions;
+import game.GameSession;
+import game.Player;
 import swing.util.AnimatedImageUtil;
 import util.Constants;
 import util.PseudoLogger;
@@ -60,8 +59,7 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 	 * @param name
 	 *            String
 	 */
-	protected PlayerOptionDialogPanel(final JDialog parentDialog,
-			final String name) {
+	protected PlayerOptionDialogPanel(final JDialog parentDialog, final String name) {
 		super(parentDialog, name);
 	}
 
@@ -140,8 +138,7 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 	JLabel getJLblMaxPlayersValue() {
 		if (jLblMaxPlayersValue == null) {
 			jLblMaxPlayersValue = new JLabel();
-			jLblMaxPlayersValue.setText(Integer
-					.toString(GameSession.gameOptions.getMaxPlayers()));
+			jLblMaxPlayersValue.setText(Integer.toString(GameSession.gameOptions.getMaxPlayers()));
 		}
 		return jLblMaxPlayersValue;
 	}
@@ -167,16 +164,14 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					getJLblMaxPlayersValue().setText(
-							Integer.toString(getJSldMaxPlayers().getValue()));
+					getJLblMaxPlayersValue().setText(Integer.toString(getJSldMaxPlayers().getValue()));
 					for (int i = 0; i < getJSldMaxPlayers().getMaximum(); i++) {
 						if (i < getJSldMaxPlayers().getValue()) {
 							getJButtonColor().get(i).setEnabled(true);
 							getJCbImage().get(i).setEnabled(true);
 							getJTxtPlayername().get(i).setEnabled(true);
 							getJCbComputername().get(i).setEnabled(true);
-							getJCbCpu().get(i).setEnabled(
-									!getJCbNetwork().isSelected());
+							getJCbCpu().get(i).setEnabled(!getJCbNetwork().isSelected());
 						} else {
 							getJButtonColor().get(i).setEnabled(false);
 							getJCbImage().get(i).setEnabled(false);
@@ -184,11 +179,9 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 							getJCbComputername().get(i).setEnabled(false);
 							getJCbCpu().get(i).setEnabled(false);
 						}
-						getJTxtPlayername().get(i).setVisible(
-								!getJCbCpu().get(i).isSelected());
-						getJCbComputername().get(i).setVisible(
-								getJCbCpu().get(i).isSelected()
-										&& !getJCbNetwork().isSelected());
+						getJTxtPlayername().get(i).setVisible(!getJCbCpu().get(i).isSelected());
+						getJCbComputername().get(i)
+								.setVisible(getJCbCpu().get(i).isSelected() && !getJCbNetwork().isSelected());
 					}
 				}
 			});
@@ -259,16 +252,13 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 					getJLblCpu().setEnabled(!getJCbNetwork().isSelected());
 					for (int i = 0; i < getJSldMaxPlayers().getMaximum(); i++) {
 						if (i < getJSldMaxPlayers().getValue()) {
-							getJCbCpu().get(i).setEnabled(
-									!getJCbNetwork().isSelected());
+							getJCbCpu().get(i).setEnabled(!getJCbNetwork().isSelected());
 							if (getJCbNetwork().isSelected()) {
 								getJCbCpu().get(i).setSelected(false);
 							}
-							getJTxtPlayername().get(i).setVisible(
-									!getJCbCpu().get(i).isSelected());
-							getJCbComputername().get(i).setVisible(
-									getJCbCpu().get(i).isSelected()
-											&& !getJCbNetwork().isSelected());
+							getJTxtPlayername().get(i).setVisible(!getJCbCpu().get(i).isSelected());
+							getJCbComputername().get(i)
+									.setVisible(getJCbCpu().get(i).isSelected() && !getJCbNetwork().isSelected());
 						}
 					}
 				}
@@ -316,8 +306,7 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 			for (int i = 0; i < getJSldMaxPlayers().getMaximum(); i++) {
 				final JTextField jTextField = new JTextField();
 				if (i < GameSession.gameOptions.getPlayers().size()) {
-					jTextField.setText(GameSession.gameOptions.getPlayer(i)
-							.getPlayerName());
+					jTextField.setText(GameSession.gameOptions.getPlayer(i).getPlayerName());
 					jTextField.setEnabled(true);
 				} else {
 					jTextField.setEnabled(false);
@@ -339,14 +328,13 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 			jCbComputername = new ArrayList<>(getJSldMaxPlayers().getMaximum());
 			for (int i = 0; i < getJSldMaxPlayers().getMaximum(); i++) {
 				final JComboBox<String> jComboBox = new JComboBox<>();
-				final String[] entries = Constants.USERDIR.list();
+				final String[] entries = Constants.USER_DIR.list();
 				Collections.sort(Arrays.asList(entries));
 				int computerfiles = 0;
 				for (final String entry : entries) {
 					if (entry.matches(".*CPU\\.class$")) {
 						computerfiles++;
-						jComboBox
-								.addItem(entry.substring(0, entry.length() - 6));
+						jComboBox.addItem(entry.substring(0, entry.length() - 6));
 					}
 				}
 				if (computerfiles == 0) {
@@ -356,14 +344,12 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 				}
 
 				if (i < GameSession.gameOptions.getPlayers().size()) {
-					getJTxtPlayername().get(i).setVisible(
-							!getJCbCpu().get(i).isSelected());
+					getJTxtPlayername().get(i).setVisible(!getJCbCpu().get(i).isSelected());
 					jComboBox.setEnabled(true);
 				} else {
 					jComboBox.setEnabled(false);
 				}
-				jComboBox.setVisible(getJCbCpu().get(i).isSelected()
-						&& !getJCbNetwork().isSelected());
+				jComboBox.setVisible(getJCbCpu().get(i).isSelected() && !getJCbNetwork().isSelected());
 				jCbComputername.add(jComboBox);
 			}
 		}
@@ -381,8 +367,7 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 			for (int i = 0; i < getJSldMaxPlayers().getMaximum(); i++) {
 				final JCheckBox jCheckBox = new JCheckBox();
 				if (i < GameSession.gameOptions.getPlayers().size()) {
-					jCheckBox.setSelected(GameSession.gameOptions.getPlayer(i)
-							.isComputer());
+					jCheckBox.setSelected(GameSession.gameOptions.getPlayer(i).isComputer());
 					jCheckBox.setEnabled(!getJCbNetwork().isSelected());
 				} else {
 					jCheckBox.setEnabled(false);
@@ -398,12 +383,9 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 					public void actionPerformed(final ActionEvent event) {
 						for (int j = 0; j < getJSldMaxPlayers().getMaximum(); j++) {
 							if (j < getJSldMaxPlayers().getValue()) {
-								getJTxtPlayername().get(j).setVisible(
-										!getJCbCpu().get(j).isSelected());
-								getJCbComputername().get(j).setVisible(
-										getJCbCpu().get(j).isSelected()
-												&& !getJCbNetwork()
-														.isSelected());
+								getJTxtPlayername().get(j).setVisible(!getJCbCpu().get(j).isSelected());
+								getJCbComputername().get(j)
+										.setVisible(getJCbCpu().get(j).isSelected() && !getJCbNetwork().isSelected());
 							}
 						}
 					}
@@ -434,16 +416,15 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 					@Override
 					public void actionPerformed(final ActionEvent event) {
 						final JComponent comp = (JComponent) event.getSource();
-						final Color newColor = JColorChooser.showDialog(comp,
-								"Choose your color", comp.getBackground());
+						final Color newColor = JColorChooser.showDialog(comp, "Choose your color",
+								comp.getBackground());
 						if (newColor != null) {
 							comp.setBackground(newColor);
 						}
 					}
 				});
 				if (i < GameSession.gameOptions.getPlayers().size()) {
-					jButton.setBackground(new Color(GameSession.gameOptions
-							.getPlayer(i).getPlayerColor()));
+					jButton.setBackground(new Color(GameSession.gameOptions.getPlayer(i).getPlayerColor()));
 					jButton.setEnabled(true);
 				} else {
 					jButton.setEnabled(false);
@@ -465,19 +446,17 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 			final GameOptions go = GameSession.gameOptions;
 			for (int i = 0; i < getJSldMaxPlayers().getMaximum(); i++) {
 				final JComboBox<String> jComboBox = new JComboBox<>();
-				final String[] entries = Constants.USERDIR.list();
+				final String[] entries = Constants.USER_DIR.list();
 				Collections.sort(Arrays.asList(entries));
 				jComboBox.addItem("");
 				int imagefiles = 0;
 				for (final String entry : entries) {
-					if (entry.toLowerCase().endsWith(".gif")
-							|| entry.toLowerCase().endsWith(".jpg")
+					if (entry.toLowerCase().endsWith(".gif") || entry.toLowerCase().endsWith(".jpg")
 							|| entry.toLowerCase().endsWith(".png")) {
 						imagefiles++;
 						jComboBox.addItem(entry);
 						if (i < go.getPlayers().size()
-								&& entry.equalsIgnoreCase(go.getPlayer(i)
-										.getPlayerImageName())) {
+								&& entry.equalsIgnoreCase(go.getPlayer(i).getPlayerImageName())) {
 							jComboBox.setSelectedIndex(imagefiles);
 						}
 					}
@@ -508,20 +487,13 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 		for (int i = 0; i < getJSldMaxPlayers().getValue(); i++) {
 			String playername = getJTxtPlayername().get(i).getText();
 			if (getJCbCpu().get(i).isSelected()) {
-				playername = (String) getJCbComputername().get(i)
-						.getSelectedItem();
+				playername = (String) getJCbComputername().get(i).getSelectedItem();
 			}
-			go.getPlayers().add(
-					i,
-					new Player(i, playername, getJButtonColor().get(i)
-							.getBackground().getRGB(), getJCbCpu().get(i)
-							.isSelected()));
-			go.getPlayer(i).setPlayerImageName(
-					getJCbImage().get(i).getSelectedItem().toString());
-			go.getPlayer(i).setPlayerImage(
-					AnimatedImageUtil.createMyImage(getJCbImage().get(i)
-							.getSelectedItem().toString(), getJButtonColor()
-							.get(i).getBackground()));
+			go.getPlayers().add(i, new Player(i, playername, getJButtonColor().get(i).getBackground().getRGB(),
+					getJCbCpu().get(i).isSelected()));
+			go.getPlayer(i).setPlayerImageName(getJCbImage().get(i).getSelectedItem().toString());
+			go.getPlayer(i).setPlayerImage(AnimatedImageUtil.createMyImage(
+					getJCbImage().get(i).getSelectedItem().toString(), getJButtonColor().get(i).getBackground()));
 			if (getJCbNetwork().isSelected()) {
 				// Initialize network-player as inaktive, because
 				// they will be activated by connection to the server
@@ -531,8 +503,7 @@ public class PlayerOptionDialogPanel extends AbstractOptDlgPnl {
 
 		go.setNetwork(getJCbNetwork().isSelected() ? 1 : 0);
 		go.setHost((String) getJCobHost().getSelectedItem());
-		if (getJTxtPort().getText() != null
-				&& getJTxtPort().getText().trim().length() > 0) {
+		if (getJTxtPort().getText() != null && getJTxtPort().getText().trim().length() > 0) {
 			go.setPort(Integer.parseInt(getJTxtPort().getText()));
 		}
 		go.setNetwork(getJCbNetwork().isSelected() ? 1 : 0);
@@ -556,8 +527,7 @@ class DaemonThread extends Thread {
 	 * @param jTxtPort
 	 *            JTextField
 	 */
-	protected DaemonThread(final JCheckBox jCbNetwork,
-			final JComboBox<String> jCobHost, final JTextField jTxtPort) {
+	protected DaemonThread(final JCheckBox jCbNetwork, final JComboBox<String> jCobHost, final JTextField jTxtPort) {
 		super();
 		this.jCbNetwork = jCbNetwork;
 		this.jCobHost = jCobHost;
@@ -575,8 +545,7 @@ class DaemonThread extends Thread {
 	public void run() {
 		InetAddress[] inetAdresses = null;
 		try {
-			inetAdresses = InetAddress.getAllByName(InetAddress.getLocalHost()
-					.getHostName());
+			inetAdresses = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
 		} catch (final UnknownHostException exception) {
 			PseudoLogger.getInstance().log(exception.getMessage());
 		}

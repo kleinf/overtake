@@ -27,8 +27,7 @@ public class StartPanel extends JPanel {
 	 */
 	protected StartPanel() {
 		super();
-		bgImage = ImageLoader.getBufferedImage("images/backgrounds/HP.GIF",
-				this);
+		bgImage = ImageLoader.getBufferedImage("images/backgrounds/HP.GIF", this);
 		bgImageTiled = false;
 		setSize(bgImage.getWidth(null), bgImage.getHeight(null));
 		setPreferredSize(getSize());
@@ -48,18 +47,13 @@ public class StartPanel extends JPanel {
 
 	private void paintBackground(final Graphics gfx) {
 		if (offscreenImage == null) {
-			offscreenImage = new BufferedImage(getWidth(), getHeight(),
-					BufferedImage.TYPE_INT_ARGB);
+			offscreenImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			if (bgImage != null) {
-				final Graphics2D offscreenGraphics = offscreenImage
-						.createGraphics();
+				final Graphics2D offscreenGraphics = offscreenImage.createGraphics();
 				if (bgImageTiled) {
-					final Rectangle rect = new Rectangle(0, 0,
-							bgImage.getWidth(null), bgImage.getHeight(null));
-					offscreenGraphics.setPaint(new TexturePaint(
-							(BufferedImage) bgImage, rect));
-					offscreenGraphics.fill(new Rectangle(0, 0, getWidth(),
-							getHeight()));
+					final Rectangle rect = new Rectangle(0, 0, bgImage.getWidth(null), bgImage.getHeight(null));
+					offscreenGraphics.setPaint(new TexturePaint((BufferedImage) bgImage, rect));
+					offscreenGraphics.fill(new Rectangle(0, 0, getWidth(), getHeight()));
 				} else {
 					offscreenGraphics.drawImage(bgImage, 0, 0, null);
 				}

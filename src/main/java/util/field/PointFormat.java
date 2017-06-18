@@ -22,8 +22,7 @@ public class PointFormat {
 	 * @param posY1
 	 *            double
 	 */
-	protected PointFormat(final PointType pointType, final double posX1,
-			final double posY1) {
+	protected PointFormat(final PointType pointType, final double posX1, final double posY1) {
 		this.pointType = pointType;
 		this.posX1 = posX1;
 		this.posY1 = posY1;
@@ -45,8 +44,8 @@ public class PointFormat {
 	 * @param posY2
 	 *            double
 	 */
-	protected PointFormat(final PointType pointType, final double posX1,
-			final double posY1, final double posX2, final double posY2) {
+	protected PointFormat(final PointType pointType, final double posX1, final double posY1, final double posX2,
+			final double posY2) {
 		this.pointType = pointType;
 		this.posX1 = posX1;
 		this.posY1 = posY1;
@@ -72,9 +71,8 @@ public class PointFormat {
 	 * @param posY3
 	 *            double
 	 */
-	protected PointFormat(final PointType pointType, final double posX1,
-			final double posY1, final double posX2, final double posY2,
-			final double posX3, final double posY3) {
+	protected PointFormat(final PointType pointType, final double posX1, final double posY1, final double posX2,
+			final double posY2, final double posX3, final double posY3) {
 		this.pointType = pointType;
 		this.posX1 = posX1;
 		this.posY1 = posY1;
@@ -166,7 +164,6 @@ public class PointFormat {
 	 */
 	@Override
 	public String toString() {
-		return pointType + ": " + posX1 + " " + posY1 + " " + posX2 + " "
-				+ posY2 + " " + posX3 + " " + posY3;
+		return pointType + ": " + posX1 + " " + posY1 + " " + posX2 + " " + posY2 + " " + posX3 + " " + posY3;
 	}
 }

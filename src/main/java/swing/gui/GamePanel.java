@@ -1,10 +1,5 @@
 package swing.gui;
 
-import game.AbstractComputer;
-import game.GameGoal;
-import game.GameSession;
-import game.Player;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +17,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 
+import game.AbstractComputer;
+import game.GameGoal;
+import game.GameSession;
+import game.Player;
 import net.Net;
 import swing.util.AnimatedImageUtil;
 import swing.util.FontCreator;
@@ -62,23 +61,19 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 
 		getBoardPanel().recalculate();
 		infoPanel.refresh();
-		abstractComputers = new AbstractComputer[GameSession.gameOptions
-				.getMaxPlayers()];
+		abstractComputers = new AbstractComputer[GameSession.gameOptions.getMaxPlayers()];
 		try {
 			// Anzahl potentiell aktiver Spieler setzen
-			for (int playerId = 0; playerId < GameSession.gameOptions
-					.getMaxPlayers(); playerId++) {
+			for (int playerId = 0; playerId < GameSession.gameOptions.getMaxPlayers(); playerId++) {
 				if (getPlayer(playerId).isComputer()) {
 					// Per Reflection die Computer-AI laden
 					final AbstractComputer abstractComputer = (AbstractComputer) Class
-							.forName(getPlayer(playerId).getPlayerName())
-							.newInstance();
+							.forName(getPlayer(playerId).getPlayerName()).newInstance();
 
 					abstractComputer.init(getBoardPanel());
 					abstractComputers[playerId] = abstractComputer;
 				}
-				getPlayer(playerId).setNumFields(
-						getBoardPanel().getSumFieldsPlayer(playerId));
+				getPlayer(playerId).setNumFields(getBoardPanel().getSumFieldsPlayer(playerId));
 			}
 		} catch (final ClassNotFoundException exception) {
 			PseudoLogger.getInstance().log(exception.getMessage());
@@ -117,14 +112,12 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 		} else {
 			spMain.setRightComponent(infoPanel);
 		}
-		spMain.setSize(getBoardPanel().getWidth() + infoPanel.getWidth() + 1,
-				getBoardPanel().getHeight() + 2);
+		spMain.setSize(getBoardPanel().getWidth() + infoPanel.getWidth() + 1, getBoardPanel().getHeight() + 2);
 		spMain.setPreferredSize(spMain.getSize());
 
 		status = new JLabel();
 		add(status, BorderLayout.SOUTH);
-		status.setFont(FontCreator.createFont("fonts/arial.ttf", Font.BOLD,
-				12.0F));
+		status.setFont(FontCreator.createFont("fonts/arial.ttf", Font.BOLD, 12.0F));
 		status.setAlignmentX(Component.CENTER_ALIGNMENT);
 		status.setSize(spMain.getWidth(), 20);
 		status.setPreferredSize(status.getSize());
@@ -147,17 +140,15 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 	 * @param playerColor
 	 *            int
 	 */
-	protected void activatePlayer(final int playerId, final String playerName,
-			final int playerColor) {
+	protected void activatePlayer(final int playerId, final String playerName, final int playerColor) {
 		final Player player = getPlayer(playerId);
 		player.setActive(true);
 		player.setPlayerName(playerName);
 		player.setPlayerColor(playerColor);
-		player.setPlayerImage(AnimatedImageUtil.createMyImage(
-				player.getPlayerImageName(), new Color(player.getPlayerColor())));
+		player.setPlayerImage(
+				AnimatedImageUtil.createMyImage(player.getPlayerImageName(), new Color(player.getPlayerColor())));
 		if (playerId == getParentFrame().getEigeneId()) {
-			chatPanel.getJComboBox().addItem(
-					new Player(-1, "Alle", Color.WHITE.getRGB(), false));
+			chatPanel.getJComboBox().addItem(new Player(-1, "Alle", Color.WHITE.getRGB(), false));
 		} else {
 			chatPanel.getJComboBox().addItem(player);
 		}
@@ -216,10 +207,8 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 				doClick(idX, idY);
 			} else {
 				// Mitspieler im Netz ueber den Zug benachrichtigen
-				getParentFrame().send(
-						Constants.NET_ALL,
-						Net.ZUG.name() + Constants.NET_DIVIDER + idX
-								+ Constants.NET_DIVIDER + idY);
+				getParentFrame().send(Constants.NET_ALL,
+						Net.ZUG.name() + Constants.NET_DIVIDER + idX + Constants.NET_DIVIDER + idY);
 			}
 		}
 	}
@@ -228,8 +217,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 	 * Den Zug eines Computergegners ausfuehren.
 	 */
 	private void computerClick() {
-		final FieldComponent bestField = abstractComputers[getCurrPlayerNumber()]
-				.computerClick(getCurrPlayer());
+		final FieldComponent bestField = abstractComputers[getCurrPlayerNumber()].computerClick(getCurrPlayer());
 
 		doClick(bestField.getIdX(), bestField.getIdY());
 	}
@@ -264,8 +252,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 			completeTurn();
 		} else if (isRepairMode()) {
 			final FieldComponent currField = getFieldComponent(idX, idY);
-			if (getCurrPlayer().getRepairPoints() > 0 && currField.isEnabled()
-					&& currField.getOverloads() > 0) {
+			if (getCurrPlayer().getRepairPoints() > 0 && currField.isEnabled() && currField.getOverloads() > 0) {
 				currField.subOverload();
 				getCurrPlayer().subRepairPoints();
 			}
@@ -294,8 +281,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 			super.setMode(mode);
 		} else {
 			// Mitspieler im Netz ueber den Moduswechsel benachrichtigen
-			getParentFrame().send(Constants.NET_ALL,
-					Net.MODE.name() + Constants.NET_DIVIDER + mode.name());
+			getParentFrame().send(Constants.NET_ALL, Net.MODE.name() + Constants.NET_DIVIDER + mode.name());
 		}
 	}
 
@@ -321,10 +307,8 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 			// Nach dem Rundenwechsel werden die Rundencounter
 			// aktualisiert und evtl. Felder repariert
 			if (GameSession.gameOptions.getMaxOverload() > 0) {
-				for (int idY = 0; idY < GameSession.gameOptions
-						.getNumFieldsHeight(); idY++) {
-					for (int idX = 0; idX < GameSession.gameOptions
-							.getNumFieldsWidth(); idX++) {
+				for (int idY = 0; idY < GameSession.gameOptions.getNumFieldsHeight(); idY++) {
+					for (int idX = 0; idX < GameSession.gameOptions.getNumFieldsWidth(); idX++) {
 						final FieldComponent field = getFieldComponent(idX, idY);
 						// Es werden nur Felder beruecksichtigt, die in
 						// Besitz von Spielern sind.
@@ -334,8 +318,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 							// im Besitz eines Spielers ist, wird es zur
 							// Belohnung um eine Stufe repariert, falls es
 							// beschaedigt sein sollte.
-							if (field.getOverloads() > 0
-									&& field.getRounds() % 10 == 0) {
+							if (field.getOverloads() > 0 && field.getRounds() % 10 == 0) {
 								field.subOverload();
 							}
 						}
@@ -407,8 +390,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 				getBoardPanel().releasePlayer(releasePlayerId);
 				releasePlayerId = -1;
 				turnCompleted = true;
-			} else if (getCurrPlayer().getPlayerId() == getParentFrame()
-					.getEigeneId()) {
+			} else if (getCurrPlayer().getPlayerId() == getParentFrame().getEigeneId()) {
 				// Netzwerkspiel und man selber ist dran
 				playerTurn = true;
 				status.setText("Du bist am Zug");
@@ -416,8 +398,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 			} else {
 				// Netzwerkspiel und ein anderer Spieler ist dran
 				playerTurn = false;
-				status.setText("Spieler " + getCurrPlayer().getPlayerName()
-						+ " ist am Zug");
+				status.setText("Spieler " + getCurrPlayer().getPlayerName() + " ist am Zug");
 				setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			}
 			// Info-Panel aktualisieren, um ggf. den Repair-Button zu aktivieren
@@ -446,8 +427,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 	 * @see swing.gui.AbstractMainPanel#checkClick(int, int, boolean)
 	 */
 	@Override
-	protected boolean checkClick(final int idX, final int idY,
-			final boolean override) {
+	protected boolean checkClick(final int idX, final int idY, final boolean override) {
 		if (!playerTurn && !override) {
 			// Das playerTurn-Flag verhindert, dass menschliche Spieler einen
 			// Zug machen, wenn der Computergegner oder ein Netzwerkspieler an
@@ -490,11 +470,9 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 		// ist und der Spieler keine Felder mehr hat, darf er wieder setzen
 		// wohin er will. (Vorausgesetzt, es ist noch mind. ein Feld frei.)
 		if (GameSession.gameOptions.isSticky()
-				&& !(GameSession.gameOptions.isSetWhileFree() && getCurrPlayer()
-						.getNumFields() == 0)) {
+				&& !(GameSession.gameOptions.isSetWhileFree() && getCurrPlayer().getNumFields() == 0)) {
 			boolean neighbour = false;
-			for (final FieldComponent relation : getBoardPanel()
-					.getActiveRelations(idX, idY)) {
+			for (final FieldComponent relation : getBoardPanel().getActiveRelations(idX, idY)) {
 				if (relation.getOwnerId() == getCurrPlayerNumber()) {
 					neighbour = true;
 					break;
@@ -520,20 +498,17 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 		// Wert um eins erhoehen
 		currField.addValue();
 		// Feld in Pruefliste eintragen
-		currChecklist.put(currField.getIdX() + "-" + currField.getIdY(),
-				currField);
+		currChecklist.put(currField.getIdX() + "-" + currField.getIdY(), currField);
 
 		Set<String> testSet = new HashSet<String>();
 		do {
 			overloads = 0;
-			for (final Entry<String, FieldComponent> entry : currChecklist
-					.entrySet()) {
+			for (final Entry<String, FieldComponent> entry : currChecklist.entrySet()) {
 				currField = entry.getValue();
 				// Wenn die Maximalkapazitaet des Feldes ueberschritten
 				// (erreicht) ist, kommt es zu einer Ueberladung und der Inhalt
 				// des Feldes verteilt sich auf die benachbarten Felder.
-				if (currField.getValue() > currField.getMaxValue()
-						|| GameSession.gameOptions.isOverloadOnEqual()
+				if (currField.getValue() > currField.getMaxValue() || GameSession.gameOptions.isOverloadOnEqual()
 						&& currField.getValue() == currField.getMaxValue()) {
 					// Kettenreaktionen zaehlen.
 					// Dabei wird ermittelt, wieviele Felder durch die
@@ -555,8 +530,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 					if (GameSession.gameOptions.isEmptyOverloaded()) {
 						currField.setValue(0);
 					} else {
-						currField.setValue(currField.getValue()
-								- currField.getMaxValue());
+						currField.setValue(currField.getValue() - currField.getMaxValue());
 					}
 
 					// Wenn die entsprechende Option eingestellt ist, wird
@@ -573,9 +547,8 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 					// Anschliessend werden auch diese geprueft, ob sie
 					// ihrerseits ueberladen und dadurch wiederum andere
 					// Felder uebernehmen.
-					for (final FieldComponent relation : getBoardPanel()
-							.getActiveRelations(currField.getIdX(),
-									currField.getIdY())) {
+					for (final FieldComponent relation : getBoardPanel().getActiveRelations(currField.getIdX(),
+							currField.getIdY())) {
 						// Auf feindliche Uebernahme pruefen
 						if (currField.getOwnerId() != getCurrPlayerNumber()) {
 							// Wenn das Feld vom Gegner uebernommen wurde,
@@ -588,24 +561,19 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 						// Wert um eins erhoehen
 						relation.addValue();
 						// Feld in Pruefliste eintragen
-						newChecklist.put(
-								relation.getIdX() + "-" + relation.getIdY(),
-								relation);
+						newChecklist.put(relation.getIdX() + "-" + relation.getIdY(), relation);
 					}
 
 					if (GameSession.gameOptions.getMaxOverload() > 0
-							&& currField.getOverloads() >= GameSession.gameOptions
-									.getMaxOverload()) {
+							&& currField.getOverloads() >= GameSession.gameOptions.getMaxOverload()) {
 						// Wenn Felder oefter explodieren, als es die
 						// Stabilitaet zulaesst, brechen die Felder weg
 						// und eine Verteilung auf umliegende Felder findet
 						// nicht mehr statt.
-						getBoardPanel().disableField(currField.getIdX(),
-								currField.getIdY());
+						getBoardPanel().disableField(currField.getIdX(), currField.getIdY());
 						// Ausserdem bekommen alle Mitspieler einen
 						// Reparaturpunkt
-						for (final Player player : GameSession.gameOptions
-								.getPlayers()) {
+						for (final Player player : GameSession.gameOptions.getPlayers()) {
 							if (player.getPlayerId() != getCurrPlayerNumber()) {
 								player.addRepairPoints();
 							}
@@ -648,8 +616,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 
 			// Wenn ohne eigene Felder gesetzt werden darf und noch Felder
 			// frei sind, duerfen alle mitspielen.
-			if (GameSession.gameOptions.isSetWhileFree()
-					&& getBoardPanel().getSumFieldsFree() > 0) {
+			if (GameSession.gameOptions.isSetWhileFree() && getBoardPanel().getSumFieldsFree() > 0) {
 				activePlayers = GameSession.gameOptions.getPlayers().size();
 			} else {
 				// Wenn ohne eigene Felder nicht gesetzt werden darf oder
@@ -680,8 +647,7 @@ public class GamePanel extends AbstractMainPanel implements Runnable {
 
 			if (GameSession.gameOptions.getGameGoal() == GameGoal.DIVIDE_ET_IMPERA) {
 				// Ein Spieler muss die prozentuale Uebermacht errungen haben
-				final int siegAnteil = getBoardPanel().getSumFields()
-						/ activePlayers;
+				final int siegAnteil = getBoardPanel().getSumFields() / activePlayers;
 				for (final Player player : GameSession.gameOptions.getPlayers()) {
 					if (player.getNumFields() > siegAnteil) {
 						winner = player;

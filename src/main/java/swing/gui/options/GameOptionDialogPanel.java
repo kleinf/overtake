@@ -1,8 +1,5 @@
 package swing.gui.options;
 
-import game.GameGoal;
-import game.GameSession;
-
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +9,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+
+import game.GameGoal;
+import game.GameSession;
 
 /**
  * @author Administrator
@@ -42,8 +42,7 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 	 * @param name
 	 *            String
 	 */
-	protected GameOptionDialogPanel(final JDialog parentDialog,
-			final String name) {
+	protected GameOptionDialogPanel(final JDialog parentDialog, final String name) {
 		super(parentDialog, name);
 	}
 
@@ -194,10 +193,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jRbLastmanstanding == null) {
 			jRbLastmanstanding = new JRadioButton();
 			jRbLastmanstanding.setText("Last man standing");
-			jRbLastmanstanding
-					.setToolTipText("The game ends as soon as one player remains - even if there are free fields to be overtaken");
-			jRbLastmanstanding.setSelected(GameSession.gameOptions
-					.getGameGoal() == GameGoal.LAST_MAN_STANDING);
+			jRbLastmanstanding.setToolTipText(
+					"The game ends as soon as one player remains - even if there are free fields to be overtaken");
+			jRbLastmanstanding.setSelected(GameSession.gameOptions.getGameGoal() == GameGoal.LAST_MAN_STANDING);
 			jRbLastmanstanding.addActionListener(new ActionListener() {
 
 				/**
@@ -227,10 +225,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jRbDivideetimpera == null) {
 			jRbDivideetimpera = new JRadioButton();
 			jRbDivideetimpera.setText("Divide et impera");
-			jRbDivideetimpera
-					.setToolTipText("The game ends as soon as one player conquers the biggest proportion e.g. more than 50% with two players, more than 25% with four players and so on");
-			jRbDivideetimpera
-					.setSelected(GameSession.gameOptions.getGameGoal() == GameGoal.DIVIDE_ET_IMPERA);
+			jRbDivideetimpera.setToolTipText(
+					"The game ends as soon as one player conquers the biggest proportion e.g. more than 50% with two players, more than 25% with four players and so on");
+			jRbDivideetimpera.setSelected(GameSession.gameOptions.getGameGoal() == GameGoal.DIVIDE_ET_IMPERA);
 			jRbDivideetimpera.addActionListener(new ActionListener() {
 
 				/**
@@ -259,10 +256,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jRbDomination == null) {
 			jRbDomination = new JRadioButton();
 			jRbDomination.setText("Domination");
-			jRbDomination
-					.setToolTipText("The game ends if one player conquers all fields - players can rejoin as long as there are free fields");
-			jRbDomination
-					.setSelected(GameSession.gameOptions.getGameGoal() == GameGoal.DOMINATION);
+			jRbDomination.setToolTipText(
+					"The game ends if one player conquers all fields - players can rejoin as long as there are free fields");
+			jRbDomination.setSelected(GameSession.gameOptions.getGameGoal() == GameGoal.DOMINATION);
 			jRbDomination.addActionListener(new ActionListener() {
 
 				/**
@@ -306,7 +302,8 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jRbFree == null) {
 			jRbFree = new JRadioButton();
 			jRbFree.setText("Free");
-			jRbFree.setToolTipText("If activated you can choose any field on the board except the ones of your opponents");
+			jRbFree.setToolTipText(
+					"If activated you can choose any field on the board except the ones of your opponents");
 			jRbFree.setSelected(!GameSession.gameOptions.isSticky());
 		}
 		return jRbFree;
@@ -321,8 +318,7 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jRbSticky == null) {
 			jRbSticky = new JRadioButton();
 			jRbSticky.setText("Sticky");
-			jRbSticky
-					.setToolTipText("If activated you can choose only new fields next to another of your fields");
+			jRbSticky.setToolTipText("If activated you can choose only new fields next to another of your fields");
 			jRbSticky.setSelected(GameSession.gameOptions.isSticky());
 		}
 		return jRbSticky;
@@ -337,12 +333,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jCbSetwhilefree == null) {
 			jCbSetwhilefree = new JCheckBox();
 			jCbSetwhilefree.setText("Set while free");
-			jCbSetwhilefree
-					.setToolTipText("If activated players can rejoin as long as there are free fields");
-			jCbSetwhilefree.setSelected(GameSession.gameOptions
-					.isSetWhileFree());
-			if (getJRbLastmanstanding().isSelected()
-					|| getJRbDomination().isSelected()) {
+			jCbSetwhilefree.setToolTipText("If activated players can rejoin as long as there are free fields");
+			jCbSetwhilefree.setSelected(GameSession.gameOptions.isSetWhileFree());
+			if (getJRbLastmanstanding().isSelected() || getJRbDomination().isSelected()) {
 				jCbSetwhilefree.setEnabled(false);
 			}
 		}
@@ -358,10 +351,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jCbOverloadonequal == null) {
 			jCbOverloadonequal = new JCheckBox();
 			jCbOverloadonequal.setText("Overload on equal");
-			jCbOverloadonequal
-					.setToolTipText("If activated fields will overload if the amount is equal to the number of neighbours, otherwise the amount of the fields needs to be greater");
-			jCbOverloadonequal.setSelected(GameSession.gameOptions
-					.isOverloadOnEqual());
+			jCbOverloadonequal.setToolTipText(
+					"If activated fields will overload if the amount is equal to the number of neighbours, otherwise the amount of the fields needs to be greater");
+			jCbOverloadonequal.setSelected(GameSession.gameOptions.isOverloadOnEqual());
 		}
 		return jCbOverloadonequal;
 	}
@@ -375,10 +367,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jCbEmptyoverloaded == null) {
 			jCbEmptyoverloaded = new JCheckBox();
 			jCbEmptyoverloaded.setText("Empty overloaded");
-			jCbEmptyoverloaded
-					.setToolTipText("If activated overloaded fields will be set to zero on overload, otherwise only the number of neighbours will be subtracted");
-			jCbEmptyoverloaded.setSelected(GameSession.gameOptions
-					.isEmptyOverloaded());
+			jCbEmptyoverloaded.setToolTipText(
+					"If activated overloaded fields will be set to zero on overload, otherwise only the number of neighbours will be subtracted");
+			jCbEmptyoverloaded.setSelected(GameSession.gameOptions.isEmptyOverloaded());
 		}
 		return jCbEmptyoverloaded;
 	}
@@ -392,10 +383,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		if (jCbLooseoverloaded == null) {
 			jCbLooseoverloaded = new JCheckBox();
 			jCbLooseoverloaded.setText("Loose overloaded");
-			jCbLooseoverloaded
-					.setToolTipText("If activated overloaded fields will loose their owners - don't use with \"Set while free\"");
-			jCbLooseoverloaded.setSelected(GameSession.gameOptions
-					.isLooseOverloaded());
+			jCbLooseoverloaded.setToolTipText(
+					"If activated overloaded fields will loose their owners - don't use with \"Set while free\"");
+			jCbLooseoverloaded.setSelected(GameSession.gameOptions.isLooseOverloaded());
 		}
 		return jCbLooseoverloaded;
 	}
@@ -416,13 +406,9 @@ public class GameOptionDialogPanel extends AbstractOptDlgPnl {
 		}
 
 		GameSession.gameOptions.setSticky(getJRbSticky().isSelected());
-		GameSession.gameOptions.setSetWhileFree(getJCbSetWhileFree()
-				.isSelected());
-		GameSession.gameOptions.setOverloadOnEqual(getJCbOverloadonequal()
-				.isSelected());
-		GameSession.gameOptions.setEmptyOverloaded(getJCbEmptyoverloaded()
-				.isSelected());
-		GameSession.gameOptions.setLooseOverloaded(getJCbLooseoverloaded()
-				.isSelected());
+		GameSession.gameOptions.setSetWhileFree(getJCbSetWhileFree().isSelected());
+		GameSession.gameOptions.setOverloadOnEqual(getJCbOverloadonequal().isSelected());
+		GameSession.gameOptions.setEmptyOverloaded(getJCbEmptyoverloaded().isSelected());
+		GameSession.gameOptions.setLooseOverloaded(getJCbLooseoverloaded().isSelected());
 	}
 }

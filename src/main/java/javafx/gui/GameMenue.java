@@ -1,11 +1,10 @@
 package javafx.gui;
 
-import game.GameSession;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 
+import game.GameSession;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
@@ -132,8 +131,7 @@ public class GameMenue extends MenuBar {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				getParentApplication().start(getEditorPanel().getXmlData(),
-						true, ModeEnum.MODE_PLAY);
+				getParentApplication().start(getEditorPanel().getXmlData(), true, ModeEnum.MODE_PLAY);
 			}
 		});
 		return menuItemStartGame;
@@ -155,9 +153,7 @@ public class GameMenue extends MenuBar {
 		menuItemSaveGame.setOnAction(new SaveGameActionListener());
 		// Solange das Spiel nicht gestartet wurde und waehrend eines aktiven
 		// Netzwerkspiels ist das Speichern eines Spielstands nicht moeglich
-		if (!isEditMode()
-				&& (getGamePanel() == null || GameSession.gameOptions
-						.getNetwork() > 0)) {
+		if (!isEditMode() && (getGamePanel() == null || GameSession.gameOptions.getNetwork() > 0)) {
 			menuItemSaveGame.setDisable(true);
 		}
 		return menuItemSaveGame;
@@ -178,17 +174,13 @@ public class GameMenue extends MenuBar {
 		public void handle(ActionEvent event) {
 			final FileChooser fileChooser = new FileChooser();
 			fileChooser.setInitialDirectory(new File("./"));
-			fileChooser.getExtensionFilters().add(
-					new ExtensionFilter("Game-Files", OVER_FILE_FILTER));
-			File selectedFile = fileChooser
-					.showOpenDialog(getParentApplication().getPrimaryStage());
+			fileChooser.getExtensionFilters().add(new ExtensionFilter("Game-Files", OVER_FILE_FILTER));
+			File selectedFile = fileChooser.showOpenDialog(getParentApplication().getPrimaryStage());
 			if (selectedFile != null) {
 				if (isEditMode()) {
-					getParentApplication().load(selectedFile.getPath(),
-							ModeEnum.MODE_EDIT);
+					getParentApplication().load(selectedFile.getPath(), ModeEnum.MODE_EDIT);
 				} else {
-					getParentApplication().load(selectedFile.getPath(),
-							ModeEnum.MODE_PLAY);
+					getParentApplication().load(selectedFile.getPath(), ModeEnum.MODE_PLAY);
 				}
 			}
 		}
@@ -209,10 +201,8 @@ public class GameMenue extends MenuBar {
 		public void handle(ActionEvent event) {
 			final FileChooser fileChooser = new FileChooser();
 			fileChooser.setInitialDirectory(new File("./"));
-			fileChooser.getExtensionFilters().add(
-					new ExtensionFilter("Game-Files", OVER_FILE_FILTER));
-			File selectedFile = fileChooser
-					.showSaveDialog(getParentApplication().getPrimaryStage());
+			fileChooser.getExtensionFilters().add(new ExtensionFilter("Game-Files", OVER_FILE_FILTER));
+			File selectedFile = fileChooser.showSaveDialog(getParentApplication().getPrimaryStage());
 			if (selectedFile != null) {
 				String filename = selectedFile.getPath();
 				final int pos = filename.lastIndexOf('.');
@@ -235,7 +225,7 @@ public class GameMenue extends MenuBar {
 
 	private MenuItem getMenuFiles() {
 		final Menu menuFiles = new Menu("File(s)");
-		final String[] entries = Constants.USERDIR.list();
+		final String[] entries = Constants.USER_DIR.list();
 		Collections.sort(Arrays.asList(entries));
 		int gamefiles = 0;
 		for (final String entry : entries) {
@@ -253,13 +243,11 @@ public class GameMenue extends MenuBar {
 					public void handle(ActionEvent event) {
 						if (event.getSource() != null) {
 							if (isEditMode()) {
-								getParentApplication().load(
-										((MenuItem) event.getSource())
-												.getText(), ModeEnum.MODE_EDIT);
+								getParentApplication().load(((MenuItem) event.getSource()).getText(),
+										ModeEnum.MODE_EDIT);
 							} else {
-								getParentApplication().load(
-										((MenuItem) event.getSource())
-												.getText(), ModeEnum.MODE_PLAY);
+								getParentApplication().load(((MenuItem) event.getSource()).getText(),
+										ModeEnum.MODE_PLAY);
 							}
 						}
 					}

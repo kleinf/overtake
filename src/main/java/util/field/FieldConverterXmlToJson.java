@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
@@ -118,8 +118,7 @@ class FieldConverterXmlToJsonSimple {
 		return root.toString();
 	}
 
-	private static void doColsOrRows2(JSONObject parent,
-			List<Element> elements, boolean first) {
+	private static void doColsOrRows2(JSONObject parent, List<Element> elements, boolean first) {
 		if (elements.size() == 0) {
 			return;
 		}
@@ -172,11 +171,9 @@ class FieldConverterXmlToJsonSimple {
 		}
 	}
 
-	private static void addKeyValue(JSONObject parent, Element element,
-			String key) {
+	private static void addKeyValue(JSONObject parent, Element element, String key) {
 		if (element != null && element.getAttributeValue(key) != null) {
-			parent.put(key,
-					JSONObject.stringToValue(element.getAttributeValue(key)));
+			parent.put(key, JSONObject.stringToValue(element.getAttributeValue(key)));
 		}
 	}
 }
@@ -201,8 +198,7 @@ class FieldConverterXmlToJsonPretty {
 		return field.toString();
 	}
 
-	private static void doColsOrRows(JSONStringer parent,
-			List<Element> elements, boolean first) {
+	private static void doColsOrRows(JSONStringer parent, List<Element> elements, boolean first) {
 		if (elements.size() == 0) {
 			return;
 		}
@@ -262,12 +258,10 @@ class FieldConverterXmlToJsonPretty {
 		parent.endArray();
 	}
 
-	private static void addKeyValue(JSONStringer parent, Element element,
-			String key) {
+	private static void addKeyValue(JSONStringer parent, Element element, String key) {
 		if (element != null && element.getAttributeValue(key) != null) {
 			parent.key(key);
-			parent.value(JSONObject.stringToValue(element
-					.getAttributeValue(key)));
+			parent.value(JSONObject.stringToValue(element.getAttributeValue(key)));
 		}
 	}
 }

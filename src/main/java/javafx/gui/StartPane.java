@@ -23,8 +23,7 @@ public class StartPane extends Pane {
 	public StartPane() {
 		super();
 		Image img = ImageLoader.getImage("images/backgrounds/HP.GIF");
-		setBackground(new Background(new BackgroundImage(img,
-				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+		setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
 				BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 		setWidth(img.getWidth());
 		setHeight(img.getHeight());

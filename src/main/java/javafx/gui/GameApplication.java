@@ -37,8 +37,7 @@ public class GameApplication extends Application {
 		BorderPane bp = new BorderPane();
 		bp.setTop(menuBar);
 		bp.setCenter(startPanel);
-		Scene scene = new Scene(bp, startPanel.getWidth(),
-				startPanel.getHeight());
+		Scene scene = new Scene(bp, startPanel.getWidth(), startPanel.getHeight());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

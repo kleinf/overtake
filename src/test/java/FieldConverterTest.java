@@ -76,8 +76,7 @@ public final class FieldConverterTest {
 		String xmlOrdered = FieldConverterJsonToXml.getXml(jsonOrdered);
 
 		// Vergleich ohne Whitespace-Unterschiede
-		Assert.assertEquals(data.replaceAll("\\s", ""),
-				xmlOrdered.replaceAll("\\s", ""));
+		Assert.assertEquals(data.replaceAll("\\s", ""), xmlOrdered.replaceAll("\\s", ""));
 	}
 
 	/**
@@ -89,7 +88,6 @@ public final class FieldConverterTest {
 		String xmlUnordered = FieldConverterJsonToXml.getXml(jsonUnordered);
 
 		// Vergleich ohne Whitespace-Unterschiede
-		Assert.assertEquals(data.replaceAll("\\s", ""),
-				xmlUnordered.replaceAll("\\s", ""));
+		Assert.assertEquals(data.replaceAll("\\s", ""), xmlUnordered.replaceAll("\\s", ""));
 	}
 }

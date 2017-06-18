@@ -1,4 +1,5 @@
-import gui.GameFrame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -7,8 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import swing.gui.GameFrame;
 import util.Constants;
-import util.Logger;
 
 /**
  * @author Administrator
@@ -42,8 +43,7 @@ public final class Appl {
 		}
 
 		// Center window
-		final Dimension screenSize = Toolkit.getDefaultToolkit()
-				.getScreenSize();
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension frameSize = frame.getSize();
 		if (frameSize.height > screenSize.height) {
 			frameSize.height = screenSize.height;
@@ -51,8 +51,7 @@ public final class Appl {
 		if (frameSize.width > screenSize.width) {
 			frameSize.width = screenSize.width;
 		}
-		frame.setLocation((screenSize.width - frameSize.width) / 2,
-				(screenSize.height - frameSize.height) / 2);
+		frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 		frame.setVisible(true);
 	}
 
@@ -68,13 +67,13 @@ public final class Appl {
 			final Appl app = new Appl();
 			app.start();
 		} catch (final ClassNotFoundException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			Logger.getGlobal().log(Level.SEVERE, exception.getMessage());
 		} catch (final InstantiationException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			Logger.getGlobal().log(Level.SEVERE, exception.getMessage());
 		} catch (final IllegalAccessException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			Logger.getGlobal().log(Level.SEVERE, exception.getMessage());
 		} catch (final UnsupportedLookAndFeelException exception) {
-			Logger.getInstance().log(exception.getMessage());
+			Logger.getGlobal().log(Level.SEVERE, exception.getMessage());
 		}
 	}
 }

@@ -57,8 +57,7 @@ public final class FontCreator {
 	 *            float
 	 * @return Font
 	 */
-	public static Font createFont(final String fontName, final int style,
-			final float size) {
+	public static Font createFont(final String fontName, final int style, final float size) {
 		Font font = createFont(fontName);
 		if (font != null) {
 			font = font.deriveFont(style, size);

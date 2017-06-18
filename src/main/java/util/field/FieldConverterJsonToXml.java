@@ -3,10 +3,10 @@ package util.field;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.output.XMLOutputter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,16 +47,14 @@ public final class FieldConverterJsonToXml {
 	 */
 	public static String getXml(JSONObject obj) {
 		Element field = new Element("field");
-		Namespace xsiNS = Namespace.getNamespace("xsi",
-				"http://www.w3.org/2001/XMLSchema-instance");
+		Namespace xsiNS = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		field.addNamespaceDeclaration(xsiNS);
 		field.setAttribute("noNamespaceSchemaLocation", "field.xsd", xsiNS);
 		Document doc = new Document();
 		doc.setRootElement(field);
 
 		String key = obj.getJSONObject("field").keys().next();
-		doColsOrRows(field, key, obj.getJSONObject("field").getJSONArray(key),
-				true);
+		doColsOrRows(field, key, obj.getJSONObject("field").getJSONArray(key), true);
 
 		StringWriter sw = new StringWriter();
 		try {
@@ -73,8 +71,7 @@ public final class FieldConverterJsonToXml {
 		return sw.toString();
 	}
 
-	private static void doColsOrRows(Element parent, String key,
-			JSONArray array, boolean first) {
+	private static void doColsOrRows(Element parent, String key, JSONArray array, boolean first) {
 		if (array.length() == 0) {
 			return;
 		}

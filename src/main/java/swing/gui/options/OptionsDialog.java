@@ -1,8 +1,5 @@
 package swing.gui.options;
 
-import game.GameOptions;
-import game.GameSession;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,11 +20,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 
+import game.GameOptions;
+import game.GameSession;
 import swing.gui.GameFrame;
 import util.ModeEnum;
 import util.PseudoLogger;
@@ -57,8 +56,8 @@ public class OptionsDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		// Esc closes dialog
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Close");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				"Close");
 		getRootPane().getActionMap().put("Close", new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -183,8 +182,7 @@ public class OptionsDialog extends JDialog {
 			// XML speichern
 			final XMLOutputter serializer = new XMLOutputter();
 			writer = new FileWriter(filename);
-			serializer.output(new Document(GameSession.gameOptions.getData()),
-					writer);
+			serializer.output(new Document(GameSession.gameOptions.getData()), writer);
 			writer.flush();
 		} catch (final IOException exception) {
 			PseudoLogger.getInstance().log(exception.getMessage());

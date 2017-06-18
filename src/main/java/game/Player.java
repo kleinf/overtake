@@ -1,6 +1,6 @@
 package game;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import swing.util.AnimatedImage;
 
@@ -28,8 +28,7 @@ public class Player {
 	 * @param computer
 	 *            boolean
 	 */
-	protected Player(final int playerId, final int playerColor,
-			final boolean computer) {
+	protected Player(final int playerId, final int playerColor, final boolean computer) {
 		this(playerId, "Player " + (playerId + 1), playerColor, computer);
 	}
 
@@ -43,8 +42,7 @@ public class Player {
 	 * @param computer
 	 *            boolean
 	 */
-	public Player(final int playerId, final String playerName,
-			final int playerColor, final boolean computer) {
+	public Player(final int playerId, final String playerName, final int playerColor, final boolean computer) {
 		// Netzwerkspieler werden inaktiv initialisiert,
 		// da gewartet werden muss, bis sie sich anmelden
 		active = true;

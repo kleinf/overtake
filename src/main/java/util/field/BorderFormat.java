@@ -27,8 +27,7 @@ public class BorderFormat {
 	 * @param refFieldY
 	 *            Zeilen-ID des referenzierten Nachbarfeldes.
 	 */
-	protected BorderFormat(final int id, final int refId, final int refFieldX,
-			final int refFieldY) {
+	protected BorderFormat(final int id, final int refId, final int refFieldX, final int refFieldY) {
 		this.id = id;
 		this.refId = refId;
 		this.refFieldX = refFieldX;
@@ -68,8 +67,7 @@ public class BorderFormat {
 	 * @return String
 	 */
 	protected String getKey() {
-		return this.id + "|" + this.refId + "|" + this.refFieldX + "|"
-				+ this.refFieldY;
+		return this.id + "|" + this.refId + "|" + this.refFieldX + "|" + this.refFieldY;
 	}
 
 	/**
@@ -98,8 +96,7 @@ public class BorderFormat {
 	 *            int
 	 * @return Shape
 	 */
-	protected Shape getWall(final int width, final int height,
-			final double pathPosSumX, final double pathPosSumY) {
+	protected Shape getWall(final int width, final int height, final double pathPosSumX, final double pathPosSumY) {
 		double pathPosX1 = 0.0D; // X-Coordinate inside of the form
 		double pathPosY1 = 0.0D; // Y-Coordinate inside of the form
 		double pathPosX2 = 0.0D; // X-Coordinate inside of the form
@@ -127,8 +124,7 @@ public class BorderFormat {
 				pathPosY2 = height * pf.getPosY2() + pathPosSumY;
 				pathPosX3 = width * pf.getPosX3() + pathPosSumX;
 				pathPosY3 = height * pf.getPosY3() + pathPosSumY;
-				wall.curveTo(pathPosX1, pathPosY1, pathPosX2, pathPosY2,
-						pathPosX3, pathPosY3);
+				wall.curveTo(pathPosX1, pathPosY1, pathPosX2, pathPosY2, pathPosX3, pathPosY3);
 				break;
 			default:
 				// not implemented
@@ -148,8 +144,8 @@ public class BorderFormat {
 	 *            int
 	 * @return double[]
 	 */
-	protected double[] getWallCenter(final int width, final int height,
-			final double pathPosSumX, final double pathPosSumY) {
+	protected double[] getWallCenter(final int width, final int height, final double pathPosSumX,
+			final double pathPosSumY) {
 		double x = 0.0D; // X-Coordinate inside of the form
 		double y = 0.0D; // Y-Coordinate inside of the form
 		final List<PointFormat> pfs = getPointFormats();

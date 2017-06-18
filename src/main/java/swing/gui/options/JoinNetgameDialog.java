@@ -1,7 +1,5 @@
 package swing.gui.options;
 
-import game.NetOptions;
-
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -21,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
+import game.NetOptions;
 import swing.gui.GameFrame;
 
 /**
@@ -47,8 +46,7 @@ public class JoinNetgameDialog extends JDialog {
 	 * @param netOptions
 	 *            NetOptions
 	 */
-	public JoinNetgameDialog(final Frame parentFrame, final boolean isModal,
-			final NetOptions netOptions) {
+	public JoinNetgameDialog(final Frame parentFrame, final boolean isModal, final NetOptions netOptions) {
 		super(parentFrame, isModal);
 
 		setSize(220, 150);
@@ -57,8 +55,8 @@ public class JoinNetgameDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		// Esc closes dialog
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Close");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				"Close");
 		getRootPane().getActionMap().put("Close", new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -190,8 +188,7 @@ public class JoinNetgameDialog extends JDialog {
 				@Override
 				public void actionPerformed(final ActionEvent event) {
 					final JComponent comp = (JComponent) event.getSource();
-					final Color newColor = JColorChooser.showDialog(comp,
-							"Choose your color", comp.getBackground());
+					final Color newColor = JColorChooser.showDialog(comp, "Choose your color", comp.getBackground());
 					comp.setBackground(newColor);
 				}
 			});
@@ -247,14 +244,11 @@ public class JoinNetgameDialog extends JDialog {
 				@Override
 				public void actionPerformed(final ActionEvent event) {
 					getNetOptions().setHost(getJTxtHost().getText());
-					if (getJTxtPort().getText() != null
-							&& getJTxtPort().getText().trim().length() > 0) {
-						getNetOptions().setPort(
-								Integer.parseInt(getJTxtPort().getText()));
+					if (getJTxtPort().getText() != null && getJTxtPort().getText().trim().length() > 0) {
+						getNetOptions().setPort(Integer.parseInt(getJTxtPort().getText()));
 					}
 					getNetOptions().setPlayerName(getJTxtName().getText());
-					getNetOptions().setPlayerColor(
-							getJButtonColor().getBackground().getRGB());
+					getNetOptions().setPlayerColor(getJButtonColor().getBackground().getRGB());
 					dispose();
 					((GameFrame) getParent()).joinNetGame(getNetOptions());
 				}

@@ -23,8 +23,7 @@ public class FieldRelation {
 	 * @param refFieldY
 	 *            Zeilen-ID des referenzierten Nachbarfeldes.
 	 */
-	protected FieldRelation(final int borderId, final int refBorderId,
-			final int refFieldX, final int refFieldY) {
+	protected FieldRelation(final int borderId, final int refBorderId, final int refFieldX, final int refFieldY) {
 		this.borderId = borderId;
 		this.refBorderId = refBorderId;
 		this.refFieldX = refFieldX;
@@ -63,7 +62,6 @@ public class FieldRelation {
 	 * @return String
 	 */
 	public String getKey() {
-		return this.borderId + "|" + this.refBorderId + "|" + this.refFieldX
-				+ "|" + this.refFieldY;
+		return this.borderId + "|" + this.refBorderId + "|" + this.refFieldX + "|" + this.refFieldY;
 	}
 }

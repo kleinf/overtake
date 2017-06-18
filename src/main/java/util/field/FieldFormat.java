@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,8 +41,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 * @param element2
 	 *            Row- oder Col-Element (je nachdem, was danach kommt)
 	 */
-	protected FieldFormat(final int id1, final int id2, final Element element1,
-			final Element element2) {
+	protected FieldFormat(final int id1, final int id2, final Element element1, final Element element2) {
 
 		final String name1 = element1.getName().toLowerCase();
 		final String name2 = element2.getName().toLowerCase();
@@ -73,25 +72,19 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 * @param object2
 	 *            Row- oder Col-Element (je nachdem, was danach kommt)
 	 */
-	protected FieldFormat(final int id1, final int id2, String key1,
-			String key2, final JSONObject object1, final JSONObject object2) {
+	protected FieldFormat(final int id1, final int id2, String key1, String key2, final JSONObject object1,
+			final JSONObject object2) {
 
 		final String name1 = key1.toLowerCase();
 		final String name2 = key2.toLowerCase();
 		map.put(name1, Integer.toString(id1));
 		map.put(name2, Integer.toString(id2));
-		map.put(name1 + FACTOR, object1.has(FACTOR) ? object1.get(FACTOR)
-				.toString() : "1");
-		map.put(name2 + FACTOR, object2.has(FACTOR) ? object2.get(FACTOR)
-				.toString() : "1");
-		map.put(name1 + OFFSET_X, object1.has(OFFSET_X) ? object1.get(OFFSET_X)
-				.toString() : "0");
-		map.put(name2 + OFFSET_X, object2.has(OFFSET_X) ? object2.get(OFFSET_X)
-				.toString() : "0");
-		map.put(name1 + OFFSET_Y, object1.has(OFFSET_Y) ? object1.get(OFFSET_Y)
-				.toString() : "0");
-		map.put(name2 + OFFSET_Y, object2.has(OFFSET_Y) ? object2.get(OFFSET_Y)
-				.toString() : "0");
+		map.put(name1 + FACTOR, object1.has(FACTOR) ? object1.get(FACTOR).toString() : "1");
+		map.put(name2 + FACTOR, object2.has(FACTOR) ? object2.get(FACTOR).toString() : "1");
+		map.put(name1 + OFFSET_X, object1.has(OFFSET_X) ? object1.get(OFFSET_X).toString() : "0");
+		map.put(name2 + OFFSET_X, object2.has(OFFSET_X) ? object2.get(OFFSET_X).toString() : "0");
+		map.put(name1 + OFFSET_Y, object1.has(OFFSET_Y) ? object1.get(OFFSET_Y).toString() : "0");
+		map.put(name2 + OFFSET_Y, object2.has(OFFSET_Y) ? object2.get(OFFSET_Y).toString() : "0");
 		parseBorders(object2);
 	}
 
@@ -104,25 +97,16 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	private void parseBorders(final Element fieldElement) {
 
 		borderFormats = new TreeMap<Integer, BorderFormat>();
-		for (final Element elementBorder : (List<Element>) fieldElement
-				.getChildren("border")) {
-			final BorderFormat borderFormat = new BorderFormat(
-					Integer.parseInt(elementBorder.getAttributeValue("id")),
-					Integer.parseInt(elementBorder
-							.getAttributeValue("refBorderId")),
-					Integer.parseInt(elementBorder
-							.getAttributeValue("refFieldX")),
-					Integer.parseInt(elementBorder
-							.getAttributeValue("refFieldY")));
+		for (final Element elementBorder : (List<Element>) fieldElement.getChildren("border")) {
+			final BorderFormat borderFormat = new BorderFormat(Integer.parseInt(elementBorder.getAttributeValue("id")),
+					Integer.parseInt(elementBorder.getAttributeValue("refBorderId")),
+					Integer.parseInt(elementBorder.getAttributeValue("refFieldX")),
+					Integer.parseInt(elementBorder.getAttributeValue("refFieldY")));
 			final List<PointFormat> pointFormats = new ArrayList<>();
-			for (final Element elementPoint : (List<Element>) elementBorder
-					.getChildren()) {
-				final PointType pt = PointType.valueOf(elementPoint.getName()
-						.toUpperCase());
-				final double posX1 = Double.parseDouble(elementPoint
-						.getAttributeValue("x1"));
-				final double posY1 = Double.parseDouble(elementPoint
-						.getAttributeValue("y1"));
+			for (final Element elementPoint : (List<Element>) elementBorder.getChildren()) {
+				final PointType pt = PointType.valueOf(elementPoint.getName().toUpperCase());
+				final double posX1 = Double.parseDouble(elementPoint.getAttributeValue("x1"));
+				final double posY1 = Double.parseDouble(elementPoint.getAttributeValue("y1"));
 				setMinMax(posX1, posY1);
 				if (PointType.MOVE == pt) {
 					pointFormats.add(new PointFormat(pt, posX1, posY1));
@@ -131,32 +115,23 @@ public class FieldFormat implements Comparable<FieldFormat> {
 					pointFormats.add(new PointFormat(pt, posX1, posY1));
 				}
 				if (PointType.QUAD == pt) {
-					final double posX2 = Double.parseDouble(elementPoint
-							.getAttributeValue("x2"));
-					final double posY2 = Double.parseDouble(elementPoint
-							.getAttributeValue("y2"));
+					final double posX2 = Double.parseDouble(elementPoint.getAttributeValue("x2"));
+					final double posY2 = Double.parseDouble(elementPoint.getAttributeValue("y2"));
 					setMinMax(posX2, posY2);
-					pointFormats.add(new PointFormat(pt, posX1, posY1, posX2,
-							posY2));
+					pointFormats.add(new PointFormat(pt, posX1, posY1, posX2, posY2));
 				}
 				if (PointType.CURVE == pt) {
-					final double posX2 = Double.parseDouble(elementPoint
-							.getAttributeValue("x2"));
-					final double posY2 = Double.parseDouble(elementPoint
-							.getAttributeValue("y2"));
+					final double posX2 = Double.parseDouble(elementPoint.getAttributeValue("x2"));
+					final double posY2 = Double.parseDouble(elementPoint.getAttributeValue("y2"));
 					setMinMax(posX2, posY2);
-					final double posX3 = Double.parseDouble(elementPoint
-							.getAttributeValue("x3"));
-					final double posY3 = Double.parseDouble(elementPoint
-							.getAttributeValue("y3"));
+					final double posX3 = Double.parseDouble(elementPoint.getAttributeValue("x3"));
+					final double posY3 = Double.parseDouble(elementPoint.getAttributeValue("y3"));
 					setMinMax(posX3, posY3);
-					pointFormats.add(new PointFormat(pt, posX1, posY1, posX2,
-							posY2, posX3, posY3));
+					pointFormats.add(new PointFormat(pt, posX1, posY1, posX2, posY2, posX3, posY3));
 				}
 			}
 			borderFormat.setPointFormats(pointFormats);
-			borderFormats.put(Integer.valueOf(borderFormat.getId()),
-					borderFormat);
+			borderFormats.put(Integer.valueOf(borderFormat.getId()), borderFormat);
 		}
 	}
 
@@ -173,17 +148,14 @@ public class FieldFormat implements Comparable<FieldFormat> {
 			JSONArray borders = fieldObject.getJSONArray("border");
 			for (int i = 0; i < borders.length(); i++) {
 				JSONObject elementBorder = borders.getJSONObject(i);
-				final BorderFormat borderFormat = new BorderFormat(
-						elementBorder.getInt("id"),
-						elementBorder.getInt("refBorderId"),
-						elementBorder.getInt("refFieldX"),
+				final BorderFormat borderFormat = new BorderFormat(elementBorder.getInt("id"),
+						elementBorder.getInt("refBorderId"), elementBorder.getInt("refFieldX"),
 						elementBorder.getInt("refFieldY"));
 				final List<PointFormat> pointFormats = new ArrayList<>();
 				JSONArray walls = elementBorder.getJSONArray("wall");
 				for (int j = 0; j < walls.length(); j++) {
 					JSONObject elementPoint = walls.getJSONObject(j);
-					final PointType pt = PointType.valueOf(elementPoint
-							.getString("type").toUpperCase());
+					final PointType pt = PointType.valueOf(elementPoint.getString("type").toUpperCase());
 					final double posX1 = elementPoint.getDouble("x1");
 					final double posY1 = elementPoint.getDouble("y1");
 					setMinMax(posX1, posY1);
@@ -197,8 +169,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 						final double posX2 = elementPoint.getDouble("x2");
 						final double posY2 = elementPoint.getDouble("y2");
 						setMinMax(posX2, posY2);
-						pointFormats.add(new PointFormat(pt, posX1, posY1,
-								posX2, posY2));
+						pointFormats.add(new PointFormat(pt, posX1, posY1, posX2, posY2));
 					}
 					if (PointType.CURVE == pt) {
 						final double posX2 = elementPoint.getDouble("x2");
@@ -207,13 +178,11 @@ public class FieldFormat implements Comparable<FieldFormat> {
 						final double posX3 = elementPoint.getDouble("x3");
 						final double posY3 = elementPoint.getDouble("y3");
 						setMinMax(posX3, posY3);
-						pointFormats.add(new PointFormat(pt, posX1, posY1,
-								posX2, posY2, posX3, posY3));
+						pointFormats.add(new PointFormat(pt, posX1, posY1, posX2, posY2, posX3, posY3));
 					}
 				}
 				borderFormat.setPointFormats(pointFormats);
-				this.borderFormats.put(Integer.valueOf(borderFormat.getId()),
-						borderFormat);
+				this.borderFormats.put(Integer.valueOf(borderFormat.getId()), borderFormat);
 			}
 		}
 	}
@@ -353,9 +322,8 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            boolean
 	 * @return Collection<BorderFormat>
 	 */
-	private Collection<BorderFormat> getBorderFormatsFiltered(final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
+	private Collection<BorderFormat> getBorderFormatsFiltered(final int idX, final int idY, final int maxX,
+			final int maxY, final boolean borderless) {
 
 		if (borderless) {
 			return borderFormats.values();
@@ -364,10 +332,8 @@ public class FieldFormat implements Comparable<FieldFormat> {
 		final Map<String, BorderFormat> borderFormatsFiltered = new HashMap<>();
 		// Alle Nachbarschaftsbeziehungen dieses Feldes durchlaufen
 		for (final BorderFormat borderFormat : borderFormats.values()) {
-			if (idX + borderFormat.getRefFieldX() >= 0
-					&& idY + borderFormat.getRefFieldY() >= 0
-					&& idX + borderFormat.getRefFieldX() < maxX
-					&& idY + borderFormat.getRefFieldY() < maxY) {
+			if (idX + borderFormat.getRefFieldX() >= 0 && idY + borderFormat.getRefFieldY() >= 0
+					&& idX + borderFormat.getRefFieldX() < maxX && idY + borderFormat.getRefFieldY() < maxY) {
 				borderFormatsFiltered.put(borderFormat.getKey(), borderFormat);
 			}
 		}
@@ -390,11 +356,10 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            boolean
 	 * @return List<FieldRelation>
 	 */
-	protected List<FieldRelation> getRelations(final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
+	protected List<FieldRelation> getRelations(final int idX, final int idY, final int maxX, final int maxY,
+			final boolean borderless) {
 
-		final Collection<BorderFormat> bf = getBorderFormatsFiltered(idX, idY,
-				maxX, maxY, borderless);
+		final Collection<BorderFormat> bf = getBorderFormatsFiltered(idX, idY, maxX, maxY, borderless);
 		int x;
 		int y;
 		final List<FieldRelation> relations = new ArrayList<>();
@@ -417,8 +382,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 					y = 0;
 				}
 			}
-			relations.add(new FieldRelation(borderFormat.getId(), borderFormat
-					.getRefId(), x, y));
+			relations.add(new FieldRelation(borderFormat.getId(), borderFormat.getRefId(), x, y));
 		}
 		return relations;
 	}
@@ -448,12 +412,11 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            boolean
 	 * @return Field
 	 */
-	public Field getField(final int width, final int height,
-			final double sumColFactor, final double sumRowFactor,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
-		return new Field(idX, idY, getFieldParts(width, height, sumColFactor,
-				sumRowFactor, translate, idX, idY, maxX, maxY, borderless));
+	public Field getField(final int width, final int height, final double sumColFactor, final double sumRowFactor,
+			final boolean translate, final int idX, final int idY, final int maxX, final int maxY,
+			final boolean borderless) {
+		return new Field(idX, idY,
+				getFieldParts(width, height, sumColFactor, sumRowFactor, translate, idX, idY, maxX, maxY, borderless));
 	}
 
 	/**
@@ -471,9 +434,8 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            boolean
 	 * @return double[]
 	 */
-	protected double[] getPosition(final int width, final int height,
-			final double sumColFactor, final double sumRowFactor,
-			final boolean translate) {
+	protected double[] getPosition(final int width, final int height, final double sumColFactor,
+			final double sumRowFactor, final boolean translate) {
 
 		// X - Koordinaten des Spaltenanfangs
 		double pathPosBoardX = 0.0D;
@@ -527,18 +489,14 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            boolean
 	 * @return Map<String, Shape>
 	 */
-	public Map<String, Shape> getWalls(final int width, final int height,
-			final double sumColFactor, final double sumRowFactor,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
+	public Map<String, Shape> getWalls(final int width, final int height, final double sumColFactor,
+			final double sumRowFactor, final boolean translate, final int idX, final int idY, final int maxX,
+			final int maxY, final boolean borderless) {
 
-		final double[] pos = getPosition(width, height, sumColFactor,
-				sumRowFactor, translate);
+		final double[] pos = getPosition(width, height, sumColFactor, sumRowFactor, translate);
 		final Map<String, Shape> walls = new HashMap<>();
-		for (final BorderFormat borderFormat : getBorderFormatsFiltered(idX,
-				idY, maxX, maxY, borderless)) {
-			walls.put(borderFormat.getKey(),
-					borderFormat.getWall(width, height, pos[0], pos[1]));
+		for (final BorderFormat borderFormat : getBorderFormatsFiltered(idX, idY, maxX, maxY, borderless)) {
+			walls.put(borderFormat.getKey(), borderFormat.getWall(width, height, pos[0], pos[1]));
 		}
 		return walls;
 	}
@@ -561,14 +519,11 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            double
 	 * @return int[]
 	 */
-	protected int[] getSize(final int containerWidth,
-			final int containerHeight, final int maxX, final int maxY,
+	protected int[] getSize(final int containerWidth, final int containerHeight, final int maxX, final int maxY,
 			final double maxOffsetX, final double maxOffsetY) {
 
-		final int width = (int) Math.rint(containerWidth
-				/ ((maxX - 1.0D) * getColFactor() + 1.0D + maxOffsetX));
-		final int height = (int) Math.rint(containerHeight
-				/ ((maxY - 1.0D) * getRowFactor() + 1.0D + maxOffsetY));
+		final int width = (int) Math.rint(containerWidth / ((maxX - 1.0D) * getColFactor() + 1.0D + maxOffsetX));
+		final int height = (int) Math.rint(containerHeight / ((maxY - 1.0D) * getRowFactor() + 1.0D + maxOffsetY));
 		return new int[] { width, height };
 	}
 
@@ -598,13 +553,11 @@ public class FieldFormat implements Comparable<FieldFormat> {
 	 *            boolean
 	 * @return List<FieldPart>
 	 */
-	protected List<FieldPart> getFieldParts(final int width, final int height,
-			final double sumColFactor, final double sumRowFactor,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
+	protected List<FieldPart> getFieldParts(final int width, final int height, final double sumColFactor,
+			final double sumRowFactor, final boolean translate, final int idX, final int idY, final int maxX,
+			final int maxY, final boolean borderless) {
 
-		final double[] pos = getPosition(width, height, sumColFactor,
-				sumRowFactor, translate);
+		final double[] pos = getPosition(width, height, sumColFactor, sumRowFactor, translate);
 		final double centerX = pos[0] + width * getMinMaxPosX() * 0.5D;
 		final double centerY = pos[1] + height * getMinMaxPosY() * 0.5D;
 
@@ -620,8 +573,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 			x = idX + borderFormat.getRefFieldX();
 			y = idY + borderFormat.getRefFieldY();
 			// Nachbarschaftsbeziehungen dieses Feldes pruefen
-			possibleBorder = borderless
-					|| (x >= 0 && y >= 0 && x < maxX && y < maxY);
+			possibleBorder = borderless || (x >= 0 && y >= 0 && x < maxX && y < maxY);
 
 			// Bei Randueberlauf muessen die Nachbarfelder, die ueber den Rand
 			// hinausgehen, auf die gegenueberliegende Seite umgeleitet werden.
@@ -643,8 +595,7 @@ public class FieldFormat implements Comparable<FieldFormat> {
 			segment = null;
 			wall = borderFormat.getWall(width, height, pos[0], pos[1]);
 			if (possibleBorder) {
-				fieldRelation = new FieldRelation(borderFormat.getId(),
-						borderFormat.getRefId(), x, y);
+				fieldRelation = new FieldRelation(borderFormat.getId(), borderFormat.getRefId(), x, y);
 				segment = new Shape();
 				segment.moveTo(centerX, centerY);
 				segment.append(wall, true);

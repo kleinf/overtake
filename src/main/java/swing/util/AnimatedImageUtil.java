@@ -57,8 +57,7 @@ public class AnimatedImageUtil {
 		final int height = 256;
 
 		final Image[] frames = new BufferedImage[1];
-		final BufferedImage image = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		final Graphics g = image.getGraphics();
 		g.setColor(color);
 		g.fillRect(0, 0, width, height);
@@ -81,12 +80,10 @@ public class AnimatedImageUtil {
 	 *            Color
 	 * @return MyImage
 	 */
-	public static AnimatedImage createMyImage(final String imageName,
-			final Color color) {
+	public static AnimatedImage createMyImage(final String imageName, final Color color) {
 		if (imageName != null && imageName.trim().length() > 0) {
 			try {
-				return createMyImage(ImageIO.createImageInputStream(new File(
-						Constants.USERPATH + "/" + imageName)));
+				return createMyImage(ImageIO.createImageInputStream(new File(Constants.USER_PATH + "/" + imageName)));
 			} catch (final IOException e) {
 				PseudoLogger.getInstance().log(e.getMessage());
 			}
@@ -101,12 +98,10 @@ public class AnimatedImageUtil {
 	 * @throws IOException
 	 *             im Fehlerfall
 	 */
-	private static AnimatedImage createMyImage(
-			final ImageInputStream imageStream) throws IOException {
+	private static AnimatedImage createMyImage(final ImageInputStream imageStream) throws IOException {
 		ImageReader reader = null;
 		try {
-			final Iterator<ImageReader> readers = ImageIO
-					.getImageReaders(imageStream);
+			final Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
 			if (!readers.hasNext()) {
 				throw new RuntimeException("Imageformat nicht lesbar.");
 			}
@@ -131,41 +126,33 @@ public class AnimatedImageUtil {
 			// Merge Frames
 			Graphics2D bufGfx;
 			Composite opaque;
-			final AlphaComposite clear = AlphaComposite.getInstance(
-					AlphaComposite.CLEAR, 0.0F);
+			final AlphaComposite clear = AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0F);
 			final Image[] framesMerged = new BufferedImage[numFrames];
 			for (int i = 0; i < numFrames; i++) {
-				framesMerged[i] = new BufferedImage(maxWidth, maxHeight,
-						BufferedImage.TYPE_INT_ARGB);
+				framesMerged[i] = new BufferedImage(maxWidth, maxHeight, BufferedImage.TYPE_INT_ARGB);
 				bufGfx = (Graphics2D) framesMerged[i].getGraphics();
 				if (i > 0) {
 					bufGfx.drawImage(framesMerged[i - 1], 0, 0, null);
 				}
-				if (i == 0
-						|| metadata[i][META_DISPOSAL] == DISPOSAL_TO_BACKGROUND
+				if (i == 0 || metadata[i][META_DISPOSAL] == DISPOSAL_TO_BACKGROUND
 						|| metadata[i][META_DISPOSAL] == DISPOSAL_TO_PREVIOUS) {
 					opaque = bufGfx.getComposite();
 					bufGfx.setComposite(clear);
 					bufGfx.fillRect(0, 0, maxWidth, maxHeight);
 					bufGfx.setComposite(opaque);
 				}
-				if (i > 0
-						&& metadata[i - 1][META_DISPOSAL] == DISPOSAL_NO_DISPOSE) {
-					bufGfx.drawImage(frames[i - 1],
-							metadata[i - 1][META_LEFT_POS],
-							metadata[i - 1][META_TOP_POS], null);
+				if (i > 0 && metadata[i - 1][META_DISPOSAL] == DISPOSAL_NO_DISPOSE) {
+					bufGfx.drawImage(frames[i - 1], metadata[i - 1][META_LEFT_POS], metadata[i - 1][META_TOP_POS],
+							null);
 				}
 				if (metadata[i][META_DISPOSAL] == DISPOSAL_TO_PREVIOUS) {
 					for (int j = 0; j < i; j++) {
 						if (metadata[j][META_DISPOSAL] == DISPOSAL_NO_DISPOSE) {
-							bufGfx.drawImage(frames[j],
-									metadata[j][META_LEFT_POS],
-									metadata[j][META_TOP_POS], null);
+							bufGfx.drawImage(frames[j], metadata[j][META_LEFT_POS], metadata[j][META_TOP_POS], null);
 						}
 					}
 				}
-				bufGfx.drawImage(frames[i], metadata[i][META_LEFT_POS],
-						metadata[i][META_TOP_POS], null);
+				bufGfx.drawImage(frames[i], metadata[i][META_LEFT_POS], metadata[i][META_TOP_POS], null);
 				bufGfx.dispose();
 				metadata[i][META_WIDTH] = maxWidth;
 				metadata[i][META_HEIGHT] = maxHeight;
@@ -174,8 +161,7 @@ public class AnimatedImageUtil {
 				metadata[i][META_DISPOSAL] = DISPOSAL_TO_BACKGROUND;
 			}
 
-			return new AnimatedImage(framesMerged, metadata, maxWidth,
-					maxHeight);
+			return new AnimatedImage(framesMerged, metadata, maxWidth, maxHeight);
 		} finally {
 			try {
 				if (imageStream != null) {
@@ -192,8 +178,7 @@ public class AnimatedImageUtil {
 
 	private static int[] getMetadata(final IIOMetadata gim) {
 		final int[] metadata = new int[8];
-		if ("javax_imageio_gif_image_1.0".equals(gim
-				.getNativeMetadataFormatName())) {
+		if ("javax_imageio_gif_image_1.0".equals(gim.getNativeMetadataFormatName())) {
 
 			final Node tree = gim.getAsTree("javax_imageio_gif_image_1.0");
 			final NodeList children = tree.getChildNodes();
@@ -202,20 +187,15 @@ public class AnimatedImageUtil {
 				if ("ImageDescriptor".equals(nodeItem.getNodeName())) {
 					final NamedNodeMap attr = nodeItem.getAttributes();
 					Node attnode = attr.getNamedItem("imageLeftPosition");
-					metadata[META_LEFT_POS] = Integer.parseInt(attnode
-							.getNodeValue());
+					metadata[META_LEFT_POS] = Integer.parseInt(attnode.getNodeValue());
 					attnode = attr.getNamedItem("imageTopPosition");
-					metadata[META_TOP_POS] = Integer.parseInt(attnode
-							.getNodeValue());
+					metadata[META_TOP_POS] = Integer.parseInt(attnode.getNodeValue());
 					attnode = attr.getNamedItem("imageWidth");
-					metadata[META_WIDTH] = Integer.parseInt(attnode
-							.getNodeValue());
+					metadata[META_WIDTH] = Integer.parseInt(attnode.getNodeValue());
 					attnode = attr.getNamedItem("imageHeight");
-					metadata[META_HEIGHT] = Integer.parseInt(attnode
-							.getNodeValue());
+					metadata[META_HEIGHT] = Integer.parseInt(attnode.getNodeValue());
 					attnode = attr.getNamedItem("interlaceFlag");
-					metadata[META_INTERLACE] = Boolean.parseBoolean(attnode
-							.getNodeValue()) ? 1 : 0;
+					metadata[META_INTERLACE] = Boolean.parseBoolean(attnode.getNodeValue()) ? 1 : 0;
 				}
 				if ("GraphicControlExtension".equals(nodeItem.getNodeName())) {
 					final NamedNodeMap attr = nodeItem.getAttributes();
@@ -237,11 +217,9 @@ public class AnimatedImageUtil {
 						metadata[META_DISPOSAL] = DISPOSAL_NO_ACTION;
 					}
 					attnode = attr.getNamedItem("transparentColorFlag");
-					metadata[META_TRANSPARENT] = Boolean.parseBoolean(attnode
-							.getNodeValue()) ? 1 : 0;
+					metadata[META_TRANSPARENT] = Boolean.parseBoolean(attnode.getNodeValue()) ? 1 : 0;
 					attnode = attr.getNamedItem("delayTime");
-					metadata[META_DELAY] = Integer.parseInt(attnode
-							.getNodeValue()) * 10;
+					metadata[META_DELAY] = Integer.parseInt(attnode.getNodeValue()) * 10;
 				}
 			}
 		}

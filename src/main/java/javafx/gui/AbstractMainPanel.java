@@ -1,9 +1,8 @@
 package javafx.gui;
 
-import javafx.scene.layout.Pane;
-
 import java.awt.event.MouseEvent;
 
+import javafx.scene.layout.Pane;
 import util.ModeEnum;
 
 /**

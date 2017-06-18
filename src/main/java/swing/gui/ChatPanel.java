@@ -1,7 +1,5 @@
 package swing.gui;
 
-import game.Player;
-
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import game.Player;
 import net.Net;
 import util.Constants;
 
@@ -98,12 +97,9 @@ public class ChatPanel extends JPanel {
 				@Override
 				public void keyReleased(final KeyEvent event) {
 					if (event.getKeyCode() == KeyEvent.VK_ENTER) {
-						getGameFrame().send(
-								((Player) getJComboBox().getSelectedItem())
-										.getPlayerId(),
-								Net.CHAT.name() + Constants.NET_DIVIDER
-										+ getGameFrame().getEigenerName()
-										+ ": " + getJTextField().getText());
+						getGameFrame().send(((Player) getJComboBox().getSelectedItem()).getPlayerId(),
+								Net.CHAT.name() + Constants.NET_DIVIDER + getGameFrame().getEigenerName() + ": "
+										+ getJTextField().getText());
 						getJTextField().setText("");
 					}
 				}

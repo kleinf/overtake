@@ -1,7 +1,5 @@
 package swing.gui.options;
 
-import game.GameSession;
-
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -18,6 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import game.GameSession;
 import util.Constants;
 
 /**
@@ -46,8 +45,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 	 * @param name
 	 *            String
 	 */
-	protected BoardOptionDialogPanel(final JDialog parentDialog,
-			final String name) {
+	protected BoardOptionDialogPanel(final JDialog parentDialog, final String name) {
 		super(parentDialog, name);
 	}
 
@@ -167,12 +165,11 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 	JComboBox<String> getJCbFieldName() {
 		if (jCbFieldName == null) {
 			jCbFieldName = new JComboBox<>();
-			final String[] entries = Constants.USERDIR.list();
+			final String[] entries = Constants.USER_DIR.list();
 			Collections.sort(Arrays.asList(entries));
 			for (final String entry : entries) {
 				if (entry.matches(".*\\.field$")) {
-					jCbFieldName
-							.addItem(entry.substring(0, entry.length() - 6));
+					jCbFieldName.addItem(entry.substring(0, entry.length() - 6));
 				}
 			}
 			jCbFieldName.setEnabled(jCbFieldName.getItemCount() > 0);
@@ -220,8 +217,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 			jSldFieldAlpha = new JSlider();
 			jSldFieldAlpha.setMinimum(0);
 			jSldFieldAlpha.setMaximum(100);
-			jSldFieldAlpha.setValue((int) (GameSession.gameOptions
-					.getFieldAlpha() * 100.0F));
+			jSldFieldAlpha.setValue((int) (GameSession.gameOptions.getFieldAlpha() * 100.0F));
 			jSldFieldAlpha.setSnapToTicks(true);
 			jSldFieldAlpha.addChangeListener(new ChangeListener() {
 
@@ -232,8 +228,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					getJLblFieldAlphaValue().setText(
-							getJSldFieldAlpha().getValue() + "%");
+					getJLblFieldAlphaValue().setText(getJSldFieldAlpha().getValue() + "%");
 					if (getJSldFieldAlpha().getValue() < 100) {
 						getJSldMaxOverload().setValue(0);
 						getJSldMaxOverload().setEnabled(false);
@@ -258,8 +253,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 	JLabel getJLblFieldAlphaValue() {
 		if (jLblFieldAlphaValue == null) {
 			jLblFieldAlphaValue = new JLabel();
-			jLblFieldAlphaValue.setText((int) (GameSession.gameOptions
-					.getFieldAlpha() * 100.0F) + "%");
+			jLblFieldAlphaValue.setText((int) (GameSession.gameOptions.getFieldAlpha() * 100.0F) + "%");
 		}
 		return jLblFieldAlphaValue;
 	}
@@ -272,8 +266,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 	JLabel getJLblMaxOverload() {
 		if (jLblMaxOverload == null) {
 			jLblMaxOverload = new JLabel();
-			jLblMaxOverload
-					.setToolTipText("The amount of how many overloads a field can take until it is vanished");
+			jLblMaxOverload.setToolTipText("The amount of how many overloads a field can take until it is vanished");
 			jLblMaxOverload.setText("Field-Integrity");
 		}
 		return jLblMaxOverload;
@@ -300,8 +293,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					getJLblMaxOverloadValue().setText(
-							Integer.toString(getJSldMaxOverload().getValue()));
+					getJLblMaxOverloadValue().setText(Integer.toString(getJSldMaxOverload().getValue()));
 					if (getJSldMaxOverload().getValue() > 0) {
 						getJSldFieldAlpha().setValue(100);
 						getJSldFieldAlpha().setEnabled(false);
@@ -326,8 +318,7 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 	JLabel getJLblMaxOverloadValue() {
 		if (jLblMaxOverloadValue == null) {
 			jLblMaxOverloadValue = new JLabel();
-			jLblMaxOverloadValue.setText(String.valueOf(GameSession.gameOptions
-					.getMaxOverload()));
+			jLblMaxOverloadValue.setText(String.valueOf(GameSession.gameOptions.getMaxOverload()));
 		}
 		return jLblMaxOverloadValue;
 	}
@@ -343,10 +334,8 @@ public class BoardOptionDialogPanel extends AbstractOptDlgPnl {
 			optDlgPnlBoardLayout.updateOptions();
 		}
 
-		GameSession.gameOptions.setFieldName((String) getJCbFieldName()
-				.getSelectedItem());
-		GameSession.gameOptions
-				.setFieldAlpha(getJSldFieldAlpha().getValue() / 100.0F);
+		GameSession.gameOptions.setFieldName((String) getJCbFieldName().getSelectedItem());
+		GameSession.gameOptions.setFieldAlpha(getJSldFieldAlpha().getValue() / 100.0F);
 		GameSession.gameOptions.setMaxOverload(getJSldMaxOverload().getValue());
 		GameSession.gameOptions.setBorderless(getJCbBorderless().isSelected());
 	}

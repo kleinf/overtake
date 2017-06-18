@@ -43,8 +43,7 @@ public final class GameApplication {
 			}
 
 			// Center window
-			final Dimension screenSize = Toolkit.getDefaultToolkit()
-					.getScreenSize();
+			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			final Dimension frameSize = frame.getSize();
 			if (frameSize.height > screenSize.height) {
 				frameSize.height = screenSize.height;
@@ -52,8 +51,7 @@ public final class GameApplication {
 			if (frameSize.width > screenSize.width) {
 				frameSize.width = screenSize.width;
 			}
-			frame.setLocation((screenSize.width - frameSize.width) / 2,
-					(screenSize.height - frameSize.height) / 2);
+			frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 			frame.setVisible(true);
 		} catch (final ClassNotFoundException exception) {
 			PseudoLogger.getInstance().log(exception.getMessage());

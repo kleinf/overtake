@@ -38,11 +38,9 @@ public class FieldFormatterTest {
 	 */
 	@Test
 	public void testFieldsizeToBoardsize() {
-		int[] boardSize = ff.getBoardsize(fieldWidth, fieldHeight,
-				numFieldsWidth, numFieldsHeight);
+		int[] boardSize = ff.getBoardsize(fieldWidth, fieldHeight, numFieldsWidth, numFieldsHeight);
 
-		int[] fieldSize = ff.getFieldsize(boardSize[0], boardSize[1], 0, 0,
-				numFieldsWidth, numFieldsHeight);
+		int[] fieldSize = ff.getFieldsize(boardSize[0], boardSize[1], 0, 0, numFieldsWidth, numFieldsHeight);
 
 		// Assert.assertEquals(fieldWidth, fieldSize[0]);
 		// Assert.assertEquals(fieldHeight, fieldSize[1]);
@@ -53,11 +51,9 @@ public class FieldFormatterTest {
 	 */
 	@Test
 	public void testBoardsizeToFieldsize() {
-		int[] fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0,
-				numFieldsWidth, numFieldsHeight);
+		int[] fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0, numFieldsWidth, numFieldsHeight);
 
-		int[] boardSize = ff.getBoardsize(fieldSize[0], fieldSize[1],
-				numFieldsWidth, numFieldsHeight);
+		int[] boardSize = ff.getBoardsize(fieldSize[0], fieldSize[1], numFieldsWidth, numFieldsHeight);
 
 		// Assert.assertEquals(boardWidth, boardSize[0]);
 		// Assert.assertEquals(boardHeight, boardSize[1]);
@@ -68,12 +64,10 @@ public class FieldFormatterTest {
 	 */
 	@Test
 	public void testCoords() {
-		int[] fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0,
-				numFieldsWidth, numFieldsHeight);
+		int[] fieldSize = ff.getFieldsize(boardWidth, boardHeight, 0, 0, numFieldsWidth, numFieldsHeight);
 		for (int idY = 0; idY < numFieldsHeight; idY++) {
 			for (int idX = 0; idX < numFieldsWidth; idX++) {
-				ff.getPolygon(fieldSize[0], fieldSize[1], true, idX, idY,
-						numFieldsWidth, numFieldsHeight, false);
+				ff.getPolygon(fieldSize[0], fieldSize[1], true, idX, idY, numFieldsWidth, numFieldsHeight, false);
 				if (!FieldFormatterSwing.getInstance().isEmpty(idX, idY)) {
 					outputSegments(idX, idY);
 				}
@@ -82,20 +76,16 @@ public class FieldFormatterTest {
 	}
 
 	private void outputSegments(final int idX, final int idY) {
-		final GeneralPath poly = FieldFormatterSwing.getInstance().getPolygon(
-				fieldWidth, fieldHeight, true, idX, idY, numFieldsWidth,
-				numFieldsHeight, false);
-		final Map<String, GeneralPath> segments = FieldFormatterSwing
-				.getInstance().getSegments(fieldWidth, fieldHeight, true, idX,
-						idY, numFieldsWidth, numFieldsHeight, borderless);
-		System.out.println(idX + "/" + idY + " " + poly.getBounds().width + "/"
-				+ poly.getBounds().height + " " + poly.getBounds().x + "/"
-				+ poly.getBounds().y);
+		final GeneralPath poly = FieldFormatterSwing.getInstance().getPolygon(fieldWidth, fieldHeight, true, idX, idY,
+				numFieldsWidth, numFieldsHeight, false);
+		final Map<String, GeneralPath> segments = FieldFormatterSwing.getInstance().getSegments(fieldWidth, fieldHeight,
+				true, idX, idY, numFieldsWidth, numFieldsHeight, borderless);
+		System.out.println(idX + "/" + idY + " " + poly.getBounds().width + "/" + poly.getBounds().height + " "
+				+ poly.getBounds().x + "/" + poly.getBounds().y);
 		for (final Entry<String, GeneralPath> entry : segments.entrySet()) {
 			final String[] borders = entry.getKey().split("\\|");
 			final GeneralPath path = entry.getValue();
-			System.out.println("\t" + borders[0] + "->" + borders[1] + " ("
-					+ (idX + Integer.parseInt(borders[2])) + "/"
+			System.out.println("\t" + borders[0] + "->" + borders[1] + " (" + (idX + Integer.parseInt(borders[2])) + "/"
 					+ (idY + Integer.parseInt(borders[3])) + ")");
 			outputSegment(path);
 		}
@@ -103,32 +93,27 @@ public class FieldFormatterTest {
 
 	private void outputSegment(GeneralPath path) {
 		StringBuilder sb = new StringBuilder();
-		for (PathIterator it = path.getPathIterator(null); !it.isDone(); it
-				.next()) {
+		for (PathIterator it = path.getPathIterator(null); !it.isDone(); it.next()) {
 			double[] coords = new double[6];
 			int type = it.currentSegment(coords);
 
 			switch (type) {
 			case PathIterator.SEG_MOVETO:
-				sb.append("x:").append((int) coords[0]).append("/")
-						.append("y:").append((int) coords[1]);
+				sb.append("x:").append((int) coords[0]).append("/").append("y:").append((int) coords[1]);
 				break;
 			case PathIterator.SEG_LINETO:
-				sb.append(" --> ").append("x1:").append((int) coords[0])
-						.append("/").append("y1:").append((int) coords[1]);
+				sb.append(" --> ").append("x1:").append((int) coords[0]).append("/").append("y1:")
+						.append((int) coords[1]);
 				break;
 			case PathIterator.SEG_QUADTO:
-				sb.append(" --> ").append("x1:").append((int) coords[0])
-						.append("/").append("y1:").append((int) coords[1])
-						.append("/").append("x2:").append((int) coords[2])
-						.append("/").append("y2:").append((int) coords[3]);
+				sb.append(" --> ").append("x1:").append((int) coords[0]).append("/").append("y1:")
+						.append((int) coords[1]).append("/").append("x2:").append((int) coords[2]).append("/")
+						.append("y2:").append((int) coords[3]);
 				break;
 			case PathIterator.SEG_CUBICTO:
-				sb.append(" --> ").append("x1:").append((int) coords[0])
-						.append("/").append("y1:").append((int) coords[1])
-						.append("/").append("x2:").append((int) coords[2])
-						.append("/").append("y2:").append((int) coords[3])
-						.append("/").append("x3:").append((int) coords[4])
+				sb.append(" --> ").append("x1:").append((int) coords[0]).append("/").append("y1:")
+						.append((int) coords[1]).append("/").append("x2:").append((int) coords[2]).append("/")
+						.append("y2:").append((int) coords[3]).append("/").append("x3:").append((int) coords[4])
 						.append("/").append("y3:").append((int) coords[5]);
 				break;
 			}

@@ -1,8 +1,5 @@
 package swing.gui;
 
-import game.GameSession;
-import game.NetOptions;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileReader;
@@ -20,13 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+import game.GameSession;
+import game.NetOptions;
 import net.ClientBody;
 import net.Net;
 import net.Server;
-
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-
 import util.Constants;
 import util.ModeEnum;
 import util.PseudoLogger;
@@ -79,10 +77,8 @@ public class GameFrame extends JFrame {
 			netOptions = new NetOptions();
 			netOptions.setHost(GameSession.gameOptions.getHost());
 			netOptions.setPort(GameSession.gameOptions.getPort());
-			netOptions.setPlayerName(GameSession.gameOptions.getPlayer(0)
-					.getPlayerName());
-			netOptions.setPlayerColor(GameSession.gameOptions.getPlayer(0)
-					.getPlayerColor());
+			netOptions.setPlayerName(GameSession.gameOptions.getPlayer(0).getPlayerName());
+			netOptions.setPlayerColor(GameSession.gameOptions.getPlayer(0).getPlayerColor());
 			joinNetGame(netOptions);
 		} else {
 			start(null, false, mode);
@@ -111,14 +107,11 @@ public class GameFrame extends JFrame {
 			try {
 				this.netOptions = netOptions;
 				// Verbindung zum Server aufbauen
-				clientSocket = new Socket(netOptions.getHost(),
-						netOptions.getPort());
-				netOut = new PrintWriter(new DataOutputStream(
-						clientSocket.getOutputStream()));
+				clientSocket = new Socket(netOptions.getHost(), netOptions.getPort());
+				netOut = new PrintWriter(new DataOutputStream(clientSocket.getOutputStream()));
 				netIn = new BufferedReader(new InputStreamReader(System.in));
 				// Am Server anmelden
-				netOut.println(netOptions.getPlayerName()
-						+ Constants.NET_DIVIDER + netOptions.getPlayerColor());
+				netOut.println(netOptions.getPlayerName() + Constants.NET_DIVIDER + netOptions.getPlayerColor());
 				System.out.println("Verbindung wird aufgebaut...");
 				netOut.flush();
 				new ClientBody(clientSocket.getInputStream(), this).start();
@@ -181,8 +174,7 @@ public class GameFrame extends JFrame {
 	 * @param mode
 	 *            Mode
 	 */
-	protected void start(final String xmlData, final boolean updateTree,
-			final ModeEnum mode) {
+	protected void start(final String xmlData, final boolean updateTree, final ModeEnum mode) {
 		JPanel panel = null;
 		if (mode == ModeEnum.MODE_PLAY) {
 			panel = new GamePanel(this, xmlData);
@@ -284,92 +276,66 @@ public class GameFrame extends JFrame {
 		String buffer;
 		if (message.startsWith(Net.ZUG.name() + Constants.NET_DIVIDER)) {
 			// Gesendeter Spielzug wurde empfangen
-			buffer = message.substring((Net.ZUG.name() + Constants.NET_DIVIDER)
-					.length());
+			buffer = message.substring((Net.ZUG.name() + Constants.NET_DIVIDER).length());
 			final String[] zug = buffer.split(Constants.NET_DIVIDER_ESCAPED);
-			gamePanel.netBoardClick(Integer.parseInt(zug[0]),
-					Integer.parseInt(zug[1]));
+			gamePanel.netBoardClick(Integer.parseInt(zug[0]), Integer.parseInt(zug[1]));
 		} else if (message.startsWith(Net.MODE.name() + Constants.NET_DIVIDER)) {
 			// Gesendeter Moduswechsel wurde empfangen
-			buffer = message
-					.substring((Net.MODE.name() + Constants.NET_DIVIDER)
-							.length());
+			buffer = message.substring((Net.MODE.name() + Constants.NET_DIVIDER).length());
 			gamePanel.setNetMode(buffer);
 		} else if (message.startsWith(Net.OK.name() + Constants.NET_DIVIDER)) {
 			// Gesendete Anmeldebestaetigung wurde empfangen
-			buffer = message.substring((Net.OK.name() + Constants.NET_DIVIDER)
-					.length());
+			buffer = message.substring((Net.OK.name() + Constants.NET_DIVIDER).length());
 			netOptions.setId(buffer);
 			System.out.println("Verbindung mit ID " + buffer + " bestaetigt");
 		} else if (message.startsWith(Net.ERROR.name() + Constants.NET_DIVIDER)) {
 			// Gesendete Anmeldung wurde abgelehnt
-			buffer = message
-					.substring((Net.ERROR.name() + Constants.NET_DIVIDER)
-							.length());
+			buffer = message.substring((Net.ERROR.name() + Constants.NET_DIVIDER).length());
 			System.out.println("Fehler: " + buffer);
 		} else if (message.startsWith(Net.GAME.name() + Constants.NET_DIVIDER)) {
 			// Gesendete Spieleinstellungen wurden empfangen
-			buffer = message
-					.substring((Net.GAME.name() + Constants.NET_DIVIDER)
-							.length());
+			buffer = message.substring((Net.GAME.name() + Constants.NET_DIVIDER).length());
 			try {
 				final StringReader reader = new StringReader(buffer);
 				final SAXBuilder builder = new SAXBuilder();
-				GameSession.gameOptions.setData(builder.build(reader)
-						.getRootElement());
+				GameSession.gameOptions.setData(builder.build(reader).getRootElement());
 				start(null, false, ModeEnum.MODE_PLAY);
 			} catch (final IOException exception) {
 				PseudoLogger.getInstance().log(exception.getMessage());
 			} catch (final JDOMException exception) {
 				PseudoLogger.getInstance().log(exception.getMessage());
 			}
-		} else if (message.startsWith(Net.USERLIST.name()
-				+ Constants.NET_DIVIDER)) {
+		} else if (message.startsWith(Net.USERLIST.name() + Constants.NET_DIVIDER)) {
 			// Gesendete Useriste wurde empfangen
-			buffer = message
-					.substring((Net.USERLIST.name() + Constants.NET_DIVIDER_DOUBLE)
-							.length());
-			final String[] clients = buffer
-					.split(Constants.NET_DIVIDER_DOUBLE_ESCAPED);
+			buffer = message.substring((Net.USERLIST.name() + Constants.NET_DIVIDER_DOUBLE).length());
+			final String[] clients = buffer.split(Constants.NET_DIVIDER_DOUBLE_ESCAPED);
 			for (final String client : clients) {
-				final String[] clientData = client
-						.split(Constants.NET_DIVIDER_ESCAPED);
-				gamePanel.activatePlayer(Integer.parseInt(clientData[0]),
-						clientData[1], Integer.parseInt(clientData[2]));
+				final String[] clientData = client.split(Constants.NET_DIVIDER_ESCAPED);
+				gamePanel.activatePlayer(Integer.parseInt(clientData[0]), clientData[1],
+						Integer.parseInt(clientData[2]));
 			}
 		} else if (message.startsWith(Net.ADD.name() + Constants.NET_DIVIDER)) {
 			// Neuer Spieler hat sich angemeldet
-			buffer = message.substring((Net.ADD.name() + Constants.NET_DIVIDER)
-					.length());
-			final String[] clientData = buffer
-					.split(Constants.NET_DIVIDER_ESCAPED);
+			buffer = message.substring((Net.ADD.name() + Constants.NET_DIVIDER).length());
+			final String[] clientData = buffer.split(Constants.NET_DIVIDER_ESCAPED);
 			if (!netOptions.getId().equals(clientData[0])) {
-				gamePanel.activatePlayer(Integer.parseInt(clientData[0]),
-						clientData[1], Integer.parseInt(clientData[2]));
-				gamePanel.getChatPanel().appendChatMessage(
-						clientData[1] + " hat sich angemeldet\n");
+				gamePanel.activatePlayer(Integer.parseInt(clientData[0]), clientData[1],
+						Integer.parseInt(clientData[2]));
+				gamePanel.getChatPanel().appendChatMessage(clientData[1] + " hat sich angemeldet\n");
 			}
-		} else if (message
-				.startsWith(Net.REMOVE.name() + Constants.NET_DIVIDER)) {
+		} else if (message.startsWith(Net.REMOVE.name() + Constants.NET_DIVIDER)) {
 			// Alter Spieler hat sich abgemeldet
-			buffer = message
-					.substring((Net.REMOVE.name() + Constants.NET_DIVIDER)
-							.length());
-			final String[] clientData = buffer
-					.split(Constants.NET_DIVIDER_ESCAPED);
+			buffer = message.substring((Net.REMOVE.name() + Constants.NET_DIVIDER).length());
+			final String[] clientData = buffer.split(Constants.NET_DIVIDER_ESCAPED);
 			if (Net.SERVER.name().equals(clientData[0])) {
-				gamePanel.getChatPanel().appendChatMessage(
-						"Server wurde beendet!\n");
+				gamePanel.getChatPanel().appendChatMessage("Server wurde beendet!\n");
 			} else if (!netOptions.getId().equals(clientData[0])) {
 				gamePanel.deactivatePlayer(Integer.parseInt(clientData[0]));
-				gamePanel.getChatPanel().appendChatMessage(
-						clientData[1] + " hat sich abgemeldet\n");
+				gamePanel.getChatPanel().appendChatMessage(clientData[1] + " hat sich abgemeldet\n");
 			}
 		} else if (message.startsWith(Net.CHAT.name() + Constants.NET_DIVIDER)) {
 			// Gesendete Chatnachricht wurde empfangen
-			buffer = message
-					.substring((Net.CHAT.name() + Constants.NET_DIVIDER)
-							.length());
+			buffer = message.substring((Net.CHAT.name() + Constants.NET_DIVIDER).length());
 			gamePanel.getChatPanel().appendChatMessage(buffer + "\n");
 		}
 	}

@@ -1,7 +1,5 @@
 package swing.gui;
 
-import game.GameSession;
-
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.GameSession;
 import util.ModeEnum;
 
 /**
@@ -42,8 +41,7 @@ public class InfoPanel extends JPanel {
 	 * @param height
 	 *            int
 	 */
-	protected InfoPanel(final GamePanel gamePanel, final int width,
-			final int height) {
+	protected InfoPanel(final GamePanel gamePanel, final int width, final int height) {
 		super();
 		setSize(width, height);
 		setPreferredSize(getSize());
@@ -171,12 +169,10 @@ public class InfoPanel extends JPanel {
 			jLblCounter = new JLabel[GameSession.gameOptions.getMaxPlayers()];
 			for (int i = 0; i < GameSession.gameOptions.getMaxPlayers(); i++) {
 				jLblCounter[i] = new JLabel();
-				if (GameSession.gameOptions.getNetwork() > 0
-						&& !gamePanel.getPlayer(i).isActive()) {
+				if (GameSession.gameOptions.getNetwork() > 0 && !gamePanel.getPlayer(i).isActive()) {
 					jLblCounter[i] = new JLabel("<Nicht angemeldet>");
 				} else {
-					jLblCounter[i] = new JLabel("Anzahl "
-							+ gamePanel.getPlayer(i).getPlayerName() + ":");
+					jLblCounter[i] = new JLabel("Anzahl " + gamePanel.getPlayer(i).getPlayerName() + ":");
 				}
 			}
 		}
@@ -185,8 +181,7 @@ public class InfoPanel extends JPanel {
 
 	private JLabel[] getJLblCounterValue() {
 		if (jLblCounterValue == null) {
-			jLblCounterValue = new JLabel[GameSession.gameOptions
-					.getMaxPlayers()];
+			jLblCounterValue = new JLabel[GameSession.gameOptions.getMaxPlayers()];
 			for (int i = 0; i < GameSession.gameOptions.getMaxPlayers(); i++) {
 				jLblCounterValue[i] = new JLabel();
 				jLblCounterValue[i] = new JLabel("");
@@ -217,8 +212,7 @@ public class InfoPanel extends JPanel {
 	 */
 	protected void refreshNetPlayer(final int playerId) {
 		if (gamePanel.getPlayer(playerId).isActive()) {
-			jLblCounter[playerId].setText("Anzahl "
-					+ gamePanel.getPlayer(playerId).getPlayerName() + ":");
+			jLblCounter[playerId].setText("Anzahl " + gamePanel.getPlayer(playerId).getPlayerName() + ":");
 		} else {
 			jLblCounter[playerId].setText("<Nicht angemeldet>");
 		}
@@ -228,34 +222,20 @@ public class InfoPanel extends JPanel {
 	 * 
 	 */
 	protected final void refresh() {
-		getJLblCurrPlayerValue().setText(
-				gamePanel.getCurrPlayer().getPlayerName());
+		getJLblCurrPlayerValue().setText(gamePanel.getCurrPlayer().getPlayerName());
 		getJLblRoundValue().setText(Integer.toString(gamePanel.getCurrRound()));
-		getJLblFreeValue().setText(
-				gamePanel.getBoardPanel().getSumFieldsFree()
-						+ " ("
-						+ Math.rint(gamePanel.getBoardPanel()
-								.getSumFieldsFree()
-								* 100.0D
-								/ gamePanel.getBoardPanel().getSumFields())
-						+ "%)");
+		getJLblFreeValue().setText(gamePanel.getBoardPanel().getSumFieldsFree() + " (" + Math
+				.rint(gamePanel.getBoardPanel().getSumFieldsFree() * 100.0D / gamePanel.getBoardPanel().getSumFields())
+				+ "%)");
 		for (int i = 0; i < GameSession.gameOptions.getMaxPlayers(); i++) {
-			getJLblCounterValue()[i].setText(gamePanel.getPlayer(i)
-					.getNumFields()
-					+ " ("
-					+ Math.rint(gamePanel.getPlayer(i).getNumFields() * 100.0D
-							/ gamePanel.getBoardPanel().getSumFields()) + "%)");
+			getJLblCounterValue()[i].setText(gamePanel.getPlayer(i).getNumFields() + " ("
+					+ Math.rint(
+							gamePanel.getPlayer(i).getNumFields() * 100.0D / gamePanel.getBoardPanel().getSumFields())
+					+ "%)");
 		}
-		if (gamePanel.getCurrPlayer().getRepairPoints() > 0
-				&& !gamePanel.getCurrPlayer().isComputer()) {
-			getJButtonRepair().setText(
-					"Repair (" + gamePanel.getCurrPlayer().getRepairPoints()
-							+ ")");
-			getJButtonRepairStop()
-					.setText(
-							"Stop Repair ("
-									+ gamePanel.getCurrPlayer()
-											.getRepairPoints() + ")");
+		if (gamePanel.getCurrPlayer().getRepairPoints() > 0 && !gamePanel.getCurrPlayer().isComputer()) {
+			getJButtonRepair().setText("Repair (" + gamePanel.getCurrPlayer().getRepairPoints() + ")");
+			getJButtonRepairStop().setText("Stop Repair (" + gamePanel.getCurrPlayer().getRepairPoints() + ")");
 			if (gamePanel.isPlayMode()) {
 				getJButtonRepair().setEnabled(gamePanel.isMyTurn());
 				getJButtonRepair().setVisible(true);

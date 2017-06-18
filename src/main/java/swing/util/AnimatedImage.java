@@ -34,8 +34,7 @@ public class AnimatedImage {
 	 * @param height
 	 *            int
 	 */
-	public AnimatedImage(final Image[] frames, final int[][] metadata,
-			final int width, final int height) {
+	public AnimatedImage(final Image[] frames, final int[][] metadata, final int width, final int height) {
 		this.frames = frames;
 		framesResized = new BufferedImage[frames.length];
 		this.metadata = metadata;
@@ -63,26 +62,18 @@ public class AnimatedImage {
 		if (heightResized > 0) {
 			scaleY = heightResized / (double) height;
 		}
-		final AffineTransform scale = AffineTransform.getScaleInstance(scaleX,
-				scaleY);
+		final AffineTransform scale = AffineTransform.getScaleInstance(scaleX, scaleY);
 		Graphics2D bufGfx;
 		for (int i = 0; i < numFrames; i++) {
-			metadataResized[i][META_WIDTH] = widthResized == 0 ? width
-					: widthResized;
-			metadataResized[i][META_HEIGHT] = heightResized == 0 ? height
-					: heightResized;
-			framesResized[i] = new BufferedImage(widthResized == 0 ? width
-					: widthResized,
-					heightResized == 0 ? height : heightResized,
-					BufferedImage.TYPE_INT_ARGB);
+			metadataResized[i][META_WIDTH] = widthResized == 0 ? width : widthResized;
+			metadataResized[i][META_HEIGHT] = heightResized == 0 ? height : heightResized;
+			framesResized[i] = new BufferedImage(widthResized == 0 ? width : widthResized,
+					heightResized == 0 ? height : heightResized, BufferedImage.TYPE_INT_ARGB);
 			bufGfx = (Graphics2D) framesResized[i].getGraphics();
 			// Better quality
-			bufGfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-			bufGfx.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
-			bufGfx.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			bufGfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			bufGfx.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			bufGfx.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			bufGfx.setTransform(scale);
 			bufGfx.drawImage(frames[i], 0, 0, null);
 		}
@@ -96,10 +87,8 @@ public class AnimatedImage {
 	 *            int
 	 * @return AnimatedImage
 	 */
-	public AnimatedImage getResizedCopy(final int widthResized,
-			final int heightResized) {
-		return new AnimatedImage(frames.clone(), metadata.clone(), width,
-				height).resize(widthResized, heightResized);
+	public AnimatedImage getResizedCopy(final int widthResized, final int heightResized) {
+		return new AnimatedImage(frames.clone(), metadata.clone(), width, height).resize(widthResized, heightResized);
 	}
 
 	/**

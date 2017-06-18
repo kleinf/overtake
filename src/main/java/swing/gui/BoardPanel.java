@@ -1,8 +1,5 @@
 package swing.gui;
 
-import game.GameSession;
-import game.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +17,10 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
+import game.GameSession;
+import game.Player;
 import swing.util.FieldFormatterSwing;
 import swing.util.ImageLoader;
 import util.field.FieldRelation;
@@ -32,8 +31,7 @@ import util.field.FieldRelation;
  * moeglich, ein Hintergrundbild einzufuegen, welches einfach gezeichnet oder
  * gekachelt dargestellt wird.
  */
-public class BoardPanel extends JPanel implements MouseListener,
-		ComponentListener {
+public class BoardPanel extends JPanel implements MouseListener, ComponentListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final boolean BG_IMAGE_TILED = true;
@@ -68,8 +66,7 @@ public class BoardPanel extends JPanel implements MouseListener,
 		final int fieldWidth = GameSession.gameOptions.getFieldWidth();
 		final int fieldHeight = GameSession.gameOptions.getFieldHeight();
 		components = new FieldComponent[numFieldsWidth][numFieldsHeight];
-		FieldFormatterSwing.getInstance().init(
-				GameSession.gameOptions.getFieldName());
+		FieldFormatterSwing.getInstance().init(GameSession.gameOptions.getFieldName());
 		setLayout(null);
 
 		// Felder initialisieren
@@ -81,61 +78,50 @@ public class BoardPanel extends JPanel implements MouseListener,
 			}
 		} else {
 			for (final Object elField : data.getChildren("field")) {
-				final int idX = Integer.parseInt(((Element) elField)
-						.getAttributeValue("idX"));
-				final int idY = Integer.parseInt(((Element) elField)
-						.getAttributeValue("idY"));
+				final int idX = Integer.parseInt(((Element) elField).getAttributeValue("idX"));
+				final int idY = Integer.parseInt(((Element) elField).getAttributeValue("idY"));
 				addField(idX, idY, fieldWidth, fieldHeight, (Element) elField);
 			}
 		}
 
 		// Nachbarschaftsbeziehungen aufbereiten
-		relations = new Wall[numFieldsWidth][numFieldsHeight][FieldFormatterSwing
-				.getInstance().getMaxRelations()];
+		relations = new Wall[numFieldsWidth][numFieldsHeight][FieldFormatterSwing.getInstance().getMaxRelations()];
 		for (int idY = 0; idY < numFieldsHeight; idY++) {
 			for (int idX = 0; idX < numFieldsWidth; idX++) {
 				if (getFieldComponent(idX, idY) != null) {
-					final List<FieldRelation> rel = FieldFormatterSwing
-							.getInstance().getRelations(idX, idY,
-									numFieldsWidth, numFieldsHeight,
-									GameSession.gameOptions.isBorderless());
+					final List<FieldRelation> rel = FieldFormatterSwing.getInstance().getRelations(idX, idY,
+							numFieldsWidth, numFieldsHeight, GameSession.gameOptions.isBorderless());
 					for (int i = 0; i < rel.size(); i++) {
-						relations[idX][idY][i] = convertRelation(idX, idY,
-								rel.get(i));
+						relations[idX][idY][i] = convertRelation(idX, idY, rel.get(i));
 					}
 				}
 			}
 		}
 
 		// Groesse des BoardPanels an Inhalt anpassen
-		final double[] pos = FieldFormatterSwing.getInstance().getPosition(
-				fieldWidth, fieldHeight, numFieldsWidth - 1,
+		final double[] pos = FieldFormatterSwing.getInstance().getPosition(fieldWidth, fieldHeight, numFieldsWidth - 1,
 				numFieldsHeight - 1, true);
-		setSize((int) Math.rint(pos[0]) + fieldWidth + 1,
-				(int) Math.rint(pos[1]) + fieldHeight + 1);
+		setSize((int) Math.rint(pos[0]) + fieldWidth + 1, (int) Math.rint(pos[1]) + fieldHeight + 1);
 
 		// Groesse des BoardPanels an Inhalt anpassen
-		int[] size = FieldFormatterSwing.getInstance().getBoardsize(fieldWidth,
-				fieldHeight, numFieldsWidth, numFieldsHeight);
+		int[] size = FieldFormatterSwing.getInstance().getBoardsize(fieldWidth, fieldHeight, numFieldsWidth,
+				numFieldsHeight);
 		setSize(size[0], size[1]);
 		setPreferredSize(getSize());
 		createBackground();
 		addComponentListener(this);
 	}
 
-	private void addField(final int idX, final int idY, final int fieldWidth,
-			final int fieldHeight, final Element xmlData) {
-		final FieldComponent field = new FieldComponent(this, idX, idY, true,
-				xmlData);
+	private void addField(final int idX, final int idY, final int fieldWidth, final int fieldHeight,
+			final Element xmlData) {
+		final FieldComponent field = new FieldComponent(this, idX, idY, true, xmlData);
 
 		// final Dimension relativeSize =
 		// FieldFormatterSwing.getInstance().getSize(
 		// getWidth(), getHeight(), idX, idY, cols, rows);
 
-		final double[] pos = FieldFormatterSwing.getInstance().getPosition(
-				fieldWidth, fieldHeight, idX, idY, true);
-		field.setBounds((int) Math.rint(pos[0]), (int) Math.rint(pos[1]),
-				fieldWidth, fieldHeight);
+		final double[] pos = FieldFormatterSwing.getInstance().getPosition(fieldWidth, fieldHeight, idX, idY, true);
+		field.setBounds((int) Math.rint(pos[0]), (int) Math.rint(pos[1]), fieldWidth, fieldHeight);
 
 		components[idX][idY] = field;
 		add(field);
@@ -145,20 +131,14 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 *
 	 */
 	private void createBackground() {
-		final Image bgImage = ImageLoader.getBufferedImage(
-				GameSession.gameOptions.getBoardBgImageName(), this);
-		offscreenImage = new BufferedImage(getWidth(), getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		final Image bgImage = ImageLoader.getBufferedImage(GameSession.gameOptions.getBoardBgImageName(), this);
+		offscreenImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		if (bgImage != null) {
-			final Graphics2D offscreenGraphics = offscreenImage
-					.createGraphics();
+			final Graphics2D offscreenGraphics = offscreenImage.createGraphics();
 			if (BG_IMAGE_TILED) {
-				final Rectangle rect = new Rectangle(0, 0,
-						bgImage.getWidth(null), bgImage.getHeight(null));
-				offscreenGraphics.setPaint(new TexturePaint(
-						(BufferedImage) bgImage, rect));
-				offscreenGraphics.fill(new Rectangle(0, 0, getWidth(),
-						getHeight()));
+				final Rectangle rect = new Rectangle(0, 0, bgImage.getWidth(null), bgImage.getHeight(null));
+				offscreenGraphics.setPaint(new TexturePaint((BufferedImage) bgImage, rect));
+				offscreenGraphics.fill(new Rectangle(0, 0, getWidth(), getHeight()));
 			} else {
 				offscreenGraphics.drawImage(bgImage, 0, 0, null);
 			}
@@ -208,8 +188,7 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 *            boolean
 	 * @return boolean
 	 */
-	protected boolean isAllowed(final int idX, final int idY,
-			final boolean override) {
+	protected boolean isAllowed(final int idX, final int idY, final boolean override) {
 		return parentPanel.checkClick(idX, idY, override);
 	}
 
@@ -253,15 +232,12 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 *            FieldRelation
 	 * @return Wall
 	 */
-	private Wall convertRelation(final int idX, final int idY,
-			final FieldRelation rel) {
+	private Wall convertRelation(final int idX, final int idY, final FieldRelation rel) {
 		final boolean destructable = true;
-		FieldComponent refField = getFieldComponent(rel.getRefFieldX(),
-				rel.getRefFieldY());
+		FieldComponent refField = getFieldComponent(rel.getRefFieldX(), rel.getRefFieldY());
 		if (refField != null && refField.isEnabled()) {
 			final Wall wall = new Wall();
-			wall.init(idX, idY, refField.getIdX(), refField.getIdY(), this,
-					destructable);
+			wall.init(idX, idY, refField.getIdX(), refField.getIdY(), this, destructable);
 			return wall;
 		}
 		return null;
@@ -283,8 +259,7 @@ public class BoardPanel extends JPanel implements MouseListener,
 
 		for (final Wall wall : relations[idX][idY]) {
 			if (wall != null && wall.isDestructable()) {
-				activeRelations.add(getFieldComponent(wall.getField2x(),
-						wall.getField2y()));
+				activeRelations.add(getFieldComponent(wall.getField2x(), wall.getField2y()));
 			}
 		}
 		return activeRelations;
@@ -314,12 +289,9 @@ public class BoardPanel extends JPanel implements MouseListener,
 			if (relation1 == null) {
 				continue;
 			}
-			for (int j = 0; j < relations[relation1.getField2x()][relation1
-					.getField2y()].length; j++) {
-				relation2 = relations[relation1.getField2x()][relation1
-						.getField2y()][j];
-				if (relation2 != null && relation2.getField2x() == idX
-						&& relation2.getField2y() == idY) {
+			for (int j = 0; j < relations[relation1.getField2x()][relation1.getField2y()].length; j++) {
+				relation2 = relations[relation1.getField2x()][relation1.getField2y()][j];
+				if (relation2 != null && relation2.getField2x() == idX && relation2.getField2y() == idY) {
 					relations[relation1.getField2x()][relation1.getField2y()][j] = null;
 				}
 			}
@@ -395,10 +367,8 @@ public class BoardPanel extends JPanel implements MouseListener,
 	 */
 	protected Element getData() {
 		final Element board = new Element("board");
-		board.setAttribute("numFieldsWidth",
-				Integer.toString(GameSession.gameOptions.getNumFieldsWidth()));
-		board.setAttribute("numFieldsHeight",
-				Integer.toString(GameSession.gameOptions.getNumFieldsHeight()));
+		board.setAttribute("numFieldsWidth", Integer.toString(GameSession.gameOptions.getNumFieldsWidth()));
+		board.setAttribute("numFieldsHeight", Integer.toString(GameSession.gameOptions.getNumFieldsHeight()));
 
 		final ArrayList<Element> elements = new ArrayList<>();
 		for (int idY = 0; idY < GameSession.gameOptions.getNumFieldsHeight(); idY++) {
@@ -500,15 +470,13 @@ public class BoardPanel extends JPanel implements MouseListener,
 	@Override
 	public void componentResized(final ComponentEvent arg0) {
 		createBackground();
-		int[] relativeSize = FieldFormatterSwing.getInstance().getFieldsize(
-				getWidth(), getHeight(), 0, 0, numFieldsWidth, numFieldsHeight);
+		int[] relativeSize = FieldFormatterSwing.getInstance().getFieldsize(getWidth(), getHeight(), 0, 0,
+				numFieldsWidth, numFieldsHeight);
 		for (int idY = 0; idY < GameSession.gameOptions.getNumFieldsHeight(); idY++) {
 			for (int idX = 0; idX < GameSession.gameOptions.getNumFieldsWidth(); idX++) {
-				final double[] pos = FieldFormatterSwing.getInstance()
-						.getPosition(relativeSize[0], relativeSize[1], idX,
-								idY, true);
-				getFieldComponent(idX, idY).setBounds((int) Math.rint(pos[0]),
-						(int) Math.rint(pos[1]), relativeSize[0],
+				final double[] pos = FieldFormatterSwing.getInstance().getPosition(relativeSize[0], relativeSize[1],
+						idX, idY, true);
+				getFieldComponent(idX, idY).setBounds((int) Math.rint(pos[0]), (int) Math.rint(pos[1]), relativeSize[0],
 						relativeSize[1]);
 			}
 		}

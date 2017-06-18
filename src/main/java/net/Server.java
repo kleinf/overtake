@@ -1,7 +1,5 @@
 package net;
 
-import game.GameSession;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.ServerSocket;
@@ -9,9 +7,10 @@ import java.net.SocketException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.output.XMLOutputter;
 
+import game.GameSession;
 import util.Constants;
 import util.PseudoLogger;
 
@@ -103,18 +102,15 @@ public class Server extends Thread {
 	 */
 	protected void sendLogin(final int targetId) {
 		// Anmeldung bestaetigen
-		send(targetId, targetId, Net.OK.name() + Constants.NET_DIVIDER
-				+ targetId);
+		send(targetId, targetId, Net.OK.name() + Constants.NET_DIVIDER + targetId);
 		// Spieleinstellungen versenden, um das Spiel zu starten
 		StringWriter writer = null;
 		try {
 			final XMLOutputter serializer = new XMLOutputter();
 			writer = new StringWriter();
-			serializer.output(new Document(GameSession.gameOptions.getData()),
-					writer);
+			serializer.output(new Document(GameSession.gameOptions.getData()), writer);
 			writer.flush();
-			send(targetId, targetId, Net.GAME.name() + Constants.NET_DIVIDER
-					+ writer.getBuffer().toString());
+			send(targetId, targetId, Net.GAME.name() + Constants.NET_DIVIDER + writer.getBuffer().toString());
 		} catch (final IOException exception) {
 			PseudoLogger.getInstance().log(exception.getMessage());
 		} finally {
@@ -131,16 +127,14 @@ public class Server extends Thread {
 		final StringBuilder users = new StringBuilder(Net.USERLIST.name());
 		for (final String key : clients.keySet()) {
 			final ServerClient target = clients.get(key);
-			users.append(Constants.NET_DIVIDER_DOUBLE
-					+ target.getClientString());
+			users.append(Constants.NET_DIVIDER_DOUBLE + target.getClientString());
 		}
 		if (!Net.USERLIST.name().equals(users.toString())) {
 			send(targetId, targetId, users.toString());
 		}
 		// Allen Clients neuen User mitteilen
-		send(targetId, Constants.NET_ALL, Net.ADD.name()
-				+ Constants.NET_DIVIDER
-				+ getServerClient(targetId).getClientString());
+		send(targetId, Constants.NET_ALL,
+				Net.ADD.name() + Constants.NET_DIVIDER + getServerClient(targetId).getClientString());
 	}
 
 	/**
@@ -151,9 +145,8 @@ public class Server extends Thread {
 	 */
 	protected void sendLogout(final int targetId) {
 		// Allen Clients ausgeloggten User mitteilen
-		send(targetId, Constants.NET_ALL, Net.REMOVE.name()
-				+ Constants.NET_DIVIDER
-				+ getServerClient(targetId).getClientString());
+		send(targetId, Constants.NET_ALL,
+				Net.REMOVE.name() + Constants.NET_DIVIDER + getServerClient(targetId).getClientString());
 	}
 
 	/**
@@ -166,8 +159,7 @@ public class Server extends Thread {
 	 * @param message
 	 *            Nachricht
 	 */
-	protected void send(final int senderId, final int targetId,
-			final String message) {
+	protected void send(final int senderId, final int targetId, final String message) {
 		final ServerClient sender = getServerClient(senderId);
 		// Zeilenumbrueche entfernen, da sonst der Text nicht vollstaendig
 		// uebertragen wird
@@ -181,9 +173,7 @@ public class Server extends Thread {
 			}
 		} else if (clients.get(Integer.toString(targetId)) == null) {
 			// Empfaenger existiert nicht
-			sender.sendError("Client "
-					+ getServerClient(targetId).getClientName()
-					+ " existiert nicht!");
+			sender.sendError("Client " + getServerClient(targetId).getClientName() + " existiert nicht!");
 		} else {
 			// An einen bestimmten Empfaenger schreiben
 			if (senderId != targetId) {
@@ -212,8 +202,7 @@ public class Server extends Thread {
 		// Allen Clients die Beendigung des Servers mitteilen
 		for (final String key : clients.keySet()) {
 			final ServerClient target = clients.get(key);
-			target.send(Net.REMOVE.name() + Constants.NET_DIVIDER
-					+ Net.SERVER.name());
+			target.send(Net.REMOVE.name() + Constants.NET_DIVIDER + Net.SERVER.name());
 		}
 		try {
 			if (socket != null) {

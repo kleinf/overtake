@@ -62,13 +62,12 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 * @see FieldFormat#getField(int, int, double, double, boolean, int, int,
 	 *      int, int, boolean)
 	 */
-	public GeneralPath getPolygon(final int width, final int height,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, boolean borderless) {
+	public GeneralPath getPolygon(final int width, final int height, final boolean translate, final int idX,
+			final int idY, final int maxX, final int maxY, boolean borderless) {
 		final double[] sumFactors = getSumFactors(idX, idY);
-		return getGeneralPath(getFieldFormat(idX, idY).getField(width, height,
-				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
-				borderless).getPolygon());
+		return getGeneralPath(getFieldFormat(idX, idY)
+				.getField(width, height, sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY, borderless)
+				.getPolygon());
 	}
 
 	/**
@@ -87,8 +86,7 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 * @see FieldFormat#getField(int, int, double, double, boolean, int, int,
 	 *      int, int, boolean)
 	 */
-	public int[] getBoardsize(final int width, final int height,
-			final int maxX, final int maxY) {
+	public int[] getBoardsize(final int width, final int height, final int maxX, final int maxY) {
 
 		double maxWidth = 0.0D;
 		double maxHeight = 0.0D;
@@ -101,8 +99,7 @@ public final class FieldFormatterSwing extends FieldFormatter {
 			}
 		}
 
-		return new int[] { (int) Math.rint(maxWidth) + 1,
-				(int) Math.rint(maxHeight) + 1 };
+		return new int[] { (int) Math.rint(maxWidth) + 1, (int) Math.rint(maxHeight) + 1 };
 	}
 
 	/**
@@ -131,15 +128,14 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 * @see FieldFormat#getWalls(int, int, double, double, boolean, int, int,
 	 *      int, int, boolean)
 	 */
-	public Map<String, GeneralPath> getWalls(final int width, final int height,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
+	public Map<String, GeneralPath> getWalls(final int width, final int height, final boolean translate, final int idX,
+			final int idY, final int maxX, final int maxY, final boolean borderless) {
 
 		final double[] sumFactors = getSumFactors(idX, idY);
 		Map<String, GeneralPath> walls = new HashMap<String, GeneralPath>();
 		for (Map.Entry<String, Shape> entry : getFieldFormat(idX, idY)
-				.getWalls(width, height, sumFactors[0], sumFactors[1],
-						translate, idX, idY, maxX, maxY, borderless).entrySet()) {
+				.getWalls(width, height, sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY, borderless)
+				.entrySet()) {
 			walls.put(entry.getKey(), getGeneralPath(entry.getValue()));
 		}
 		return walls;
@@ -153,11 +149,9 @@ public final class FieldFormatterSwing extends FieldFormatter {
 			} else if (PointType.LINE.equals(pf.getPointType())) {
 				gp.lineTo(pf.getPosX1(), pf.getPosY1());
 			} else if (PointType.QUAD.equals(pf.getPointType())) {
-				gp.quadTo(pf.getPosX1(), pf.getPosY1(), pf.getPosX2(),
-						pf.getPosY2());
+				gp.quadTo(pf.getPosX1(), pf.getPosY1(), pf.getPosX2(), pf.getPosY2());
 			} else if (PointType.CURVE.equals(pf.getPointType())) {
-				gp.curveTo(pf.getPosX1(), pf.getPosY1(), pf.getPosX2(),
-						pf.getPosY2(), pf.getPosX3(), pf.getPosY3());
+				gp.curveTo(pf.getPosX1(), pf.getPosY1(), pf.getPosX2(), pf.getPosY2(), pf.getPosX3(), pf.getPosY3());
 			}
 		}
 		return gp;
@@ -188,20 +182,17 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 * @see FieldFormat#getFieldParts(int, int, double, double, boolean, int,
 	 *      int, int, int, boolean)
 	 */
-	public Map<String, GeneralPath> getSegments(final int width,
-			final int height, final boolean translate, final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
+	public Map<String, GeneralPath> getSegments(final int width, final int height, final boolean translate,
+			final int idX, final int idY, final int maxX, final int maxY, final boolean borderless) {
 
 		final double[] sumFactors = getSumFactors(idX, idY);
 		Map<String, GeneralPath> segments = new HashMap<String, GeneralPath>();
 
-		for (FieldPart fp : getFieldFormat(idX, idY).getField(width, height,
-				sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY,
-				borderless).getFieldParts()) {
+		for (FieldPart fp : getFieldFormat(idX, idY)
+				.getField(width, height, sumFactors[0], sumFactors[1], translate, idX, idY, maxX, maxY, borderless)
+				.getFieldParts()) {
 			if (fp.getSegment() != null) {
-				segments.put(fp.getFieldRelation().getKey(),
-						getGeneralPath(fp.getSegment()));
+				segments.put(fp.getFieldRelation().getKey(), getGeneralPath(fp.getSegment()));
 			}
 		}
 		return segments;
@@ -231,14 +222,12 @@ public final class FieldFormatterSwing extends FieldFormatter {
 	 *            boolean
 	 * @return Map<String, GeneralPath>
 	 */
-	public Map<String, GeneralPath> getArrows(final int width,
-			final int height, final boolean translate, final int idX,
-			final int idY, final int maxX, final int maxY,
-			final boolean borderless) {
+	public Map<String, GeneralPath> getArrows(final int width, final int height, final boolean translate, final int idX,
+			final int idY, final int maxX, final int maxY, final boolean borderless) {
 
 		Map<String, GeneralPath> arrows = new HashMap<String, GeneralPath>();
-		for (Map.Entry<String, Shape> entry : getArrowShapes(width, height,
-				translate, idX, idY, maxX, maxY, borderless).entrySet()) {
+		for (Map.Entry<String, Shape> entry : getArrowShapes(width, height, translate, idX, idY, maxX, maxY, borderless)
+				.entrySet()) {
 			arrows.put(entry.getKey(), getGeneralPath(entry.getValue()));
 		}
 		return arrows;

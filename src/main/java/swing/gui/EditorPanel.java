@@ -1,8 +1,8 @@
 package swing.gui;
 
-import game.GameSession;
-
 import java.awt.event.MouseEvent;
+
+import game.GameSession;
 
 /**
  * @author Administrator
@@ -47,28 +47,21 @@ public class EditorPanel extends AbstractMainPanel {
 	protected void boardClick(final MouseEvent mouseEvent) {
 		final int idX = ((FieldComponent) mouseEvent.getComponent()).getIdX();
 		final int idY = ((FieldComponent) mouseEvent.getComponent()).getIdY();
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1
-				&& mouseEvent.isShiftDown()) {
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && mouseEvent.isShiftDown()) {
 			// Linke Maustaste + SHIFT = Wert aendern
-			if (getFieldComponent(idX, idY).getValue() < getFieldComponent(idX,
-					idY).getMaxValue()) {
-				getFieldComponent(idX, idY).setValue(
-						getFieldComponent(idX, idY).getValue() + 1);
+			if (getFieldComponent(idX, idY).getValue() < getFieldComponent(idX, idY).getMaxValue()) {
+				getFieldComponent(idX, idY).setValue(getFieldComponent(idX, idY).getValue() + 1);
 			} else {
 				getFieldComponent(idX, idY).setValue(0);
 			}
-		} else if (mouseEvent.getButton() == MouseEvent.BUTTON1
-				&& mouseEvent.isControlDown()) {
+		} else if (mouseEvent.getButton() == MouseEvent.BUTTON1 && mouseEvent.isControlDown()) {
 			// Linke Maustaste + STRG = Besitzer aendern
-			if (getFieldComponent(idX, idY).getOwnerId() < GameSession.gameOptions
-					.getMaxPlayers() - 1) {
-				getFieldComponent(idX, idY).setOwner(
-						getFieldComponent(idX, idY).getOwnerId() + 1);
+			if (getFieldComponent(idX, idY).getOwnerId() < GameSession.gameOptions.getMaxPlayers() - 1) {
+				getFieldComponent(idX, idY).setOwner(getFieldComponent(idX, idY).getOwnerId() + 1);
 			} else {
 				getFieldComponent(idX, idY).setOwner(-1);
 			}
-		} else if (mouseEvent.getButton() == MouseEvent.BUTTON1
-				&& mouseEvent.isAltDown()) {
+		} else if (mouseEvent.getButton() == MouseEvent.BUTTON1 && mouseEvent.isAltDown()) {
 			// Linke Maustaste + ALT = Reset
 			getFieldComponent(idX, idY).setValue(0);
 			getFieldComponent(idX, idY).setOwner(-1);
@@ -90,8 +83,7 @@ public class EditorPanel extends AbstractMainPanel {
 	 * @see swing.gui.AbstractMainPanel#checkClick(int, int, boolean)
 	 */
 	@Override
-	protected boolean checkClick(final int idX, final int idY,
-			final boolean override) {
+	protected boolean checkClick(final int idX, final int idY, final boolean override) {
 		return true;
 	}
 }

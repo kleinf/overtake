@@ -1,7 +1,5 @@
 package swing.gui.options;
 
-import game.GameSession;
-
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -30,6 +28,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import game.GameSession;
 import swing.util.FieldFormatterSwing;
 import swing.util.FontCreator;
 
@@ -64,8 +63,8 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		// Esc closes dialog
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Close");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				"Close");
 		getRootPane().getActionMap().put("Close", new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -130,8 +129,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					jSliderW.setToolTipText(Integer.toString(jSliderW
-							.getValue()));
+					jSliderW.setToolTipText(Integer.toString(jSliderW.getValue()));
 					repaint();
 				}
 			});
@@ -166,8 +164,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					jSliderH.setToolTipText(Integer.toString(jSliderH
-							.getValue()));
+					jSliderH.setToolTipText(Integer.toString(jSliderH.getValue()));
 					repaint();
 				}
 			});
@@ -198,8 +195,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					jSliderX.setToolTipText(Integer.toString(jSliderX
-							.getValue()));
+					jSliderX.setToolTipText(Integer.toString(jSliderX.getValue()));
 					repaint();
 				}
 			});
@@ -230,8 +226,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 				 */
 				@Override
 				public void stateChanged(final ChangeEvent event) {
-					jSliderY.setToolTipText(Integer.toString(jSliderY
-							.getValue()));
+					jSliderY.setToolTipText(Integer.toString(jSliderY.getValue()));
 					repaint();
 				}
 			});
@@ -304,19 +299,13 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 		protected final void init() {
 			FieldFormatterSwing.getInstance().init(parentPanel.getFieldName());
 			isBorderless = parentPanel.isBorderless();
-			int[] size = FieldFormatterSwing.getInstance().getBoardsize(
-					fieldWidth, fieldHeight, getJSliderX().getValue(),
-					getJSliderY().getValue());
-			final double maxWidth = size[0]
-					+ parentPanel.getJSliderH().getPreferredSize().getWidth()
-					+ parentPanel.getJSliderY().getPreferredSize().getWidth()
-					+ 10;
-			final double maxHeight = size[1]
-					+ parentPanel.getJSliderW().getPreferredSize().getHeight()
-					+ parentPanel.getJSliderX().getPreferredSize().getHeight()
-					+ 30;
-			parentPanel.setSize((int) Math.rint(maxWidth),
-					(int) Math.rint(maxHeight));
+			int[] size = FieldFormatterSwing.getInstance().getBoardsize(fieldWidth, fieldHeight,
+					getJSliderX().getValue(), getJSliderY().getValue());
+			final double maxWidth = size[0] + parentPanel.getJSliderH().getPreferredSize().getWidth()
+					+ parentPanel.getJSliderY().getPreferredSize().getWidth() + 10;
+			final double maxHeight = size[1] + parentPanel.getJSliderW().getPreferredSize().getHeight()
+					+ parentPanel.getJSliderX().getPreferredSize().getHeight() + 30;
+			parentPanel.setSize((int) Math.rint(maxWidth), (int) Math.rint(maxHeight));
 			parentPanel.setPreferredSize(getSize());
 		}
 
@@ -328,8 +317,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 		@Override
 		protected void paintComponent(final Graphics graphics) {
 			final Graphics2D g2d = (Graphics2D) graphics;
-			final BufferedImage bufImg = new BufferedImage(getWidth(),
-					getHeight(), BufferedImage.TYPE_INT_ARGB);
+			final BufferedImage bufImg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D bufG2d = (Graphics2D) bufImg.getGraphics();
 			bufG2d.setColor(Color.BLACK);
 			numFieldsWidth = parentPanel.getJSliderX().getValue();
@@ -339,14 +327,12 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 			Rectangle bounds;
 			GeneralPath poly;
 			String value;
-			bufG2d.setFont(FontCreator.createFont("fonts/arial.ttf", Font.BOLD,
-					12.0F));
+			bufG2d.setFont(FontCreator.createFont("fonts/arial.ttf", Font.BOLD, 12.0F));
 			final FontMetrics fontMetrics = getFontMetrics(bufG2d.getFont());
 			final int fontHeight = fontMetrics.getHeight();
 			if (fieldWidth == -1 || fieldHeight == -1) {
-				int[] size = FieldFormatterSwing.getInstance().getFieldsize(
-						getWidth(), getHeight(), 0, 0, numFieldsWidth,
-						numFieldsHeight);
+				int[] size = FieldFormatterSwing.getInstance().getFieldsize(getWidth(), getHeight(), 0, 0,
+						numFieldsWidth, numFieldsHeight);
 				if (fieldWidth == -1) {
 					fieldWidth = size[0];
 				}
@@ -357,38 +343,30 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 			for (int idY = 0; idY < numFieldsHeight; idY++) {
 				for (int idX = 0; idX < numFieldsWidth; idX++) {
 					if (!FieldFormatterSwing.getInstance().isEmpty(idX, idY)) {
-						poly = FieldFormatterSwing.getInstance().getPolygon(
-								fieldWidth, fieldHeight, true, idX, idY,
+						poly = FieldFormatterSwing.getInstance().getPolygon(fieldWidth, fieldHeight, true, idX, idY,
 								numFieldsWidth, numFieldsHeight, isBorderless);
 						if (showSegments) {
-							drawSegments(idX, idY, g2d, bufG2d, fontMetrics,
-									fontHeight);
+							drawSegments(idX, idY, g2d, bufG2d, fontMetrics, fontHeight);
 						}
 						if (showArrows) {
-							drawArrows(idX, idY, g2d, bufG2d, fontMetrics,
-									fontHeight);
+							drawArrows(idX, idY, g2d, bufG2d, fontMetrics, fontHeight);
 						}
 						bufG2d.draw(poly);
 						value = idX + "/" + idY;
 						bounds = poly.getBounds();
 						bufG2d.drawString(value,
-								(int) Math.rint(bounds.getCenterX())
-										- fontMetrics.stringWidth(value) / 2,
-								(int) Math.round(bounds.getCenterY())
-										+ fontHeight / 3);
+								(int) Math.rint(bounds.getCenterX()) - fontMetrics.stringWidth(value) / 2,
+								(int) Math.round(bounds.getCenterY()) + fontHeight / 3);
 					}
 				}
 			}
 			g2d.drawImage(bufImg, 0, 0, this);
 		}
 
-		private void drawSegments(final int idX, final int idY,
-				final Graphics2D g2d, final Graphics2D bufG2d,
+		private void drawSegments(final int idX, final int idY, final Graphics2D g2d, final Graphics2D bufG2d,
 				final FontMetrics fontMetrics, final int fontHeight) {
-			final Map<String, GeneralPath> segments = FieldFormatterSwing
-					.getInstance().getSegments(fieldWidth, fieldHeight, true,
-							idX, idY, numFieldsWidth, numFieldsHeight,
-							isBorderless);
+			final Map<String, GeneralPath> segments = FieldFormatterSwing.getInstance().getSegments(fieldWidth,
+					fieldHeight, true, idX, idY, numFieldsWidth, numFieldsHeight, isBorderless);
 			for (final Entry<String, GeneralPath> entry : segments.entrySet()) {
 				final String[] borders = entry.getKey().split("\\|");
 				final int borderId = Integer.parseInt(borders[0]);
@@ -416,39 +394,24 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 					}
 					g2d.fill(path);
 					if (showBorderRefs) {
-						final String borderConnection = borderId + "->"
-								+ refBorderId;
-						final String fieldConnection = "(" + refFieldIdX + "/"
-								+ refFieldIdY + ")";
+						final String borderConnection = borderId + "->" + refBorderId;
+						final String fieldConnection = "(" + refFieldIdX + "/" + refFieldIdY + ")";
 						final Rectangle bounds = path.getBounds();
-						bufG2d.drawString(
-								borderConnection,
-								(int) Math.rint(bounds.getCenterX())
-										- fontMetrics
-												.stringWidth(borderConnection)
-										/ 2,
-								(int) Math.round(bounds.getCenterY())
-										- fontHeight / 3);
-						bufG2d.drawString(
-								fieldConnection,
-								(int) Math.rint(bounds.getCenterX())
-										- fontMetrics
-												.stringWidth(fieldConnection)
-										/ 2,
-								(int) Math.round(bounds.getCenterY())
-										+ fontHeight / 2);
+						bufG2d.drawString(borderConnection,
+								(int) Math.rint(bounds.getCenterX()) - fontMetrics.stringWidth(borderConnection) / 2,
+								(int) Math.round(bounds.getCenterY()) - fontHeight / 3);
+						bufG2d.drawString(fieldConnection,
+								(int) Math.rint(bounds.getCenterX()) - fontMetrics.stringWidth(fieldConnection) / 2,
+								(int) Math.round(bounds.getCenterY()) + fontHeight / 2);
 					}
 				}
 			}
 		}
 
-		private void drawArrows(final int idX, final int idY,
-				final Graphics2D g2d, final Graphics2D bufG2d,
+		private void drawArrows(final int idX, final int idY, final Graphics2D g2d, final Graphics2D bufG2d,
 				final FontMetrics fontMetrics, final int fontHeight) {
-			final Map<String, GeneralPath> arrows = FieldFormatterSwing
-					.getInstance().getArrows(fieldWidth, fieldHeight, true,
-							idX, idY, numFieldsWidth, numFieldsHeight,
-							isBorderless);
+			final Map<String, GeneralPath> arrows = FieldFormatterSwing.getInstance().getArrows(fieldWidth, fieldHeight,
+					true, idX, idY, numFieldsWidth, numFieldsHeight, isBorderless);
 			g2d.setColor(Color.RED);
 			for (final Entry<String, GeneralPath> entry : arrows.entrySet()) {
 				final String[] temp = entry.getKey().split("\\|");
@@ -457,20 +420,15 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 					g2d.draw(path);
 					if (showBorderRefs) {
 						final String value1 = temp[0] + "->" + temp[1];
-						final String value2 = "("
-								+ (idX + Integer.parseInt(temp[2])) + "/"
+						final String value2 = "(" + (idX + Integer.parseInt(temp[2])) + "/"
 								+ (idY + Integer.parseInt(temp[3])) + ")";
 						final Rectangle bounds = path.getBounds();
 						bufG2d.drawString(value1,
-								(int) Math.rint(bounds.getCenterX())
-										- fontMetrics.stringWidth(value1) / 2,
-								(int) Math.round(bounds.getCenterY())
-										- fontHeight / 4);
+								(int) Math.rint(bounds.getCenterX()) - fontMetrics.stringWidth(value1) / 2,
+								(int) Math.round(bounds.getCenterY()) - fontHeight / 4);
 						bufG2d.drawString(value2,
-								(int) Math.rint(bounds.getCenterX())
-										- fontMetrics.stringWidth(value2) / 2,
-								(int) Math.round(bounds.getCenterY())
-										+ fontHeight);
+								(int) Math.rint(bounds.getCenterX()) - fontMetrics.stringWidth(value2) / 2,
+								(int) Math.round(bounds.getCenterY()) + fontHeight);
 					}
 				}
 			}
@@ -542,9 +500,7 @@ public class BoardLayoutOptDlgPnl extends JDialog {
 		GameSession.gameOptions.setNumFieldsHeight(numFieldsHeight);
 		GameSession.gameOptions.setFieldWidth(fieldWidth);
 		GameSession.gameOptions.setFieldHeight(fieldHeight);
-		GameSession.gameOptions
-				.setFieldWidthRelative(getJSliderW().getValue() == -1);
-		GameSession.gameOptions
-				.setFieldHeightRelative(getJSliderH().getValue() == -1);
+		GameSession.gameOptions.setFieldWidthRelative(getJSliderW().getValue() == -1);
+		GameSession.gameOptions.setFieldHeightRelative(getJSliderH().getValue() == -1);
 	}
 }

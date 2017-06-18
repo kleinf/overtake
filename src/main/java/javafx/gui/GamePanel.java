@@ -17,8 +17,7 @@ public class GamePanel extends AbstractMainPanel {
 		return null;
 	}
 
-	protected void activatePlayer(int playerId, String playerName,
-			int playerColor) {
+	protected void activatePlayer(int playerId, String playerName, int playerColor) {
 	}
 
 	protected void deactivatePlayer(int playerId) {

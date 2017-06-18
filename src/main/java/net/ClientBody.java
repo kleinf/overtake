@@ -40,8 +40,7 @@ public class ClientBody extends Thread {
 	public void run() {
 		BufferedReader bufferedReader;
 		try {
-			bufferedReader = new BufferedReader(new InputStreamReader(
-					inputStream));
+			bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			String buffer = bufferedReader.readLine();
 			while (buffer != null) {
 				parentFrame.receive(buffer);

@@ -5,7 +5,7 @@ import java.util.List;
 
 import java.awt.Color;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * @author Administrator
@@ -451,22 +451,17 @@ public final class GameOptions {
 		final Element boardoptions = new Element("boardoptions");
 		gameOptions.addContent(boardoptions);
 		boardoptions.setAttribute("fieldName", fieldName);
-		boardoptions.setAttribute("numFieldsWidth",
-				Integer.toString(numFieldsWidth));
-		boardoptions.setAttribute("numFieldsHeight",
-				Integer.toString(numFieldsHeight));
+		boardoptions.setAttribute("numFieldsWidth", Integer.toString(numFieldsWidth));
+		boardoptions.setAttribute("numFieldsHeight", Integer.toString(numFieldsHeight));
 		boardoptions.setAttribute("fieldWidth", Integer.toString(fieldWidth));
 		boardoptions.setAttribute("fieldHeight", Integer.toString(fieldHeight));
-		boardoptions.setAttribute("fieldWidthRelative",
-				Boolean.toString(fieldWidthRelative));
-		boardoptions.setAttribute("fieldHeightRelative",
-				Boolean.toString(fieldHeightRelative));
+		boardoptions.setAttribute("fieldWidthRelative", Boolean.toString(fieldWidthRelative));
+		boardoptions.setAttribute("fieldHeightRelative", Boolean.toString(fieldHeightRelative));
 		boardoptions.setAttribute("fieldAlpha", Float.toString(fieldAlpha));
 		boardoptions.setAttribute("sticky", Boolean.toString(sticky));
 		boardoptions.setAttribute("maxOverload", Integer.toString(maxOverload));
 		boardoptions.setAttribute("boardBgImageName", boardBgImageName);
-		boardoptions.setAttribute("boardBgImageTiled",
-				Boolean.toString(boardBgImageTiled));
+		boardoptions.setAttribute("boardBgImageTiled", Boolean.toString(boardBgImageTiled));
 
 		final Element playeroptions = new Element("playeroptions");
 		gameOptions.addContent(playeroptions);
@@ -483,15 +478,11 @@ public final class GameOptions {
 		final Element gameoptions = new Element("gameoptions");
 		gameOptions.addContent(gameoptions);
 		gameoptions.setAttribute("gameGoal", gameGoal.toString());
-		gameoptions
-				.setAttribute("setWhileFree", Boolean.toString(setWhileFree));
+		gameoptions.setAttribute("setWhileFree", Boolean.toString(setWhileFree));
 		gameoptions.setAttribute("borderless", Boolean.toString(borderless));
-		gameoptions.setAttribute("overloadOnEqual",
-				Boolean.toString(overloadOnEqual));
-		gameoptions.setAttribute("emptyOverloaded",
-				Boolean.toString(emptyOverloaded));
-		gameoptions.setAttribute("looseOverloaded",
-				Boolean.toString(looseOverloaded));
+		gameoptions.setAttribute("overloadOnEqual", Boolean.toString(overloadOnEqual));
+		gameoptions.setAttribute("emptyOverloaded", Boolean.toString(emptyOverloaded));
+		gameoptions.setAttribute("looseOverloaded", Boolean.toString(looseOverloaded));
 
 		return gameOptions;
 	}
@@ -503,30 +494,20 @@ public final class GameOptions {
 	public void setData(final Element data) {
 		final Element boardoptions = data.getChild("boardoptions");
 		fieldName = boardoptions.getAttributeValue("fieldName");
-		numFieldsWidth = Integer.parseInt(boardoptions
-				.getAttributeValue("numFieldsWidth"));
-		numFieldsHeight = Integer.parseInt(boardoptions
-				.getAttributeValue("numFieldsHeight"));
-		fieldWidth = Integer.parseInt(boardoptions
-				.getAttributeValue("fieldWidth"));
-		fieldHeight = Integer.parseInt(boardoptions
-				.getAttributeValue("fieldHeight"));
-		fieldWidthRelative = Boolean.parseBoolean(boardoptions
-				.getAttributeValue("fieldWidthRelative"));
-		fieldHeightRelative = Boolean.parseBoolean(boardoptions
-				.getAttributeValue("fieldHeightRelative"));
-		fieldAlpha = Float.parseFloat(boardoptions
-				.getAttributeValue("fieldAlpha"));
+		numFieldsWidth = Integer.parseInt(boardoptions.getAttributeValue("numFieldsWidth"));
+		numFieldsHeight = Integer.parseInt(boardoptions.getAttributeValue("numFieldsHeight"));
+		fieldWidth = Integer.parseInt(boardoptions.getAttributeValue("fieldWidth"));
+		fieldHeight = Integer.parseInt(boardoptions.getAttributeValue("fieldHeight"));
+		fieldWidthRelative = Boolean.parseBoolean(boardoptions.getAttributeValue("fieldWidthRelative"));
+		fieldHeightRelative = Boolean.parseBoolean(boardoptions.getAttributeValue("fieldHeightRelative"));
+		fieldAlpha = Float.parseFloat(boardoptions.getAttributeValue("fieldAlpha"));
 		sticky = Boolean.parseBoolean(boardoptions.getAttributeValue("sticky"));
-		maxOverload = Integer.parseInt(boardoptions
-				.getAttributeValue("maxOverload"));
+		maxOverload = Integer.parseInt(boardoptions.getAttributeValue("maxOverload"));
 		boardBgImageName = boardoptions.getAttributeValue("boardBgImageName");
-		boardBgImageTiled = Boolean.parseBoolean(boardoptions
-				.getAttributeValue("boardBgImageTiled"));
+		boardBgImageTiled = Boolean.parseBoolean(boardoptions.getAttributeValue("boardBgImageTiled"));
 
 		final Element playeroptions = data.getChild("playeroptions");
-		maxPlayers = Integer.parseInt(playeroptions
-				.getAttributeValue("maxPlayers"));
+		maxPlayers = Integer.parseInt(playeroptions.getAttributeValue("maxPlayers"));
 		network = Integer.parseInt(playeroptions.getAttributeValue("network"));
 		host = playeroptions.getAttributeValue("host");
 		port = Integer.parseInt(playeroptions.getAttributeValue("port"));
@@ -537,15 +518,10 @@ public final class GameOptions {
 
 		final Element gameoptions = data.getChild("gameoptions");
 		gameGoal = GameGoal.valueOf(gameoptions.getAttributeValue("gameGoal"));
-		setWhileFree = Boolean.parseBoolean(gameoptions
-				.getAttributeValue("setWhileFree"));
-		borderless = Boolean.parseBoolean(gameoptions
-				.getAttributeValue("borderless"));
-		overloadOnEqual = Boolean.parseBoolean(gameoptions
-				.getAttributeValue("overloadOnEqual"));
-		emptyOverloaded = Boolean.parseBoolean(gameoptions
-				.getAttributeValue("emptyOverloaded"));
-		looseOverloaded = Boolean.parseBoolean(gameoptions
-				.getAttributeValue("looseOverloaded"));
+		setWhileFree = Boolean.parseBoolean(gameoptions.getAttributeValue("setWhileFree"));
+		borderless = Boolean.parseBoolean(gameoptions.getAttributeValue("borderless"));
+		overloadOnEqual = Boolean.parseBoolean(gameoptions.getAttributeValue("overloadOnEqual"));
+		emptyOverloaded = Boolean.parseBoolean(gameoptions.getAttributeValue("emptyOverloaded"));
+		looseOverloaded = Boolean.parseBoolean(gameoptions.getAttributeValue("looseOverloaded"));
 	}
 }

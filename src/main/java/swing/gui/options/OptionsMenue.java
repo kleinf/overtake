@@ -86,8 +86,7 @@ public class OptionsMenue {
 	}
 
 	private JMenuItem getMenuItemLoadOptions() {
-		final JMenuItem jMenuItemLoadOptions = new JMenuItem("Load options",
-				'l');
+		final JMenuItem jMenuItemLoadOptions = new JMenuItem("Load options", 'l');
 		jMenuItemLoadOptions.addActionListener(new ActionListener() {
 
 			/**
@@ -107,9 +106,7 @@ public class OptionsMenue {
 					 */
 					@Override
 					public boolean accept(final File file) {
-						return file.isDirectory()
-								|| file.getName().toLowerCase()
-										.endsWith(INI_FILE);
+						return file.isDirectory() || file.getName().toLowerCase().endsWith(INI_FILE);
 					}
 
 					/**
@@ -122,11 +119,9 @@ public class OptionsMenue {
 						return "Options";
 					}
 				});
-				final int returnVal = jFileChooser
-						.showOpenDialog(getParentDialog());
+				final int returnVal = jFileChooser.showOpenDialog(getParentDialog());
 				if (returnVal == 0) {
-					getParentDialog().loadOptions(
-							jFileChooser.getSelectedFile().getPath());
+					getParentDialog().loadOptions(jFileChooser.getSelectedFile().getPath());
 				}
 			}
 		});
@@ -134,8 +129,7 @@ public class OptionsMenue {
 	}
 
 	private JMenuItem getMenuItemSaveOptions() {
-		final JMenuItem jMenuItemSaveOptions = new JMenuItem("Save options",
-				's');
+		final JMenuItem jMenuItemSaveOptions = new JMenuItem("Save options", 's');
 		jMenuItemSaveOptions.addActionListener(new ActionListener() {
 
 			/**
@@ -155,9 +149,7 @@ public class OptionsMenue {
 					 */
 					@Override
 					public boolean accept(final File file) {
-						return file.isDirectory()
-								|| file.getName().toLowerCase()
-										.endsWith(INI_FILE);
+						return file.isDirectory() || file.getName().toLowerCase().endsWith(INI_FILE);
 					}
 
 					/**
@@ -170,8 +162,7 @@ public class OptionsMenue {
 						return "Options";
 					}
 				});
-				final int returnVal = jFileChooser
-						.showSaveDialog(getParentDialog());
+				final int returnVal = jFileChooser.showSaveDialog(getParentDialog());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					String filename = jFileChooser.getSelectedFile().getPath();
 					final int pos = filename.lastIndexOf('.');
@@ -194,7 +185,7 @@ public class OptionsMenue {
 
 	private JMenuItem getMenuFiles() {
 		final JMenu jMenuFiles = new JMenu("File(s)");
-		final String[] entries = Constants.USERDIR.list();
+		final String[] entries = Constants.USER_DIR.list();
 		Collections.sort(Arrays.asList(entries));
 		int gamefiles = 0;
 		for (final String entry : entries) {
@@ -211,8 +202,7 @@ public class OptionsMenue {
 					@Override
 					public void actionPerformed(final ActionEvent event) {
 						if (event.getActionCommand() != null) {
-							getParentDialog().loadOptions(
-									event.getActionCommand());
+							getParentDialog().loadOptions(event.getActionCommand());
 						}
 					}
 				});
@@ -247,11 +237,9 @@ public class OptionsMenue {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				try {
-					UIManager
-							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					SwingUtilities.updateComponentTreeUI(getParentDialog());
-					SwingUtilities.updateComponentTreeUI(getParentDialog()
-							.getParent());
+					SwingUtilities.updateComponentTreeUI(getParentDialog().getParent());
 				} catch (final ClassNotFoundException exception) {
 					PseudoLogger.getInstance().log(exception.getMessage());
 				} catch (final InstantiationException exception) {
@@ -278,11 +266,9 @@ public class OptionsMenue {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				try {
-					UIManager
-							.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 					SwingUtilities.updateComponentTreeUI(getParentDialog());
-					SwingUtilities.updateComponentTreeUI(getParentDialog()
-							.getParent());
+					SwingUtilities.updateComponentTreeUI(getParentDialog().getParent());
 				} catch (final ClassNotFoundException exception) {
 					PseudoLogger.getInstance().log(exception.getMessage());
 				} catch (final InstantiationException exception) {
@@ -309,11 +295,9 @@ public class OptionsMenue {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				try {
-					UIManager
-							.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+					UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 					SwingUtilities.updateComponentTreeUI(getParentDialog());
-					SwingUtilities.updateComponentTreeUI(getParentDialog()
-							.getParent());
+					SwingUtilities.updateComponentTreeUI(getParentDialog().getParent());
 				} catch (final ClassNotFoundException exception) {
 					PseudoLogger.getInstance().log(exception.getMessage());
 				} catch (final InstantiationException exception) {
@@ -340,11 +324,9 @@ public class OptionsMenue {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				try {
-					UIManager
-							.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+					UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 					SwingUtilities.updateComponentTreeUI(getParentDialog());
-					SwingUtilities.updateComponentTreeUI(getParentDialog()
-							.getParent());
+					SwingUtilities.updateComponentTreeUI(getParentDialog().getParent());
 				} catch (final ClassNotFoundException exception) {
 					PseudoLogger.getInstance().log(exception.getMessage());
 				} catch (final InstantiationException exception) {

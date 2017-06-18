@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,13 +42,9 @@ public abstract class FieldFormatter {
 			if (fileName == null) {
 				return;
 			}
-			fileReader = new FileReader(
-					fileName
-							+ ((fileName.toLowerCase().lastIndexOf(".field") == -1
-									&& fileName.toLowerCase().lastIndexOf(
-											".xml") == -1 && fileName
-									.toLowerCase().lastIndexOf(".json") == -1) ? ".field"
-									: ""));
+			fileReader = new FileReader(fileName + ((fileName.toLowerCase().lastIndexOf(".field") == -1
+					&& fileName.toLowerCase().lastIndexOf(".xml") == -1
+					&& fileName.toLowerCase().lastIndexOf(".json") == -1) ? ".field" : ""));
 			bufferedReader = new BufferedReader(fileReader);
 			String line = bufferedReader.readLine();
 			final StringBuilder stringBuilder = new StringBuilder();
@@ -133,8 +129,7 @@ public abstract class FieldFormatter {
 			for (int j = 0; j < list2.size(); j++) {
 				el2 = list2.get(j);
 				fieldFormat = new FieldFormat(i, j, el1, el2);
-				maxBorders = Math.max(fieldFormat.getBorderFormats().size(),
-						maxBorders);
+				maxBorders = Math.max(fieldFormat.getBorderFormats().size(), maxBorders);
 				fieldFormats[i][j] = fieldFormat;
 			}
 		}
@@ -180,8 +175,7 @@ public abstract class FieldFormatter {
 			for (int j = 0; j < list2.length(); j++) {
 				el2 = list2.getJSONObject(j);
 				fieldFormat = new FieldFormat(i, j, key1, key2, el1, el2);
-				maxBorders = Math.max(fieldFormat.getBorderFormats().size(),
-						maxBorders);
+				maxBorders = Math.max(fieldFormat.getBorderFormats().size(), maxBorders);
 				fieldFormats[i][j] = fieldFormat;
 			}
 		}
@@ -258,11 +252,10 @@ public abstract class FieldFormatter {
 	 *            boolean
 	 * @return List<FieldRelation>
 	 */
-	public List<FieldRelation> getRelations(final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
+	public List<FieldRelation> getRelations(final int idX, final int idY, final int maxX, final int maxY,
+			final boolean borderless) {
 
-		return getFieldFormat(idX, idY).getRelations(idX, idY, maxX, maxY,
-				borderless);
+		return getFieldFormat(idX, idY).getRelations(idX, idY, maxX, maxY, borderless);
 	}
 
 	/**
@@ -304,12 +297,11 @@ public abstract class FieldFormatter {
 	 * 
 	 * @see FieldFormat#getPosition(int, int, double, double, boolean)
 	 */
-	public double[] getPosition(final int width, final int height,
-			final int idX, final int idY, final boolean translate) {
+	public double[] getPosition(final int width, final int height, final int idX, final int idY,
+			final boolean translate) {
 
 		final double[] sumFactors = getSumFactors(idX, idY);
-		return getFieldFormat(idX, idY).getPosition(width, height,
-				sumFactors[0], sumFactors[1], translate);
+		return getFieldFormat(idX, idY).getPosition(width, height, sumFactors[0], sumFactors[1], translate);
 	}
 
 	/**
@@ -327,8 +319,7 @@ public abstract class FieldFormatter {
 	 *            int
 	 * @return int[]
 	 */
-	public int[] getFieldsize(final int containerWidth,
-			final int containerHeight, final int idX, final int idY,
+	public int[] getFieldsize(final int containerWidth, final int containerHeight, final int idX, final int idY,
 			final int maxX, final int maxY) {
 
 		double maxOffsetX = 0.0D;
@@ -340,8 +331,7 @@ public abstract class FieldFormatter {
 			}
 		}
 
-		return getFieldFormat(idX, idY).getSize(containerWidth,
-				containerHeight, maxX, maxY, maxOffsetX, maxOffsetY);
+		return getFieldFormat(idX, idY).getSize(containerWidth, containerHeight, maxX, maxY, maxOffsetX, maxOffsetY);
 	}
 
 	// ********* Folgende Methoden sind nur zur Visualisierung gedacht *********
@@ -368,68 +358,51 @@ public abstract class FieldFormatter {
 	 *            boolean
 	 * @return Map<String, Shape>
 	 */
-	public Map<String, Shape> getArrowShapes(final int width, final int height,
-			final boolean translate, final int idX, final int idY,
-			final int maxX, final int maxY, final boolean borderless) {
+	public Map<String, Shape> getArrowShapes(final int width, final int height, final boolean translate, final int idX,
+			final int idY, final int maxX, final int maxY, final boolean borderless) {
 
 		final Map<String, Shape> arrows = new HashMap<>();
 		double[] sumFactors = getSumFactors(idX, idY);
 		final FieldFormat fieldFormat = getFieldFormat(idX, idY);
-		double[] pos = fieldFormat.getPosition(width, height, sumFactors[0],
-				sumFactors[1], translate);
-		final double centerX = pos[0] + width * fieldFormat.getMinMaxPosX()
-				* 0.5D;
-		final double centerY = pos[1] + height * fieldFormat.getMinMaxPosY()
-				* 0.5D;
+		double[] pos = fieldFormat.getPosition(width, height, sumFactors[0], sumFactors[1], translate);
+		final double centerX = pos[0] + width * fieldFormat.getMinMaxPosX() * 0.5D;
+		final double centerY = pos[1] + height * fieldFormat.getMinMaxPosY() * 0.5D;
 		FieldFormat fieldFormatRef;
 		BorderFormat borderFormatRef;
 		double[] wallCenter;
 		// Alle Nachbarschaftsbeziehungen dieses Feldes durchlaufen
-		for (FieldRelation relation : fieldFormat.getRelations(idX, idY, maxX,
-				maxY, borderless)) {
+		for (FieldRelation relation : fieldFormat.getRelations(idX, idY, maxX, maxY, borderless)) {
 
-			fieldFormatRef = getFieldFormat(relation.getRefFieldX(),
-					relation.getRefFieldY());
-			borderFormatRef = fieldFormatRef.getBorderFormats().get(
-					Integer.valueOf(relation.getRefBorderId()));
+			fieldFormatRef = getFieldFormat(relation.getRefFieldX(), relation.getRefFieldY());
+			borderFormatRef = fieldFormatRef.getBorderFormats().get(Integer.valueOf(relation.getRefBorderId()));
 			if (borderFormatRef == null) {
 				continue;
 			}
-			sumFactors = getSumFactors(relation.getRefFieldX(),
-					relation.getRefFieldY());
-			pos = fieldFormatRef.getPosition(width, height, sumFactors[0],
-					sumFactors[1], translate);
+			sumFactors = getSumFactors(relation.getRefFieldX(), relation.getRefFieldY());
+			pos = fieldFormatRef.getPosition(width, height, sumFactors[0], sumFactors[1], translate);
 			// Pruefen, welche der Feldgrenzen dieses Feldes mit
 			// welcher Feldgrenze des Nachbarfeldes uebereinstimmt.
-			wallCenter = borderFormatRef.getWallCenter(width, height, pos[0],
-					pos[1]);
+			wallCenter = borderFormatRef.getWallCenter(width, height, pos[0], pos[1]);
 
-			final Shape arrow = getArrow(centerX, centerY, wallCenter[0],
-					wallCenter[1]);
+			final Shape arrow = getArrow(centerX, centerY, wallCenter[0], wallCenter[1]);
 
 			arrows.put(relation.getKey(), arrow);
 		}
-		for (final BorderFormat borderFormat : fieldFormat.getBorderFormats()
-				.values()) {
+		for (final BorderFormat borderFormat : fieldFormat.getBorderFormats().values()) {
 			final int refFieldX = idX + borderFormat.getRefFieldX();
 			final int refFieldY = idY + borderFormat.getRefFieldY();
-			if (refFieldX >= 0 && refFieldY >= 0 && refFieldX < maxX
-					&& refFieldY < maxY) {
+			if (refFieldX >= 0 && refFieldY >= 0 && refFieldX < maxX && refFieldY < maxY) {
 
 				fieldFormatRef = getFieldFormat(refFieldX, refFieldY);
-				borderFormatRef = fieldFormatRef.getBorderFormats().get(
-						Integer.valueOf(borderFormat.getRefId()));
+				borderFormatRef = fieldFormatRef.getBorderFormats().get(Integer.valueOf(borderFormat.getRefId()));
 
 				sumFactors = getSumFactors(refFieldX, refFieldY);
-				pos = fieldFormatRef.getPosition(width, height, sumFactors[0],
-						sumFactors[1], translate);
+				pos = fieldFormatRef.getPosition(width, height, sumFactors[0], sumFactors[1], translate);
 				// Pruefen, welche der Feldgrenzen dieses Feldes mit
 				// welcher Feldgrenze des Nachbarfeldes uebereinstimmt.
-				wallCenter = borderFormatRef.getWallCenter(width, height,
-						pos[0], pos[1]);
+				wallCenter = borderFormatRef.getWallCenter(width, height, pos[0], pos[1]);
 
-				final Shape arrow = getArrow(centerX, centerY, wallCenter[0],
-						wallCenter[1]);
+				final Shape arrow = getArrow(centerX, centerY, wallCenter[0], wallCenter[1]);
 
 				arrows.put(borderFormat.getKey(), arrow);
 			} else if (borderless) {
@@ -454,8 +427,7 @@ public abstract class FieldFormatter {
 	 *            double
 	 * @return Shape
 	 */
-	protected Shape getArrow(final double startX, final double startY,
-			final double endX, final double endY) {
+	protected Shape getArrow(final double startX, final double startY, final double endX, final double endY) {
 
 		final Shape arrow = new Shape();
 		final double angle = getDegrees(startX, startY, endX, endY);
@@ -472,18 +444,12 @@ public abstract class FieldFormatter {
 		arrow.lineTo(endX, endY);
 
 		arrow.moveTo(endX, endY);
-		arrow.lineTo(
-				endX - sideLength
-						* Math.cos((angle + sideAngle) * Math.PI / 180.0D),
-				endY - sideLength
-						* Math.sin((angle + sideAngle) * Math.PI / 180.0D));
+		arrow.lineTo(endX - sideLength * Math.cos((angle + sideAngle) * Math.PI / 180.0D),
+				endY - sideLength * Math.sin((angle + sideAngle) * Math.PI / 180.0D));
 
 		arrow.moveTo(endX, endY);
-		arrow.lineTo(
-				endX - sideLength
-						* Math.cos((angle - sideAngle) * Math.PI / 180.0D),
-				endY - sideLength
-						* Math.sin((angle - sideAngle) * Math.PI / 180.0D));
+		arrow.lineTo(endX - sideLength * Math.cos((angle - sideAngle) * Math.PI / 180.0D),
+				endY - sideLength * Math.sin((angle - sideAngle) * Math.PI / 180.0D));
 
 		return arrow;
 	}
@@ -503,8 +469,7 @@ public abstract class FieldFormatter {
 	 *            double
 	 * @return double
 	 */
-	private double getDegrees(final double posX1, final double posY1,
-			final double posX2, final double posY2) {
+	private double getDegrees(final double posX1, final double posY1, final double posX2, final double posY2) {
 
 		final double distX = posX2 - posX1;
 		final double distY = posY2 - posY1;

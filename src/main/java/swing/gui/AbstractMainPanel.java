@@ -1,8 +1,5 @@
 package swing.gui;
 
-import game.GameSession;
-import game.Player;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -15,12 +12,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 
+import game.GameSession;
+import game.Player;
 import swing.util.AnimatedImageUtil;
 import util.ModeEnum;
 import util.PseudoLogger;
@@ -45,8 +44,7 @@ public abstract class AbstractMainPanel extends JPanel {
 	 * @param xmlData
 	 *            String
 	 */
-	protected AbstractMainPanel(final GameFrame parentFrame,
-			final String xmlData) {
+	protected AbstractMainPanel(final GameFrame parentFrame, final String xmlData) {
 		super();
 		currPlayerNumber = 0;
 		currRound = 1;
@@ -61,18 +59,15 @@ public abstract class AbstractMainPanel extends JPanel {
 				final Document doc = builder.build(reader);
 				final Element elGame = doc.getRootElement();
 
-				currPlayerNumber = Integer.parseInt(elGame
-						.getAttributeValue("currPlayerNumber"));
+				currPlayerNumber = Integer.parseInt(elGame.getAttributeValue("currPlayerNumber"));
 
-				currRound = Integer.parseInt(elGame
-						.getAttributeValue("currRound"));
+				currRound = Integer.parseInt(elGame.getAttributeValue("currRound"));
 
 				GameSession.gameOptions.setData(elGame.getChild("options"));
 
 				// Process images
 				for (final Player player : GameSession.gameOptions.getPlayers()) {
-					player.setPlayerImage(AnimatedImageUtil.createMyImage(
-							player.getPlayerImageName(),
+					player.setPlayerImage(AnimatedImageUtil.createMyImage(player.getPlayerImageName(),
 							new Color(player.getPlayerColor())));
 				}
 
@@ -138,8 +133,7 @@ public abstract class AbstractMainPanel extends JPanel {
 	 *            boolean
 	 * @return boolean
 	 */
-	protected abstract boolean checkClick(final int idX, final int idY,
-			final boolean override);
+	protected abstract boolean checkClick(final int idX, final int idY, final boolean override);
 
 	/**
 	 * @return GameFrame
@@ -162,8 +156,7 @@ public abstract class AbstractMainPanel extends JPanel {
 	 *            int
 	 * @return BoardPanel
 	 */
-	protected final FieldComponent getFieldComponent(final int idX,
-			final int idY) {
+	protected final FieldComponent getFieldComponent(final int idX, final int idY) {
 		return boardPanel.getFieldComponent(idX, idY);
 	}
 
@@ -247,8 +240,7 @@ public abstract class AbstractMainPanel extends JPanel {
 			final Document doc = new Document();
 			final Element root = new Element("game");
 			doc.setRootElement(root);
-			root.setAttribute("currPlayerNumber",
-					Integer.toString(currPlayerNumber));
+			root.setAttribute("currPlayerNumber", Integer.toString(currPlayerNumber));
 
 			root.setAttribute("currRound", Integer.toString(currRound));
 			root.addContent(GameSession.gameOptions.getData());

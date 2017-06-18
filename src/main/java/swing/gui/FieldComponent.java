@@ -1,7 +1,5 @@
 package swing.gui;
 
-import game.GameSession;
-
 import java.util.Map;
 
 import java.awt.AlphaComposite;
@@ -16,8 +14,9 @@ import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
+import game.GameSession;
 import swing.util.AnimatedImage;
 import swing.util.AnimatedImageUtil;
 import swing.util.FieldFormatterSwing;
@@ -27,8 +26,7 @@ import swing.util.FontCreator;
  * @author Administrator
  * 
  */
-public class FieldComponent extends JComponent implements MouseListener,
-		Runnable {
+public class FieldComponent extends JComponent implements MouseListener, Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private final BoardPanel boardPanel;
@@ -49,12 +47,9 @@ public class FieldComponent extends JComponent implements MouseListener,
 	private final Color lineColorEdit;
 	private boolean mouseover = false;
 	private final transient AlphaComposite fieldAlpha;
-	private final transient AlphaComposite alpha100 = AlphaComposite
-			.getInstance(AlphaComposite.SRC_OVER, 1.0F);
-	private final transient AlphaComposite alpha75 = AlphaComposite
-			.getInstance(AlphaComposite.SRC_OVER, 0.75F);
-	private final transient AlphaComposite alpha50 = AlphaComposite
-			.getInstance(AlphaComposite.SRC_OVER, 0.5F);
+	private final transient AlphaComposite alpha100 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0F);
+	private final transient AlphaComposite alpha75 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75F);
+	private final transient AlphaComposite alpha50 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5F);
 	private final Font font;
 	private final FontMetrics fontMetrics;
 	private int centerX;
@@ -74,8 +69,8 @@ public class FieldComponent extends JComponent implements MouseListener,
 	 * @param xmlData
 	 *            Element
 	 */
-	protected FieldComponent(final BoardPanel parentPanel, final int idX,
-			final int idY, final boolean enabled, final Element xmlData) {
+	protected FieldComponent(final BoardPanel parentPanel, final int idX, final int idY, final boolean enabled,
+			final Element xmlData) {
 		super();
 		boardPanel = parentPanel;
 		this.idX = idX;
@@ -84,29 +79,24 @@ public class FieldComponent extends JComponent implements MouseListener,
 		if (xmlData == null) {
 			value = 0;
 			setOwner(-1);
-			setEnabled(enabled
-					&& !FieldFormatterSwing.getInstance().isEmpty(idX, idY));
+			setEnabled(enabled && !FieldFormatterSwing.getInstance().isEmpty(idX, idY));
 			overloads = 0;
 			rounds = 0;
 		} else {
 			value = Integer.parseInt(xmlData.getAttributeValue("value"));
 			setOwner(Integer.parseInt(xmlData.getAttributeValue("ownerId")));
-			setEnabled(Boolean.parseBoolean(xmlData
-					.getAttributeValue("enabled")));
-			overloads = Integer
-					.parseInt(xmlData.getAttributeValue("overloads"));
+			setEnabled(Boolean.parseBoolean(xmlData.getAttributeValue("enabled")));
+			overloads = Integer.parseInt(xmlData.getAttributeValue("overloads"));
 			rounds = Integer.parseInt(xmlData.getAttributeValue("rounds"));
 		}
 		colorAllowed = Color.GREEN;
 		colorNotAllowed = Color.RED;
 		lineColorEdit = Color.GREEN;
 
-		setSize(GameSession.gameOptions.getFieldWidth(),
-				GameSession.gameOptions.getFieldHeight());
+		setSize(GameSession.gameOptions.getFieldWidth(), GameSession.gameOptions.getFieldHeight());
 		setPreferredSize(getSize());
 
-		fieldAlpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				GameSession.gameOptions.getFieldAlpha());
+		fieldAlpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, GameSession.gameOptions.getFieldAlpha());
 		font = FontCreator.createFont("fonts/arial.ttf", Font.BOLD, 12.0F);
 		fontMetrics = boardPanel.getFontMetrics(font);
 
@@ -120,8 +110,7 @@ public class FieldComponent extends JComponent implements MouseListener,
 	 * @see java.awt.Component#setBounds(int, int, int, int)
 	 */
 	@Override
-	public void setBounds(final int posX, final int posY, final int width,
-			final int height) {
+	public void setBounds(final int posX, final int posY, final int width, final int height) {
 
 		/*
 		 * segments = FieldFormatter.getInstance().getSegments(width, height,
@@ -131,9 +120,8 @@ public class FieldComponent extends JComponent implements MouseListener,
 		 */
 
 		// Die Darstellung des Polygons an die geaenderte Groesse anpassen
-		polygon = FieldFormatterSwing.getInstance().getPolygon(width, height,
-				false, idX, idY, GameSession.gameOptions.getNumFieldsWidth(),
-				GameSession.gameOptions.getNumFieldsHeight(),
+		polygon = FieldFormatterSwing.getInstance().getPolygon(width, height, false, idX, idY,
+				GameSession.gameOptions.getNumFieldsWidth(), GameSession.gameOptions.getNumFieldsHeight(),
 				GameSession.gameOptions.isBorderless());
 
 		// Die Grenzen des Feldes auf die Groesse des Polygons anpassen
@@ -216,8 +204,7 @@ public class FieldComponent extends JComponent implements MouseListener,
 		}
 		ownerId = playerId;
 		if (playerId > -1) {
-			ownerImage = boardPanel.getPlayer(playerId).getPlayerImage()
-					.getResizedCopy(getWidth(), getHeight());
+			ownerImage = boardPanel.getPlayer(playerId).getPlayerImage().getResizedCopy(getWidth(), getHeight());
 			setRunning(true);
 		}
 	}
@@ -287,8 +274,7 @@ public class FieldComponent extends JComponent implements MouseListener,
 	 */
 	public boolean isAllowedClick(final boolean override) {
 		if (allowedClick == null) {
-			allowedClick = Boolean.valueOf(boardPanel.isAllowed(idX, idY,
-					override));
+			allowedClick = Boolean.valueOf(boardPanel.isAllowed(idX, idY, override));
 		}
 		return allowedClick.booleanValue();
 	}
@@ -300,8 +286,7 @@ public class FieldComponent extends JComponent implements MouseListener,
 	 */
 	private boolean isAllowedRepair(final boolean override) {
 		if (allowedRepair == null) {
-			allowedRepair = Boolean.valueOf(boardPanel.isAllowed(idX, idY,
-					override));
+			allowedRepair = Boolean.valueOf(boardPanel.isAllowed(idX, idY, override));
 		}
 		return allowedRepair.booleanValue();
 	}
@@ -403,9 +388,8 @@ public class FieldComponent extends JComponent implements MouseListener,
 			if (GameSession.gameOptions.getMaxOverload() == 0) {
 				g2d.setComposite(fieldAlpha);
 			} else {
-				g2d.setComposite(AlphaComposite.getInstance(
-						AlphaComposite.SRC_OVER, 1.0F - (float) getOverloads()
-								/ GameSession.gameOptions.getMaxOverload()));
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+						1.0F - (float) getOverloads() / GameSession.gameOptions.getMaxOverload()));
 			}
 			if (isEnabled()) {
 				if (!ownerImage.isAnim()) {
@@ -421,11 +405,9 @@ public class FieldComponent extends JComponent implements MouseListener,
 				if (boardPanel.isEditMode()) {
 					lineColor = lineColorEdit;
 				} else if (boardPanel.isRepairMode()) {
-					lineColor = isAllowedRepair(false) ? colorAllowed
-							: colorNotAllowed;
+					lineColor = isAllowedRepair(false) ? colorAllowed : colorNotAllowed;
 				} else {
-					fillColor = isAllowedClick(false) ? colorAllowed
-							: colorNotAllowed;
+					fillColor = isAllowedClick(false) ? colorAllowed : colorNotAllowed;
 					g2d.setComposite(alpha50);
 					g2d.setColor(fillColor);
 					g2d.fill(polygon);
@@ -438,15 +420,13 @@ public class FieldComponent extends JComponent implements MouseListener,
 
 			if (isEnabled()) {
 				g2d.setFont(font);
-				final int width = fontMetrics.stringWidth(Integer
-						.toString(value));
+				final int width = fontMetrics.stringWidth(Integer.toString(value));
 				final int height = fontMetrics.getHeight();
 				final int posX = centerX - width / 2;
 				final int posY = centerY + height / 3;
 				g2d.setColor(Color.WHITE);
 				g2d.setComposite(alpha75);
-				g2d.fillRect(posX - 1, posY - height / 2 - 5, width + 2,
-						height / 2 + 7);
+				g2d.fillRect(posX - 1, posY - height / 2 - 5, width + 2, height / 2 + 7);
 				g2d.setComposite(alpha100);
 				g2d.setColor(lineColor);
 				g2d.drawString(Integer.toString(value), posX, posY);

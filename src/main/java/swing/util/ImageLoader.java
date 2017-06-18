@@ -25,8 +25,7 @@ public final class ImageLoader {
 	 *            Component
 	 * @return BufferedImage
 	 */
-	public static BufferedImage getBufferedImage(final String imageName,
-			final Component component) {
+	public static BufferedImage getBufferedImage(final String imageName, final Component component) {
 
 		if (imageName == null || imageName.trim().length() == 0) {
 			return null;
@@ -51,8 +50,7 @@ public final class ImageLoader {
 			return null;
 		}
 
-		final BufferedImage bufferedImage = new BufferedImage(
-				image.getWidth(null), image.getHeight(null),
+		final BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
 				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.drawImage(image, 0, 0, null);

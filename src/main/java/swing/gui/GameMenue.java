@@ -1,8 +1,5 @@
 package swing.gui;
 
-import game.GameSession;
-import game.NetOptions;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
+import game.GameSession;
+import game.NetOptions;
 import swing.gui.options.JoinNetgameDialog;
 import swing.gui.options.OptionsDialog;
 import util.Constants;
@@ -89,8 +88,7 @@ public class GameMenue {
 			 */
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				final OptionsDialog options = new OptionsDialog(
-						getParentFrame(), ModeEnum.MODE_PLAY);
+				final OptionsDialog options = new OptionsDialog(getParentFrame(), ModeEnum.MODE_PLAY);
 				options.setVisible(true);
 			}
 		});
@@ -98,8 +96,7 @@ public class GameMenue {
 	}
 
 	private JMenuItem getMenuItemJoinNetgame() {
-		final JMenuItem jMenuItemJoinNetgame = new JMenuItem("Join Netgame",
-				'j');
+		final JMenuItem jMenuItemJoinNetgame = new JMenuItem("Join Netgame", 'j');
 		jMenuItemJoinNetgame.addActionListener(new ActionListener() {
 
 			/**
@@ -109,8 +106,7 @@ public class GameMenue {
 			 */
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				final JoinNetgameDialog joinNetGame = new JoinNetgameDialog(
-						getParentFrame(), true, new NetOptions());
+				final JoinNetgameDialog joinNetGame = new JoinNetgameDialog(getParentFrame(), true, new NetOptions());
 				joinNetGame.setVisible(true);
 			}
 		});
@@ -128,8 +124,7 @@ public class GameMenue {
 			 */
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				final OptionsDialog options = new OptionsDialog(
-						getParentFrame(), ModeEnum.MODE_EDIT);
+				final OptionsDialog options = new OptionsDialog(getParentFrame(), ModeEnum.MODE_EDIT);
 				options.setVisible(true);
 			}
 		});
@@ -149,8 +144,7 @@ public class GameMenue {
 			 */
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				getParentFrame().start(getEditorPanel().getXmlData(), true,
-						ModeEnum.MODE_PLAY);
+				getParentFrame().start(getEditorPanel().getXmlData(), true, ModeEnum.MODE_PLAY);
 			}
 		});
 		return jMenuItemStartGame;
@@ -170,9 +164,7 @@ public class GameMenue {
 	private JMenuItem getMenuItemSaveGame() {
 		final JMenuItem jMenuItemSaveGame = new JMenuItem("Save game", 's');
 		jMenuItemSaveGame.addActionListener(new SaveGameActionListener());
-		if (!isEditMode()
-				&& (getGamePanel() == null || GameSession.gameOptions
-						.getNetwork() > 0)) {
+		if (!isEditMode() && (getGamePanel() == null || GameSession.gameOptions.getNetwork() > 0)) {
 			// Solange das Spiel nicht gestartet wurde und waehrend eines
 			// aktiven
 			// Netzwerkspiels ist das Speichern eines Spielstands nicht moeglich
@@ -204,13 +196,9 @@ public class GameMenue {
 			}
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				if (isEditMode()) {
-					getParentFrame().load(
-							jFileChooser.getSelectedFile().getPath(),
-							ModeEnum.MODE_EDIT);
+					getParentFrame().load(jFileChooser.getSelectedFile().getPath(), ModeEnum.MODE_EDIT);
 				} else {
-					getParentFrame().load(
-							jFileChooser.getSelectedFile().getPath(),
-							ModeEnum.MODE_PLAY);
+					getParentFrame().load(jFileChooser.getSelectedFile().getPath(), ModeEnum.MODE_PLAY);
 				}
 			}
 		}
@@ -270,8 +258,7 @@ public class GameMenue {
 		 */
 		@Override
 		public boolean accept(final File file) {
-			return file.isDirectory()
-					|| file.getName().toLowerCase().endsWith(OVER_FILE);
+			return file.isDirectory() || file.getName().toLowerCase().endsWith(OVER_FILE);
 		}
 
 		/**
@@ -287,7 +274,7 @@ public class GameMenue {
 
 	private JMenuItem getMenuFiles() {
 		final JMenu jMenuFiles = new JMenu("File(s)");
-		final String[] entries = Constants.USERDIR.list();
+		final String[] entries = Constants.USER_DIR.list();
 		Collections.sort(Arrays.asList(entries));
 		int gamefiles = 0;
 		for (final String entry : entries) {
@@ -306,11 +293,9 @@ public class GameMenue {
 					public void actionPerformed(final ActionEvent event) {
 						if (event.getActionCommand() != null) {
 							if (isEditMode()) {
-								getParentFrame().load(event.getActionCommand(),
-										ModeEnum.MODE_EDIT);
+								getParentFrame().load(event.getActionCommand(), ModeEnum.MODE_EDIT);
 							} else {
-								getParentFrame().load(event.getActionCommand(),
-										ModeEnum.MODE_PLAY);
+								getParentFrame().load(event.getActionCommand(), ModeEnum.MODE_PLAY);
 							}
 						}
 					}

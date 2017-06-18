@@ -33,9 +33,8 @@ public class Wall {
 	 * @param destructable
 	 *            Aktiv-Flag.
 	 */
-	protected void init(final int field1x, final int field1y,
-			final int field2x, final int field2y, final BoardPanel parent,
-			final boolean destructable) {
+	protected void init(final int field1x, final int field1y, final int field2x, final int field2y,
+			final BoardPanel parent, final boolean destructable) {
 		this.field1x = field1x;
 		this.field1y = field1y;
 		this.field2x = field2x;
@@ -144,7 +143,6 @@ public class Wall {
 	 * @return boolean
 	 */
 	public boolean isAllowed() {
-		return parent.isAllowed(field1x, field1y, false)
-				|| parent.isAllowed(field2x, field2y, false);
+		return parent.isAllowed(field1x, field1y, false) || parent.isAllowed(field2x, field2y, false);
 	}
 }
